@@ -1,0 +1,634 @@
+html {
+    padding: 0px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;           /* 100vw e 100vh para 100% da janela */
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: auto;
+}
+
+body {
+    background-color: rgb(21, 21, 21);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100%;
+    margin: 3 auto auto auto;
+    
+}
+
+*{
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1{
+    font-family: "Fjalla One", sans-serif;
+}
+
+a{
+    font-family: "Space Mono", monospace;
+}
+
+.navbar a{
+    font-family: "Fjalla One", sans-serif;
+}
+
+
+
+
+@media screen and (min-width: 1251px) {
+
+   
+
+    .mypage {
+        display: inherit;
+        height: inherit;
+        margin: auto;
+        width: 70%;
+        padding: 0px;
+        flex-direction: inherit;
+        justify-content: inherit;
+    }
+
+        
+    
+    .navbar{
+        /*background-color: rgba(16, 16, 16, 0.5); colocar background no navbar todo*/
+        min-width: 100%;
+        max-width: 100%;
+        width: auto;
+        height: 100px;
+        background-color: rgb(46, 46, 46);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        
+        }
+
+        .menu{
+            width: 30%;
+            height: 100;
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .menu ul{
+            
+            justify-content: left;
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            width: auto;
+            margin: auto auto auto 0;
+            padding: 0;
+
+        }
+        
+        .menu ul li{
+            
+            /*background-color: rgba(16, 16, 16); colocar background em cada item*/
+            border-radius: 15px;
+            list-style: none;
+            height: 100%;
+            width: 100px;
+        }
+        
+        .menu li:hover {
+            background-color: rgb(16, 16, 16, 0.5); /* Nova cor de fundo quando o mouse está sobre o botão */
+        }
+        
+        .navbar a{
+            text-decoration: none;
+            color: #fff;
+            font-size: 20px;
+            text-transform: uppercase;
+            margin: auto;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+  
+
+    .logo {
+            margin: auto auto auto auto;
+            width: 30%;
+            height: 100;
+        }
+
+
+        .more {
+                width: 30%;
+                height: 100;
+                align-items: right;
+                justify-content: right;
+            }
+
+
+        .more-area{
+            width: 100;
+            height: 100%;
+            
+            margin: auto 0 auto auto;
+        }
+
+        .more a{
+            text-decoration: none;
+            color: #fff;
+            font-size: 20px;
+            text-transform: uppercase;
+            margin: auto;
+            height: 100%;
+            width: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .more a:hover {
+            background-color: rgb(16, 16, 16, 0.5); /* Nova cor de fundo quando o mouse está sobre o botão */
+        }
+    
+       
+
+
+    .introdution {
+        width: 70%;
+        background-image: url("introdution.png");
+        background-size: fill;
+        aspect-ratio: 5 / 1;
+        margin: auto auto 25 auto;
+        
+    }
+
+        
+     .products {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: auto;
+        background-color: #262626;
+        
+
+
+
+    }
+
+    .products ul{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        height: auto;
+        margin: 20 auto 20 auto;
+        
+    }
+
+    .products li{
+        list-style: none;
+        width: auto;
+        height: auto;
+        background-color: rgb(24, 24, 24);
+        padding: 15;
+        border-radius: 15px;
+        margin: auto;
+       
+    }
+
+    .products .image {
+        width: 200px;
+        height: 200px;
+        background-color: #ffffff;
+        border-radius: 15px;
+        margin: auto;
+        padding: 0;
+        background-size: cover;
+
+    }
+
+    
+
+
+    .products .info{
+        width: 100%;
+        height: 100;
+    }
+
+    .name{
+        text-align: center;
+        color: #fff;
+        font-size: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: sans-serif;
+        margin: auto;
+        width: 100%;
+        height: 50%;
+    }
+
+    .price{
+        text-align: center;
+        color: #fff;
+        font-size: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: sans-serif;
+        margin: auto;
+        width: 100%;
+        height: 50%;
+        
+    }
+
+    .name a{
+        text-decoration: none;
+        color: #fff;
+        font-size: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        
+    }
+
+    .price a{
+        text-decoration: none;
+        color: #ff0000;
+        font-size: 20px;
+        text-transform: uppercase;
+        font-weight: lighter;
+        margin: auto;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        height: 100%;
+        font-family: "Space Mono", monospace;
+        
+    }
+
+    @media screen and (max-width: 1600px) {
+
+        .products {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            margin: 15auto auto auto;
+            background-color: #262626;
+            
+    
+    
+    
+        }
+    
+        .products ul{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+            height: auto;
+            margin: 20 auto 20 auto;
+            
+        }
+    
+        .products li{
+            list-style: none;
+            width: auto;
+            height: auto;
+            background-color: rgb(24, 24, 24);
+            padding: 0;
+            border-radius: 15px;
+            margin: auto;
+           
+        }
+    
+        .products .image{
+            width: 170;
+            height: 170;
+            border-radius: 15px;
+            margin: 10 10 10 10;
+            padding: 0;
+            background-size: cover;
+
+        }
+
+        
+    
+        .products .info{
+            width: 100%;
+            height: 60;
+        }
+    
+        .name{
+            text-align: center;
+            color: #fff;
+            font-size: 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin: auto;
+            width: 100%;
+            height: 50%;
+        }
+    
+        .price{
+            text-align: center;
+            color: #fff;
+            font-size: 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin: auto;
+            width: 100%;
+            height: 50%;
+            
+        }
+    
+        .name a{
+            text-decoration: none;
+            color: #fff;
+            font-size: 17px;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: flex;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            
+        }
+    
+        .price a{
+            text-decoration: none;
+            color: #ff0000;
+            font-size: 17;
+            text-transform: uppercase;
+            margin: auto;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            height: 100%;
+            font-weight: lighter;
+            font-family: "Space Mono", monospace;            
+        }
+}
+}
+
+@media screen and (max-width: 1251px) {
+
+    body{
+        display: flex;
+        flex-direction: column;
+        background-color: #191919;
+       }
+    
+       .mypage {
+        display: inherit;
+        height: inherit;
+        margin: auto;
+        width: 100%;
+        padding: 0px;
+        flex-direction: inherit;
+        justify-content: inherit;
+    }
+
+        .navbar{
+        /*background-color: rgba(16, 16, 16, 0.5); colocar background no navbar todo*/
+        min-width: 100%;
+        max-width: 100%;
+        width: 100vw;
+        height: 60px;
+        background-color: rgb(39, 39, 39);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        }
+
+        .menu{
+            width: 40%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            margin: auto auto auto auto;
+        }
+
+        .logo {
+            margin: auto auto auto auto;
+            width: 20%;
+            height: 100%;
+            display: flex;
+        }
+
+
+        .more {
+                width: 40%;
+                height: 100%;
+                align-items: right;
+                justify-content: right;
+                margin: auto auto auto auto;
+            }
+        
+        .menu ul{
+            
+            justify-content: left;
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            width: auto;
+            margin: auto auto auto 5;
+            padding: 0;
+
+
+        }
+        
+        .menu ul li{
+            
+            /*background-color: rgba(16, 16, 16); colocar background em cada item*/
+            border-radius: 15px;
+            list-style: none;
+            height: 100%;
+            width: 50;
+        }
+        
+        .menu li:hover {
+            background-color: rgb(16, 16, 16, 0.5); /* Nova cor de fundo quando o mouse está sobre o botão */
+        }
+        
+        .navbar a{
+            text-decoration: none;
+            color: #fff;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin: auto;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+  
+
+    
+
+
+        .more-area{
+            width: 50;
+            height: 100%;
+            
+            margin: auto 3 auto auto;
+
+        }
+
+        .more a{
+            text-decoration: none;
+            color: #fff;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin: auto;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .more a:hover {
+            background-color: rgb(16, 16, 16, 0.5); /* Nova cor de fundo quando o mouse está sobre o botão */
+        }
+
+        .introdution {
+            width: 100%;
+            background-image: url("introdution.png");
+            background-size: cover;
+            aspect-ratio: 5 / 1;
+            margin: 15 auto 15 auto;
+
+        }
+
+        .products {
+            width: 100%;
+            height: auto;
+            background-color: #202020;
+        }
+        
+        .products ul {
+            display: flex;
+            flex-wrap: wrap;
+            width: auto;
+            height: auto;
+            margin: auto;
+        }
+        
+        .products li {
+            list-style: none;
+            padding: 5px;
+            border-radius: 15px;
+            margin: 02 auto 02 0; /* Espaço entre as linhas */
+            width: 50%;
+            height: auto;
+        }
+
+        .products .background {
+            border-radius: 15px;
+            height: 220;
+            width: 160;
+            margin: auto;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            background-color: #262626;
+        }
+        
+        .products .image {
+            width: 140px;
+            height: 140px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            margin: 15 auto 5 auto;
+            background-size: cover;
+
+        }
+        
+        .products .info {
+            width: 80%;
+            height: 50px;
+            margin: 2 auto auto auto;
+        }
+
+
+
+        .first .image img{
+                background-image: url('fds.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+
+        }
+        
+        .name {
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin: auto;
+            height: 50%;
+            width: 100%;
+        }
+
+        .price {
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin: auto;
+            height: 50%;
+            width: 100%;
+        }
+        
+        .name a{
+            text-decoration: none;
+            color: inherit;
+            font-size: 14px;
+            margin: auto;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            text-shadow: 1px 2px 1px black;
+            font-family: "Fjalla One", sans-serif;
+            font-weight: normal;
+
+        }
+
+        .price a{
+            text-decoration: none;
+            color: inherit;
+            font-size: 14px;
+            margin: auto;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            color: red;
+            text-shadow: 1px 2px 1px black;
+            font-weight: lighter;
+            font-family: "Space Mono", monospace;
+
+
+        }
+
+}
