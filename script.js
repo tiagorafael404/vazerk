@@ -20,7 +20,3 @@ function showCookieConsent() {
     }
 }
 
-// Exibir a mensagem de consentimento de cookies quando a página carregar
-window.onload = function() {
-    showCookieConsent();
-};
