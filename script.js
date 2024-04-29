@@ -9,7 +9,7 @@ function acceptCookies() {
     document.getElementById('cookieConsent').style.display = 'none';
 }
 
-// Função para exibir a mensagem de consentimento de cookies se ainda não tiver sido aceita neste mês
+// Função para exibir a mensagem de consentimento de cookies se ainda não tiver sido aceita após 5 minutos
 function showCookieConsent() {
     if (!areCookiesAccepted()) {
         var lastAccepted = localStorage.getItem('lastAccepted');
