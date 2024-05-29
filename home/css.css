@@ -160,8 +160,8 @@ a{
 
     .introdution {
         width: 70%;
-        background-image: url("introdution.png");
-        background-size: fill;
+        background-image: url("vazerk ad1.jpg");
+        background-size: cover;
         aspect-ratio: 5 / 1;
         margin: auto auto 25 auto;
         
@@ -511,7 +511,7 @@ a{
 
         .introdution {
             width: 100%;
-            background-image: url("introdution.png");
+            background-image: url("vazerk ad1.jpg");
             background-size: cover;
             aspect-ratio: 5 / 1;
             margin: 15 auto 15 auto;
