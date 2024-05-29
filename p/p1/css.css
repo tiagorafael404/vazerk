@@ -632,5 +632,75 @@ body {
                 justify-content: space-around;
                
             }
+
+            .choice{
+                width: 100%;
+                height: auto;
+                margin: 10 auto 15 0;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+            }
+    
+            .choice_title{
+                width: 100%;
+                height:auto;
+                margin: auto auto 10 0;
+            }
+    
+            .choice_title a{
+                text-decoration: none;
+                color: #fff;
+                text-transform: uppercase;
+                margin: auto;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                justify-content: left;
+                font-size: 18;
+                font-weight: normal;
+            }
+    
+            .choices{
+                width: 100%;
+                height: auto;
+            }
+    
+            .choices ul{
+                list-style: none;
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-wrap: wrap;
+                margin: auto auto auto 0; 
+            }
+    
+            .choices li{
+    
+                width: 60;
+                height: 40;
+                background-color: rgb(21, 21, 21);
+                margin: auto;
+                border-style: solid;
+                border-color: black;
+                border-width: 2;
+                border-radius: 15px;
+                margin: 0 5 10 0;
+            }
+    
+            .choices li a{
+                text-decoration: none;
+                color: #fff;
+                text-transform: uppercase;
+                margin: auto;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 16;
+                font-weight: normal;
+    
+            }
     
     }
