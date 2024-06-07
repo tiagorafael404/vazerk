@@ -542,7 +542,7 @@ a{
         }
 
         .products .background {
-            border-radius: 15px;
+            border-radius: 0px;
             height: 220;
             width: 160;
             margin: auto;
