@@ -59,6 +59,13 @@ body {
     font-family: "Fjalla One", sans-serif;
 }
 
+.buy_button a{
+    font-family: "Fjalla One", sans-serif;
+    text-decoration: none;
+    color: black;
+    text-shadow: 1px 2px 1px black;
+}
+
 
 
 
@@ -379,8 +386,35 @@ body {
 
         }
 
-              
-    }
+        .buy_button{
+            width: 140;
+            height: 40;
+            margin: 10 auto 15 35;
+            border-radius: 7px;
+            border-style: solid;
+            border-color: black;
+            border-width: 1;
+            background-color: rgb(227, 109, 69);
+        }
+
+        .buy_button a{
+            text-decoration: none;
+            color: #ffffff;
+            text-transform: uppercase;
+            margin: auto;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 18;
+            word-spacing: 0;
+            letter-spacing: 1;
+            font-family: "Space Mono", monospace;
+        }
+
+}
 
     @media screen and (max-width: 1251px) {
 
@@ -544,7 +578,7 @@ body {
 
             .part2 {
                 width: 100%;
-                aspect-ratio: 5 / 6;
+                aspect-ratio: 5 / 5;
                 background-color: rgb(42, 42, 42);
                 border-radius: 10px;
             }
@@ -603,13 +637,6 @@ body {
  
             }
     
-            .product_price{
-    
-                width: 100%;
-                height: 60;
-                margin: auto auto 25 auto;
-    
-            }
 
             .gallery ul{
                 list-style: none;
@@ -702,5 +729,52 @@ body {
                 font-weight: normal;
     
             }
+
+            .product_price{
+                width: 100%;
+                height: 30;
+                margin: 0 auto 15 0;
+            }
     
+            .product_price a{
+                text-decoration: none;
+                color: #fff;
+                text-transform: uppercase;
+                margin: auto;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                justify-content: left;
+                font-size: 18;
+                font-weight: normal;
+            }
+    
+            .buy_button{
+                width: 140;
+                height: 40;
+                margin: 0 auto 0 30;
+                border-radius: 7px;
+                border-style: solid;
+                border-color: black;
+                border-width: 1;
+                background-color: rgb(227, 109, 69);
+            }
+    
+            .buy_button a{
+                text-decoration: none;
+                color: #ffffff;
+                text-transform: uppercase;
+                margin: auto;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                font-size: 18;
+                word-spacing: 0;
+                letter-spacing: 1;
+                font-family: "Space Mono", monospace;
+            }
+
     }
