@@ -249,7 +249,7 @@ a{
     .name a{
         text-decoration: none;
         color: #fff;
-        font-size: 20px;
+        font-size: 16px;
         text-transform: uppercase;
         font-weight: bold;
         display: flex;
@@ -358,7 +358,7 @@ a{
         .name a{
             text-decoration: none;
             color: #fff;
-            font-size: 17px;
+            font-size: 15px;
             text-transform: uppercase;
             font-weight: bold;
             display: flex;
