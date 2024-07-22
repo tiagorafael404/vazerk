@@ -17,3 +17,15 @@ const executeCodes = () => {
 };
 //executeCodes function will be called on webpage load
 window.addEventListener("load", executeCodes);
+
+document.addEventListener("DOMContentLoaded", function() {
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const photo = document.getElementById('photo');
+
+  galleryItems.forEach(item => {
+      item.addEventListener('click', function() {
+          const newImage = item.getAttribute('qual-imagem');
+          photo.style.backgroundImage = `url(${newImage})`;
+      });
+  });
+});

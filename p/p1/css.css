@@ -298,7 +298,6 @@ body {
             margin: auto 0 auto auto;
         }
 
-
         .gallery ul{
             list-style: none;
             width: 80%;
@@ -314,6 +313,8 @@ body {
             border-radius: 10px;
             background-size: cover;
             margin: 0 auto 15 auto;
+            cursor: pointer;
+
         }
 
         .choice{
