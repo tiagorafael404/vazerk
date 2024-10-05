@@ -29,3 +29,14 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   });
 });
+
+
+document.getElementById("more").addEventListener("click", function() {
+  var divmenu = document.getElementById("menu");
+  
+  if (divmenu.style.display === "none") {
+    divmenu.style.display = "block";  // Mostrar a div
+  } else {
+    divmenu.style.display = "none";   // Esconder a div
+  }
+});
