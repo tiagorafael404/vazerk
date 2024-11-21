@@ -189,7 +189,7 @@ a{
         list-style: none;
         padding: 10px;
         border-radius: 0px;
-        margin: 02 auto 02 0; /* Espaço entre as linhas */
+        margin: 02 0 02 0; /* Espaço entre as linhas */
         width: 25%;
         height: auto;
         text-transform: none;
