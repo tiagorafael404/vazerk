@@ -83,7 +83,7 @@ body {
         justify-content: inherit;
     }
 
-        
+
     
     .navbar{
         /*background-color: rgba(16, 16, 16, 0.5); colocar background no navbar todo*/
@@ -183,6 +183,23 @@ body {
         .more a:hover {
             background-color: rgb(16, 16, 16, 0.5); /* Nova cor de fundo quando o mouse está sobre o botão */
         }
+
+        .freeshipping{
+            width: 100%;
+            height: 20px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            align-content: center;
+         font-size: 12;
+         text-transform: none;
+         text-decoration: none;
+         font-family: "Space Mono", monospace;
+            }
+
+            .freeshipping a{
+                font-family: "Space Mono", monospace;
+            }
 
         .container {
             display: flex;
