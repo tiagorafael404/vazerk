@@ -172,6 +172,7 @@ a{
         width: 100%;
         height: auto;
         background-color: #202020;
+        text-transform: none;
     }
     
     .products ul {
@@ -180,7 +181,8 @@ a{
         width: auto;
         height: auto;
         margin: auto;
-   
+        text-transform: none;
+
     }
     
     .products li {
@@ -190,6 +192,8 @@ a{
         margin: 02 auto 02 0; /* Espaço entre as linhas */
         width: 25%;
         height: auto;
+        text-transform: none;
+
     }
 
 
@@ -212,6 +216,8 @@ a{
         margin-top: 7;
         width: 100%;
         height: 60;
+        text-transform: none;
+
     }
 
     .name{
@@ -229,7 +235,7 @@ a{
         text-align: left;
         color: #fff;
         font-size: 20px;
-        text-transform: uppercase;
+        text-transform: none;
         font-weight: bold;
         font-family: sans-serif;
         width: 100%;
@@ -241,7 +247,7 @@ a{
         text-decoration: none;
         color: #fff;
         font-size: 16px;
-        text-transform: uppercase;
+        text-transform: none;
         font-weight: bold;
         display: flex;
         height: 100%;
@@ -254,7 +260,7 @@ a{
         text-decoration: none;
         color: #fbfbfb;
         font-size: 20px;
-        text-transform: uppercase;
+        text-transform: none;
         font-weight: lighter;
         margin: auto;
         align-items: center;
