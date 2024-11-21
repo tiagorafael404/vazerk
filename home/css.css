@@ -292,75 +292,73 @@ a{
         .products {
             width: 100%;
             height: auto;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            margin: 15 auto auto auto;
-            background-color: #262626;
-            
-    
-    
-    
+            background-color: #202020;
+            text-transform: none;
         }
-    
-        .products ul{
+        
+        .products ul {
             display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            width: 100%;
-            height: auto;
-            margin: 20 auto 20 auto;
-            
-        }
-    
-        .products li{
-            list-style: none;
+            flex-wrap: wrap;
             width: auto;
             height: auto;
-            background-color: rgb(24, 24, 24);
-            padding: 0;
-            border-radius: 0px;
             margin: auto;
-           
+            text-transform: none;
+    
+        }
+        
+        .products li {
+            list-style: none;
+            padding: 10px;
+            border-radius: 0px;
+            margin: 02 0 02 0; /* Espaço entre as linhas */
+            width: 25%;
+            height: auto;
+            text-transform: none;
+    
         }
     
-        .products .image{
-            width: 170;
-            height: 170;
+    
+    
+        .products .image {
+            width: 100%;
+            aspect-ratio: 8/9;
+            background-color: #ffffff;
             border-radius: 15px;
-            margin: 10 10 10 10;
+            margin: auto;
             padding: 0;
             background-size: cover;
-
+    
         }
-
+    
         
     
+    
         .products .info{
+            margin-top: 7;
             width: 100%;
             height: 60;
+            text-transform: none;
+    
         }
     
         .name{
-            text-align: center;
+            text-align: left;
             color: #fff;
             font-size: 20px;
             text-transform: uppercase;
             font-weight: bold;
             font-family: sans-serif;
-            margin: auto;
             width: 100%;
             height: 50%;
         }
     
         .price{
-            text-align: center;
+            text-align: left;
             color: #fff;
             font-size: 20px;
-            text-transform: uppercase;
+            text-transform: none;
             font-weight: bold;
             font-family: sans-serif;
-            margin: auto;
             width: 100%;
             height: 50%;
             
@@ -370,28 +368,28 @@ a{
             text-decoration: none;
             color: #fff;
             font-size: 15px;
-            text-transform: uppercase;
+            text-transform: none;
             font-weight: bold;
             display: flex;
             height: 100%;
             align-items: center;
-            justify-content: center;
+            justify-content: left;
             
         }
     
         .price a{
             text-decoration: none;
             color: #fbfbfb;
-            font-size: 17;
-            text-transform: uppercase;
+            font-size: 17px;
+            text-transform: none;
+            font-weight: lighter;
             margin: auto;
             align-items: center;
             justify-content: left;
             display: flex;
             height: 100%;
-            width: 90%;
-            font-weight: lighter;
-            font-family: "Space Mono", monospace;   
+            font-family: "Space Mono", monospace;
+            
         }
 }
 }
