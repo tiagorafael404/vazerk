@@ -448,13 +448,18 @@ a{
         }
 
 
-        .more {
+       .more {
                 width: 40%;
                 height: 100%;
-                align-items: right;
-                justify-content: right;
                 margin: auto auto auto auto;
             }
+
+        .more-area{
+            font-size: 20;
+            margin: auto 15 auto auto;
+            height: 100%;
+            width: 50%;
+        }
         
         .menu ul{
             display: none;
@@ -502,7 +507,7 @@ a{
   
         .menu2 i{
             font-size: 20;
-            margin: auto auto auto 10%;
+            margin: auto auto auto 20%;
             height: 100%;
             align-content: center;
             width: 50%;
@@ -536,13 +541,6 @@ a{
             border-radius: 0 0 50px 50px;
            }
 
-        .more-area{
-            width: 50;
-            height: 100%;
-            
-            margin: auto 3 auto auto;
-
-        }
 
         .more a{
             text-decoration: none;
