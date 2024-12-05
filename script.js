@@ -2,8 +2,8 @@ const cookieBox = document.querySelector(".cookies-box"),
   buttons = document.querySelectorAll(".button");
 
 const executeCodes = () => {
-  // Verifica se o cookie "codinglab" já existe
-  if (document.cookie.includes("codinglab")) return;
+  // Verifica se o cookie "cookieBy" já existe
+  if (document.cookie.includes("cookieBy")) return;
 
   // Mostra a caixa de cookies
   cookieBox.classList.add("show");
@@ -13,17 +13,18 @@ const executeCodes = () => {
       // Oculta a caixa de cookies
       cookieBox.classList.remove("show");
 
-      // Verifica se o botão clicado é o de aceitar
+      // Se o botão clicado for o de aceitar, configura o cookie
       if (button.id === "acceptBtn") {
-        // Configura o cookie com validade de 1 mês
+        // Configura o cookie com validade de 30 dias
         document.cookie = "cookieBy=codinglab; max-age=" + 60 * 60 * 24 * 30;
       }
     });
   });
 };
 
-// Chama a função quando a página carrega
+// Chama a função ao carregar a página
 window.addEventListener("load", executeCodes);
+
 
 
 
