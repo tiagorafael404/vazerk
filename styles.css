@@ -84,24 +84,7 @@
     color: black;
 }
 
-.buttons > div {
-    padding: 10px 20px;
-    background-color: #4caf50; /* Verde para botão */
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    margin: 5px;
-    display: inline-block;
-  }
-  
-  .buttons > div#declineBtn {
-    background-color: #f44336; /* Vermelho para botão */
-  }
-  
-  .buttons > div:hover {
-    opacity: 0.8; /* Efeito de hover */
-  }
+
 
 @media screen and (max-width: 1600px) {
 
