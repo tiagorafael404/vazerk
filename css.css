@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +8,7 @@
 body {
   min-height: 100vh;
 }
-.cookies-box {
+.wrapper {
   position: fixed;
   bottom: 50px;
   right: -370px;
@@ -18,8 +19,10 @@ body {
   padding: 15px 25px 22px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
-
-.cookies-box header {
+.wrapper.show {
+  right: 20px;
+}
+.wrapper header {
   display: flex;
   align-items: center;
   column-gap: 15px;
@@ -32,10 +35,10 @@ header h2 {
   color: #4070f4;
   font-weight: 500;
 }
-.cookies-box .data {
+.wrapper .data {
   margin-top: 16px;
 }
-.cookies-box .data p {
+.wrapper .data p {
   color: #333;
   font-size: 16px;
 }
@@ -46,7 +49,7 @@ header h2 {
 .data p a:hover {
   text-decoration: underline;
 }
-.cookies-box .buttons {
+.wrapper .buttons {
   margin-top: 16px;
   width: 100%;
   display: flex;

@@ -6,17 +6,7 @@
 
 @media screen and (max-width: 1600px) {
 
-.cookies-box{
-    height: 150px;
-    width: 650px;
-    background-color: rgb(21, 21, 21);
-    border-radius: 15px 15px 15px 15px;
-    border: solid 4px #fff;
-    padding: 10px;
-    position: fixed;
-    bottom: 10; /* Encosta a caixa no fundo da tela */
-    left: 50%;
-}
+
 
 }
 }
