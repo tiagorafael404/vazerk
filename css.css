@@ -7,7 +7,7 @@
 body {
   min-height: 100vh;
 }
-.wrapper {
+.cookies-box {
   position: fixed;
   bottom: 50px;
   right: -370px;
@@ -19,7 +19,7 @@ body {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-.wrapper header {
+.cookies-box header {
   display: flex;
   align-items: center;
   column-gap: 15px;
@@ -32,10 +32,10 @@ header h2 {
   color: #4070f4;
   font-weight: 500;
 }
-.wrapper .data {
+.cookies-box .data {
   margin-top: 16px;
 }
-.wrapper .data p {
+.cookies-box .data p {
   color: #333;
   font-size: 16px;
 }
@@ -46,7 +46,7 @@ header h2 {
 .data p a:hover {
   text-decoration: underline;
 }
-.wrapper .buttons {
+.cookies-box .buttons {
   margin-top: 16px;
   width: 100%;
   display: flex;
