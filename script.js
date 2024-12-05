@@ -5,13 +5,15 @@ const executeCodes = () => {
   // Verifica se o cookie "cookieBy" já existe
   if (document.cookie.includes("cookieBy")) return;
 
-  // Mostra a caixa de cookies
+  // Adiciona a classe "show" e define o estilo "display: block"
   cookieBox.classList.add("show");
+  cookieBox.style.display = "block";
 
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
-      // Oculta a caixa de cookies
+      // Remove a classe "show" e define o estilo "display: none"
       cookieBox.classList.remove("show");
+      cookieBox.style.display = "none";
 
       // Se o botão clicado for o de aceitar, configura o cookie
       if (button.id === "acceptBtn") {
@@ -24,7 +26,6 @@ const executeCodes = () => {
 
 // Chama a função ao carregar a página
 window.addEventListener("load", executeCodes);
-
 
 
 
