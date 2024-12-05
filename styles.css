@@ -3,6 +3,7 @@
 
 
 .cookies-box{
+    display: none;
     height: 150px;
     width: 750px;
     background-color: rgb(21, 21, 21);
@@ -14,6 +15,9 @@
     left: 50%;
 }
 
+.cookies-box.show {
+    display: block;
+  }
 
 .cookies-title{
     display: flex;
@@ -87,7 +91,7 @@
 .buttons #acceptBtn:hover {
     background-color: #034bf1;
   }
-  
+
   #declineBtn {
     border: 2px solid #4070f4;
     background-color: #fff;
