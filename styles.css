@@ -338,6 +338,8 @@
     font-family:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     height: 100px;
     padding: 10px;
+    box-sizing: border-box;
+    resize: none;
 }
 
 .contact-form button{
@@ -829,6 +831,8 @@
     font-family:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     height: 70px;
     padding: 10px;
+    box-sizing: border-box;
+    resize: none;
 }
 
 
