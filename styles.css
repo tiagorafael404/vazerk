@@ -241,6 +241,194 @@
     color: #fff;
   }
 
+
+
+#contact {
+    display: none; /* Inicialmente invisível */
+    opacity: 0; /* Torna a div invisível */
+    transform: translateY(100%); /* Coloca a div fora da tela, abaixo */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Animação suave de opacidade e movimento */
+  }
+  
+  #contact.show {
+    display: block; /* Torna a div visível */
+    opacity: 1; /* Torna a div visível */
+    transform: translateY(0); /* Move a div para a posição original (de baixo para cima) */
+  }
+  
+
+
+.contact{
+    height: auto;
+    width: 1000;
+    margin: auto auto auto auto;
+    justify-content: center;
+    justify-items: center;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+}
+
+.contact-window{
+    height: auto;
+    width: 800px;
+    background-color: rgb(17, 16, 31);
+    margin: auto auto auto auto;
+    justify-content: center;
+    justify-items: center;
+    display: flex;
+    flex-direction: column;
+    border: solid 5px #fff;
+    border-radius: 25px 25px 25px 25px;
+
+
+}
+
+.contact-header{
+    height: 80px;
+    width: 100%;
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    display: flex;
+
+    margin: 10 auto 0 auto;
+}
+
+.contact-form{
+    height: 75%;
+    width: 100%;
+    margin: 0 auto 0 auto;
+    justify-content: center;
+    justify-items: center;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.contact-form form{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto auto auto;
+    width: 80%;
+}
+
+.contact-form label{
+    color: #fff;
+    font-family:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-weight: bold;
+    font-size: 25px;
+    width: 90%;
+
+}
+
+.contact-form input{
+    height: 50px;
+    width: 100%;
+    font-weight: bold;
+    margin: auto auto 20 auto;
+    font-size: 16px;
+    padding: 10px;
+
+}
+
+.contact-form textarea{
+    font-size: 16px;
+    font-family:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    height: 100px;
+    padding: 10px;
+}
+
+.contact-form button{
+    all: unset;
+    width: 250px;
+    height: 50px;
+    background-color: #ff0042;
+    color: #fff;
+    text-align: center;
+    font-family:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    border-radius: 10px 10px 10px 10px;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 20 auto 20 auto;
+
+}
+
+
+.contact .close{
+    width: 20px;
+    aspect-ratio: 1/1;
+    margin: 10 50 auto auto;
+    text-align: center;
+}
+
+.contact .space{
+    width: 20px;
+    height: auto;
+    margin: auto auto auto 50;
+
+}
+
+.contact .title{
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+
+
+}
+
+
+
+.contact .title1{
+    width: 100%;
+    height: auto;
+    margin: 0 auto 0 auto;
+    text-align: center;
+
+
+}
+
+.contact .title2{
+    width: 100%;
+    height: auto;
+    margin: 0 auto 0 auto;
+    text-align: center;
+
+
+}
+
+.contact a{
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    font-family:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+
+.contact .title i{
+    color: #fff;
+    font-size: 22px;
+}
+
+.contact .close i{
+    color: #fff;
+    font-size: 22px;
+    border: solid 5px #fff;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+    height: 42px;
+    width: 42px;
+    display: flex; /* Usado para centralizar o ícone */
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+}
+
+
+
 @media screen and (max-width: 1600px) {
 
 .cookies-box{
@@ -547,5 +735,190 @@
     background-color: #4070f4;
     color: #fff;
   }
+
+
+#contact {
+    display: none; /* Inicialmente invisível */
+    opacity: 0; /* Torna a div invisível */
+    transform: translateY(100%); /* Coloca a div fora da tela, abaixo */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Animação suave de opacidade e movimento */
+  }
+  
+  #contact.show {
+    display: block; /* Torna a div visível */
+    opacity: 1; /* Torna a div visível */
+    transform: translateY(0); /* Move a div para a posição original (de baixo para cima) */
+  }
+  
+
+.contact{
+    height: auto;
+    width: 100%;
+    margin: 100 auto auto auto;
+    justify-content: center;
+    justify-items: center;
+    display: none;
+    position: absolute;
+
+}
+
+.contact-window{
+    height: 100%;
+    width: 90%;
+    background-color: rgb(17, 16, 31);
+    margin: auto auto auto auto;
+    justify-content: center;
+    justify-items: center;
+    display: flex;
+    flex-direction: column;
+    border: solid 5px #fff;
+    border-radius: 25px 25px 25px 25px;
+
+
+}
+
+.contact-header{
+    height: 100%;
+    width: 100%;
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    display: flex;
+
+    margin: 10 auto 10 auto;
+}
+
+.contact-form{
+    height: 75%;
+    width: 100%;
+    margin: 0 auto 0 auto;
+    justify-content: center;
+    justify-items: center;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.contact-form form{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto auto auto;
+    width: 80%;
+}
+
+.contact-form label{
+    color: #fff;
+    font-family:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-weight: bold;
+    font-size: 22px;
+    width: 90%;
+
+}
+
+.contact-form input{
+    height: 50px;
+    width: 100%;
+    font-weight: bold;
+    margin: 3 auto 10 auto;
+    font-size: 16px;
+}
+
+.contact-form textarea{
+    font-size: 16px;
+    font-family:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    height: 70px;
+    padding: 10px;
+}
+
+
+.contact-form button{
+    all: unset;
+    width: 250px;
+    height: 50px;
+    background-color: #ff0042;
+    color: #fff;
+    text-align: center;
+    font-family:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    border-radius: 10px 10px 10px 10px;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 20 auto 20 auto;
+
+}
+
+
+.contact .close{
+    width: 20px;
+    height: auto;
+    margin: 10 30 auto auto;
+    text-align: center;
+
+}
+
+.contact .space{
+    width: 20px;
+    height: auto;
+    margin: auto auto auto 30;
+
+}
+
+.contact .title{
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+
+
+}
+
+
+
+.contact .title1{
+    width: 100%;
+    height: auto;
+    margin: 0 auto 0 auto;
+    text-align: center;
+
+
+}
+
+.contact .title2{
+    width: 100%;
+    height: auto;
+    margin: 0 auto 0 auto;
+    text-align: center;
+
+
+}
+
+.contact a{
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    font-family:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+
+.contact .title i{
+    color: #fff;
+    font-size: 22px;
+}
+
+.contact .close i{
+    color: #fff;
+    font-size: 22px;
+    border: solid 5px;
+    border-radius: 100%;
+    border-style: solid;
+    padding: 5px;
+    cursor: pointer;
+    height: 32px;
+    width: 32px;
+    display: flex; /* Usado para centralizar o ícone */
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+}
 
 }
