@@ -1015,6 +1015,7 @@
 
     #contact.show {
         display: block;
+
         /* Torna a div visível */
         opacity: 1;
         /* Torna a div visível */
@@ -1030,7 +1031,8 @@
         justify-content: center;
         justify-items: center;
         display: none;
-        position: absolute;
+        position: fixed;
+        top: 0px;
 
     }
 
