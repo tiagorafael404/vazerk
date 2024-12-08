@@ -3,7 +3,8 @@ html {
     overflow-x: hidden;
     box-sizing: border-box;
     height: 100vh;
-    width: 100vw;           /* 100vw e 100vh para 100% da janela */
+    width: 100vw;
+    /* 100vw e 100vh para 100% da janela */
     min-height: 100vh;
     min-height: 100dvh;
     margin: auto;
@@ -17,19 +18,19 @@ body {
     background-repeat: no-repeat;
     width: 100%;
     margin: 3 auto auto auto;
-    
+
 }
 
-*{
+* {
     padding: 0;
     box-sizing: border-box;
 }
 
-h1{
+h1 {
     font-family: "Fjalla One", sans-serif;
 }
 
-a{
+a {
     font-family: "Space Mono", monospace;
 }
 
@@ -52,33 +53,33 @@ a{
         justify-content: inherit;
     }
 
-    
- 
-ul{
 
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-    margin: 50 auto auto auto;
 
-}
+    ul {
 
-li{
-    margin: 0 auto 50 0;
-    list-style: none;
-}
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        margin: 50 auto auto auto;
 
-ul h1{
-    margin: 0 auto 15 auto;
-    color: #fff;
+    }
 
-}
+    li {
+        margin: 0 auto 50 0;
+        list-style: none;
+    }
 
-ul a{
-    margin: 15 auto auto 0;
-    color: #fff;
+    ul h1 {
+        margin: 0 auto 15 auto;
+        color: #fff;
 
-}
+    }
+
+    ul a {
+        margin: 15 auto auto 0;
+        color: #fff;
+
+    }
 
 
 
@@ -91,7 +92,7 @@ ul a{
             text-transform: none;
             margin: auto;
         }
-        
+
         .products ul {
             display: flex;
             flex-wrap: wrap;
@@ -99,22 +100,23 @@ ul a{
             height: auto;
             margin: auto;
             text-transform: none;
-    
+
         }
-        
+
         .products li {
             list-style: none;
             padding: 10px;
             border-radius: 0px;
-            margin: 02 0 02 0; /* Espaço entre as linhas */
+            margin: 02 0 02 0;
+            /* Espaço entre as linhas */
             width: 25%;
             height: auto;
             text-transform: none;
-    
+
         }
-    
-    
-    
+
+
+
         .products .image {
             width: 100%;
             aspect-ratio: 8/9;
@@ -123,21 +125,21 @@ ul a{
             margin: auto;
             padding: 0;
             background-size: cover;
-    
+
         }
-    
-        
-    
-    
-        .products .info{
+
+
+
+
+        .products .info {
             margin-top: 7;
             width: 100%;
             height: 60;
             text-transform: none;
-    
+
         }
-    
-        .name{
+
+        .name {
             text-align: left;
             color: #fff;
             font-size: 20px;
@@ -147,8 +149,8 @@ ul a{
             width: 100%;
             height: 50%;
         }
-    
-        .price{
+
+        .price {
             text-align: left;
             color: #fff;
             font-size: 20px;
@@ -157,10 +159,10 @@ ul a{
             font-family: sans-serif;
             width: 100%;
             height: 50%;
-            
+
         }
-    
-        .name a{
+
+        .name a {
             text-decoration: none;
             color: #fff;
             font-size: 15px;
@@ -170,10 +172,10 @@ ul a{
             height: 100%;
             align-items: center;
             justify-content: left;
-            
+
         }
-    
-        .price a{
+
+        .price a {
             text-decoration: none;
             color: #fbfbfb;
             font-size: 17px;
@@ -185,20 +187,20 @@ ul a{
             display: flex;
             height: 100%;
             font-family: "Space Mono", monospace;
-            
+
         }
-}
+    }
 }
 
 @media screen and (max-width: 1251px) {
 
-    body{
+    body {
         display: flex;
         flex-direction: column;
         background-color: #191919;
-       }
-    
-       .mypage {
+    }
+
+    .mypage {
         display: inherit;
         height: inherit;
         margin: auto;
@@ -210,31 +212,31 @@ ul a{
 
 
 
-    ul{
+    ul {
 
         display: flex;
         flex-direction: column;
         width: 85%;
         margin: 30 auto auto auto;
-    
+
     }
-    
-    li{
+
+    li {
         margin: 0 auto 50 0;
         list-style: none;
     }
-    
-    ul h1{
+
+    ul h1 {
         margin: 0 auto 15 auto;
         color: #fff;
         font-size: 24px;
     }
-    
-    ul a{
+
+    ul a {
         margin: 15 auto auto 0;
         color: #fff;
         font-size: 16px;
-    
+
     }
 
 
