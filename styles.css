@@ -150,23 +150,25 @@
 
         display: none;
         height: 150px;
-        width: 700px;
+        width: 600px;
         background-color: rgb(21, 21, 21);
         border-radius: 15px 15px 15px 15px;
         border: solid 4px #fff;
         padding: 10px 10px 10px 30px;
         bottom: 10;
         /* Encosta a caixa no fundo da tela */
-        left: 50%;
+        left: 60%;
 
     }
 
-    .cookies-box.show {}
+    .cookies-box.show {
+        
+    }
 
     .cookies-title {
         display: flex;
         flex-direction: row;
-        margin: auto auto 10 auto;
+        margin: 0 auto 0 auto;
         color: #fff;
 
     }
@@ -175,20 +177,21 @@
         font-size: 25px;
         font-family: "Space Mono", monospace;
         letter-spacing: 0;
-
+        margin: auto auto auto 0;
     }
 
     .cookies-title i {
         font-size: 20px;
         margin: auto 10 auto 0;
+
     }
 
     .cookies-box .text {
         display: flex;
         flex-direction: row;
-        margin: auto auto 10 auto;
+        margin: 5 auto 5 auto;
         color: #fff;
-
+        height: auto;
     }
 
     .cookies-box .text h2 {
@@ -198,6 +201,8 @@
         text-decoration: none;
         font-weight: normal;
         letter-spacing: 0.5;
+        margin: auto 0 auto 0;
+        
 
     }
 
@@ -683,18 +688,114 @@
 
     @media screen and (max-width: 1600px) {
 
-        .cookies-box {
-            height: 150px;
-            width: 650px;
-            background-color: rgb(21, 21, 21);
-            border-radius: 15px 15px 15px 15px;
-            border: solid 4px #fff;
-            padding: 10px 10px 10px 30px;
-            position: fixed;
-            bottom: 10;
-            /* Encosta a caixa no fundo da tela */
-            left: 50%;
-        }
+    .cookies-box {
+        position: fixed;
+
+        display: none;
+        height: 150px;
+        width: 600px;
+        background-color: rgb(21, 21, 21);
+        border-radius: 15px 15px 15px 15px;
+        border: solid 4px #fff;
+        padding: 10px 10px 10px 30px;
+        bottom: 10;
+        /* Encosta a caixa no fundo da tela */
+        left: 50%;
+    }
+
+    .cookies-box.show {
+        
+    }
+
+    .cookies-title {
+        display: flex;
+        flex-direction: row;
+        margin: 0 auto 0 auto;
+        color: #fff;
+
+    }
+
+    .cookies-box .cookies-title h1 {
+        font-size: 22px;
+        font-family: "Space Mono", monospace;
+        letter-spacing: 0;
+        margin: auto auto auto 0;
+    }
+
+    .cookies-title i {
+        font-size: 18px;
+        margin: auto 10 auto 0;
+
+    }
+
+    .cookies-box .text {
+        display: flex;
+        flex-direction: row;
+        margin: 5 auto 5 auto;
+        color: #fff;
+        height: auto;
+    }
+
+    .cookies-box .text h2 {
+        color: #fff;
+        font-size: 16px;
+        font-family: "Fjalla One", sans-serif;
+        text-decoration: none;
+        font-weight: normal;
+        letter-spacing: 0.5;
+        margin: auto 0 auto 0;
+        
+
+    }
+
+    .cookies-box .text a {
+        color: aqua;
+        font-size: 18px;
+        font-family: "Space Mono", monospace;
+        margin: auto auto auto 15;
+    }
+
+    .cookies-box .buttons {
+
+        margin: 15 auto 0 auto;
+
+    }
+
+    .cookies-box .buttons #declineBtn,
+    .cookies-box .buttons #acceptBtn {
+        height: 40px;
+        width: 200px;
+        font-size: 16px;
+        background-color: #fff;
+        border-radius: 5px 5px 5px 5px;
+        font-family: "Space Mono", monospace;
+        text-decoration: none;
+        font-weight: bold;
+        letter-spacing: 1;
+        cursor: pointer;
+    }
+
+    .buttons #acceptBtn:hover {
+        background-color: #4070f4;
+        color: #fff;
+    }
+
+    .buttons #declineBtn:hover {
+        background-color: #4070f4;
+        color: #fff;
+
+    }
+
+    #acceptBtn {
+        border: 2px solid #4070f4;
+        background-color: #fff;
+        color: #4070f4;
+    }
+
+    #declineBtn:hover {
+        background-color: #4070f4;
+        color: #fff;
+    }
 
     }
 }
@@ -930,7 +1031,7 @@
         font-size: 20px;
         font-family: "Space Mono", monospace;
         letter-spacing: 0;
-
+        margin: auto auto auto 0;
     }
 
     .cookies-title i {
@@ -953,6 +1054,7 @@
         text-decoration: none;
         font-weight: normal;
         letter-spacing: 0.5;
+        margin: auto 0 auto 0;
 
     }
 
