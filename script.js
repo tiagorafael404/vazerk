@@ -1,28 +1,60 @@
-const cookieBox = document.querySelector(".cookies-box"),
-  buttons = document.querySelectorAll(".button");
+// Seleciona elementos
+const cookieBox = document.getElementById('cookiesBox');
+const acceptBtn = document.getElementById('acceptBtn');
+const declineBtn = document.getElementById('declineBtn');
 
-const executeCodes = () => {
-  // Verifica se o cookie "cookieBy" já existe
-  if (document.cookie.includes("cookieBy")) return;
+// Função para verificar se o cookie de consentimento já foi definido
+const isCookieSet = () => document.cookie.includes("cookieBy=codinglab");
 
-  // Adiciona a classe "show" e define o estilo "display: block"
+// Função para verificar se o cookie de recusa já foi definido
+const isCookieDeclined = () => document.cookie.includes("cookieDeclined=true");
+
+// Função para configurar o cookie de aceitação
+const setCookie = () => {
+  document.cookie = "cookieBy=codinglab; max-age=" + 60 * 60 * 24 * 30 + "; path=/"; // 30 dias
+};
+
+// Função para configurar o cookie de recusa
+const setDeclineCookie = () => {
+  document.cookie = "cookieDeclined=true; max-age=" + 60 * 60 * 24 * 30 + "; path=/"; // 30 dias
+};
+
+// Função para exibir a caixa de cookies
+const showCookieBox = () => {
   cookieBox.classList.add("show");
   cookieBox.style.display = "block";
+};
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      // Remove a classe "show" e define o estilo "display: none"
-      cookieBox.classList.remove("show");
-      cookieBox.style.display = "none";
+// Função para esconder a caixa de cookies
+const hideCookieBox = () => {
+  cookieBox.classList.remove("show");
+  cookieBox.style.display = "none";
+};
 
-      // Se o botão clicado for o de aceitar, configura o cookie
-      if (button.id === "acceptBtn") {
-        // Configura o cookie com validade de 30 dias
-        document.cookie = "cookieBy=codinglab; max-age=" + 60 * 60 * 24 * 30;
-      }
-    });
+// Função para executar a lógica dos cookies
+const executeCookiesLogic = () => {
+  // Se o cookie de consentimento ou recusa já estiver configurado, não exibe a caixa de cookies
+  if (isCookieSet() || isCookieDeclined()) return;
+
+  // Exibe a caixa de cookies
+  showCookieBox();
+
+  // Adiciona o evento para o botão "Aceitar"
+  acceptBtn.addEventListener("click", () => {
+    setCookie(); // Configura o cookie de aceitação
+    hideCookieBox(); // Esconde a caixa de cookies
+  });
+
+  // Adiciona o evento para o botão "Recusar"
+  declineBtn.addEventListener("click", () => {
+    setDeclineCookie(); // Configura o cookie de recusa
+    hideCookieBox(); // Esconde a caixa de cookies
   });
 };
+
+// Executa a lógica dos cookies
+executeCookiesLogic();
+
 
 // Chama a função ao carregar a página
 window.addEventListener("load", executeCodes);
