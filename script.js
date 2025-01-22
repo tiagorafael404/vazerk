@@ -1,3 +1,5 @@
+
+
 // Seleciona elementos
 const cookieBox = document.getElementById('cookiesBox');
 const acceptBtn = document.getElementById('acceptBtn');
@@ -55,9 +57,6 @@ const executeCookiesLogic = () => {
 // Executa a lógica dos cookies
 executeCookiesLogic();
 
-
-// Chama a função ao carregar a página
-window.addEventListener("load", executeCodes);
 
 
 
@@ -164,4 +163,5 @@ document.getElementById("contactme").addEventListener("click", function() {
     }
   });
 
-  
+  // Chama a função ao carregar a página
+window.addEventListener("load", executeCodes);
