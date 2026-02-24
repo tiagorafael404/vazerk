@@ -1,4 +1,59 @@
+// Firebase Config - coloca isto SÓ UMA VEZ, no início do script.js
+const firebaseConfig = {
+  apiKey: "AIzaSy... (copia do teu Firebase Console)",
+  authDomain: "vazerk.com",  // Usa o teu domínio custom para produção
+  projectId: "vazerk-firebase",
+  storageBucket: "vazerk-firebase.appspot.com",
+  messagingSenderId: "...",
+  appId: "..."
+};
 
+// Inicializa o Firebase (com proteção para não duplicar)
+let app;
+if (!firebase.apps.length) {
+  app = firebase.initializeApp(firebaseConfig);
+} else {
+  app = firebase.app();  // Usa o já existente
+}
+
+// Instância de Auth (global para usar em qualquer função)
+const auth = firebase.auth();
+
+// Função para login com Google
+function loginComGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+      console.log("Logado com Google!", user.displayName);
+      alert("Bem-vindo, " + user.displayName + "!");
+      // Aqui podes atualizar a UI global (ex: mudar header, redirecionar)
+      updateUserUI(user);
+    })
+    .catch((error) => {
+      console.error("Erro no Google login:", error.message);
+      alert("Erro: " + error.message);
+    });
+}
+
+// Função para atualizar UI quando user muda (logado/deslogado)
+function updateUserUI(user) {
+  if (user) {
+    // Exemplo: mostra nome no header ou menu
+    document.querySelectorAll('.user-name').forEach(el => {
+      el.innerText = user.displayName || user.email;
+    });
+    // Esconde botões de login, mostra logout/carrinho
+  } else {
+    // Mostra botões de login/register
+  }
+}
+
+// Listener global para mudanças de auth (roda em todas as páginas)
+auth.onAuthStateChanged((user) => {
+  updateUserUI(user);
+  console.log("Estado de auth mudou:", user ? "Logado" : "Não logado");
+});
 
 // Seleciona elementos
 const cookieBox = document.getElementById('cookiesBox');
