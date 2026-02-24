@@ -36,6 +36,8 @@ function loginComGoogle() {
     });
 }
 
+
+
 // Função para atualizar UI quando user muda (logado/deslogado)
 function updateUserUI(user) {
   if (user) {
