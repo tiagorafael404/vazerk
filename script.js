@@ -1,25 +1,7 @@
-// Firebase Config - coloca isto SÓ UMA VEZ, no início do script.js
-const firebaseConfig = {
-  apiKey: "AIzaSy... (copia do teu Firebase Console)",
-  authDomain: "vazerk.com",  // Usa o teu domínio custom para produção
-  projectId: "vazerk-firebase",
-  storageBucket: "vazerk-firebase.appspot.com",
-  messagingSenderId: "...",
-  appId: "..."
-};
-
-// Inicializa o Firebase (com proteção para não duplicar)
-let app;
-if (!firebase.apps.length) {
-  app = firebase.initializeApp(firebaseConfig);
-} else {
-  app = firebase.app();  // Usa o já existente
-}
-
-// Instância de Auth (global para usar em qualquer função)
 const auth = firebase.auth();
 
-// Função para login com Google
+// Função para login com Google.
+// Esta função será chamada diretamente pelo 'onclick' no seu HTML.
 function loginComGoogle() {
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider)
@@ -27,7 +9,7 @@ function loginComGoogle() {
       const user = result.user;
       console.log("Logado com Google!", user.displayName);
       alert("Bem-vindo, " + user.displayName + "!");
-      // Aqui podes atualizar a UI global (ex: mudar header, redirecionar)
+      // Aqui você pode atualizar a interface do usuário (UI) para refletir o login.
       updateUserUI(user);
     })
     .catch((error) => {
@@ -36,20 +18,28 @@ function loginComGoogle() {
     });
 }
 
-
-
-// Função para atualizar UI quando user muda (logado/deslogado)
+// Função para atualizar a UI quando o estado de autenticação do usuário muda.
 function updateUserUI(user) {
   if (user) {
-    // Exemplo: mostra nome no header ou menu
+    // Exemplo: Mostra o nome do usuário em elementos com a classe 'user-name'.
+    // Você precisaria ter elementos como <span class="user-name"></span> no seu HTML.
     document.querySelectorAll('.user-name').forEach(el => {
       el.innerText = user.displayName || user.email;
     });
-    // Esconde botões de login, mostra logout/carrinho
+    // Adicione aqui a lógica para esconder botões de login e mostrar botões de logout/perfil.
   } else {
-    // Mostra botões de login/register
+    // Adicione aqui a lógica para mostrar botões de login/registro e esconder elementos de usuário logado.
+    document.querySelectorAll('.user-name').forEach(el => {
+        el.innerText = "Visitante"; // Ou limpa o texto
+    });
   }
 }
+
+// Listener global para detectar mudanças no estado de autenticação (login/logout).
+auth.onAuthStateChanged((user) => {
+  updateUserUI(user);
+  console.log("Estado de autenticação mudou:", user ? "Logado" : "Não logado");
+});
 
 // Listener global para mudanças de auth (roda em todas as páginas)
 auth.onAuthStateChanged((user) => {
