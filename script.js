@@ -210,5 +210,4 @@ document.getElementById("contactme").addEventListener("click", function() {
     }
   });
 
-  // Chama a função ao carregar a página
-window.addEventListener("load", executeCodes);
+ 
