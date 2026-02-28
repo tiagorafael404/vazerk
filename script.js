@@ -13,6 +13,10 @@ function loginComGoogle() {
       updateUserUI(user);
     })
     .catch((error) => {
+      // Não mostra nada se o usuário cancelar o popup
+      if (error.code === 'auth/cancelled-popup-request' || error.code === 'auth/popup-closed-by-user') {
+        return;
+      }
       console.error("Erro no Google login:", error.message);
       alert("Erro: " + error.message);
     });
@@ -26,13 +30,30 @@ function updateUserUI(user) {
     document.querySelectorAll('.user-name').forEach(el => {
       el.innerText = user.displayName || user.email;
     });
-    // Adicione aqui a lógica para esconder botões de login e mostrar botões de logout/perfil.
+    // Esconde botão de login e mostra botão de logout
+    document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'block');
   } else {
-    // Adicione aqui a lógica para mostrar botões de login/registro e esconder elementos de usuário logado.
+    // Mostra botão de login e esconde botão de logout
+    document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'block');
+    document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.user-name').forEach(el => {
-        el.innerText = "Visitante"; // Ou limpa o texto
+        el.innerText = "Visitante";
     });
   }
+}
+// Função para logout do Google
+function logoutGoogle() {
+  auth.signOut()
+    .then(() => {
+      console.log("Logout realizado!");
+      alert("Você saiu da conta Google.");
+      updateUserUI(null);
+    })
+    .catch((error) => {
+      console.error("Erro ao fazer logout:", error.message);
+      alert("Erro: " + error.message);
+    });
 }
 
 // Listener global para detectar mudanças no estado de autenticação (login/logout).
