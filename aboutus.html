@@ -163,15 +163,47 @@ vazerk
       </div>
     </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+
+  <!-- 2. Carregue os SDKs dos produtos Firebase que você usa. -->
+  <!-- Como você está usando autenticação, precisamos do firebase-auth-compat.js. -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+
+  <!-- Se você quiser usar o Analytics, adicione esta linha também: -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics-compat.js"></script> -->
+
+  <!-- 3. Seu objeto de configuração do Firebase e a inicialização. -->
+  <!-- ESTE BLOCO É CRÍTICO. Ele DEVE vir DEPOIS dos scripts do Firebase SDK acima, -->
+  <!-- e ANTES do seu script personalizado (script.js). -->
+  <script>
+    // Seus detalhes de configuração do Firebase, EXATAMENTE como obtidos do Firebase Console.
+    const firebaseConfig = {
+    apiKey: "AIzaSyBFU-qShFQ41BMCAKZ6LrODJpT_9SyBW60",
+    authDomain: "vazerk-firebase.firebaseapp.com",
+    projectId: "vazerk-firebase",
+    storageBucket: "vazerk-firebase.firebasestorage.app",
+    messagingSenderId: "984741758936",
+    appId: "1:984741758936:web:e307ce6d349796bb9054ad",
+    measurementId: "G-FQPQH211BL"
+  };
+
+    // Inicialize o Firebase com a sua configuração.
+    firebase.initializeApp(firebaseConfig);
+
+    // Se você ativou o Analytics e incluiu o script firebase-analytics-compat.js,
+    // pode inicializá-lo assim:
+    // const analytics = firebase.analytics();
+  </script>
+
+  <!-- 4. Seu script personalizado (script.js). -->
+  <!-- Este script deve vir POR ÚLTIMO, pois ele vai usar as funções do Firebase -->
+  <!-- que já foram carregadas e inicializadas pelos scripts anteriores. -->
+  <script src="script.js"></script>
     
 
 
 </body>
 
-<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
 
-<!-- O teu script que já tens -->
-<script src="script.js"></script>
 
 </html>
