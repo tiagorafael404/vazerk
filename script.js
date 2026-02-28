@@ -25,22 +25,20 @@ function loginComGoogle() {
 // Função para atualizar a UI quando o estado de autenticação do usuário muda.
 function updateUserUI(user) {
   if (user) {
-    // Exemplo: Mostra o nome do usuário em elementos com a classe 'user-name'.
-    // Você precisaria ter elementos como <span class="user-name"></span> no seu HTML.
     document.querySelectorAll('.user-name').forEach(el => {
       el.innerText = user.displayName || user.email;
     });
-    // Esconde botão de login e mostra botão de logout
     document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'block');
   } else {
-    // Mostra botão de login e esconde botão de logout
     document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'block');
     document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.user-name').forEach(el => {
         el.innerText = "Visitante";
     });
   }
+  // Sempre exibe os botões apenas após detectar o estado
+  document.querySelectorAll('.nav-login, .nav-logout').forEach(el => el.style.visibility = 'visible');
 }
 // Função para logout do Google
 function logoutGoogle() {
