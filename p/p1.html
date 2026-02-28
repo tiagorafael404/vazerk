@@ -48,19 +48,12 @@
             </div>
 
             <div class="more">
-                <div class="nav-login" onclick="loginComGoogle()" style="display:none">
+                <div class="nav-login" onclick="loginComGoogle()">
                     <a>Login</a>
                 </div>
                 <div class="nav-logout" onclick="logoutGoogle()" style="display:none">
                     <a>Logout</a>
                 </div>
-                <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-                    document.querySelector('.nav-login').style.display = isLoggedIn ? 'none' : '';
-                    document.querySelector('.nav-logout').style.display = isLoggedIn ? '' : 'none';
-                });
-                </script>
             </div>
 
         </div>
