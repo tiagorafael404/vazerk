@@ -9,7 +9,9 @@ function loginComGoogle() {
       const user = result.user;
       console.log("Logado com Google!", user.displayName);
       alert("Bem-vindo, " + user.displayName + "!");
-      // Aqui você pode atualizar a interface do usuário (UI) para refletir o login.
+      // Persiste o estado de login localmente
+      localStorage.setItem('loggedIn', 'true');
+      // Atualiza a interface do usuário (UI) para refletir o login.
       updateUserUI(user);
     })
     .catch((error) => {
@@ -25,6 +27,7 @@ function loginComGoogle() {
 // Função para atualizar a UI quando o estado de autenticação do usuário muda.
 function updateUserUI(user) {
   if (user) {
+    localStorage.setItem('loggedIn', 'true');
     // Exemplo: Mostra o nome do usuário em elementos com a classe 'user-name'.
     // Você precisaria ter elementos como <span class="user-name"></span> no seu HTML.
     document.querySelectorAll('.user-name').forEach(el => {
@@ -34,6 +37,7 @@ function updateUserUI(user) {
     document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'block');
   } else {
+    localStorage.setItem('loggedIn', 'false');
     // Mostra botão de login e esconde botão de logout
     document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'block');
     document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'none');
@@ -48,6 +52,7 @@ function logoutGoogle() {
     .then(() => {
       console.log("Logout realizado!");
       alert("Você saiu da conta Google.");
+      localStorage.setItem('loggedIn', 'false');
       updateUserUI(null);
     })
     .catch((error) => {
@@ -55,6 +60,20 @@ function logoutGoogle() {
       alert("Erro: " + error.message);
     });
 }
+
+
+// Ao carregar a página, verifica o estado local e exibe instantaneamente
+window.addEventListener('DOMContentLoaded', () => {
+  const loggedIn = localStorage.getItem('loggedIn') === 'true';
+  if (loggedIn) {
+    // Exibe logout, esconde login
+    document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'block');
+  } else {
+    document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'block');
+    document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'none');
+  }
+});
 
 // Listener global para detectar mudanças no estado de autenticação (login/logout).
 auth.onAuthStateChanged((user) => {
