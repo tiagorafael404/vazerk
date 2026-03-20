@@ -27,6 +27,8 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        text-decoration: none;
+        text-transform: none;
 
     }
 
@@ -72,7 +74,7 @@
         text-decoration: none;
         color: #fff;
         font-size: 20px;
-        text-transform: uppercase;
+        text-transform: none;
         margin: auto;
         height: 100%;
         width: 100%;
@@ -904,7 +906,7 @@
         text-decoration: none;
         color: #fff;
         font-size: 14px;
-        text-transform: uppercase;
+        text-transform: none;
         margin: auto;
         height: 100%;
         width: 100%;
@@ -956,7 +958,7 @@
         text-decoration: none;
         color: #fff;
         font-size: 14px;
-        text-transform: uppercase;
+        text-transform: none;
         margin: auto;
         height: 100%;
         width: 100%;
