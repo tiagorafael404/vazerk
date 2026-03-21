@@ -1,0 +1,80 @@
+html {
+    padding: 0px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;           /* 100vw e 100vh para 100% da janela */
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: auto;
+}
+
+body {
+    background-color: rgb(21, 21, 21);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100%;
+    margin: 3 auto auto auto;
+    
+}
+
+*{
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+.product_name a{
+    font-family: "Space Mono", monospace;
+    text-shadow: 1px 2px 1px black;
+
+}
+
+.product_description a{
+    font-family: "Space Mono", monospace;
+}
+
+.product_price a{
+    font-family: "Fjalla One", sans-serif;
+    letter-spacing: 2px;
+    text-shadow: 1px 2px 1px black;
+
+
+}
+
+.choice_title a{
+    font-family: "Space Mono", monospace;
+    text-shadow: 1px 2px 1px black;
+
+}
+
+.choice li a{
+    font-family: "Space Mono", monospace;
+}
+
+
+.buy_button a{
+    font-family: "Fjalla One", sans-serif;
+    text-decoration: none;
+    color: black;
+    text-shadow: 1px 2px 1px black;
+}
+
+
+
+
+@media screen and (min-width: 1251px) {
+
+   
+
+
+}
+
+    @media screen and (max-width: 1251px) {
+
+
+
+    }
