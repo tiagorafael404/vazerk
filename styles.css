@@ -569,13 +569,13 @@
         margin: auto auto auto 0;
         background-color: rgb(42, 42, 42);
         border-radius: 10px;
+        
     }
 
     .p-container .photo {
         width: 82%;
         height: 100%;
         background-size: cover;
-
         border-radius: 10px;
         margin: auto 0 auto auto;
     }
