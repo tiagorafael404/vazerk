@@ -2,6 +2,65 @@
     font-family: "Fjalla One", sans-serif;
 }
 
+html {
+    padding: 0px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;           /* 100vw e 100vh para 100% da janela */
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: auto;
+}
+
+body {
+    background-color: F6F4E8;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    width: 100%;
+    margin: 3 auto auto auto;
+    
+}
+
+*{
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+
+
+.product_name a{
+    font-family: "Space Mono", monospace;
+    text-shadow: 1px 2px 1px white;
+
+}
+
+.product_description a{
+    font-family: "Space Mono", monospace;
+}
+
+.product_price a{
+    font-family: "Fjalla One", sans-serif;
+    letter-spacing: 2px;
+    text-shadow: 1px 2px 1px white;
+
+
+}
+
+.choice_title a{
+    font-family: "Space Mono", monospace;
+    text-shadow: 1px 2px 1px white;
+
+}
+
+.choice li a{
+    font-family: "Space Mono", monospace;
+}
+
 
 @media screen and (min-width: 1251px) {
 
@@ -23,7 +82,6 @@
         max-width: 100%;
         width: auto;
         height: 80px;
-        background-color: rgb(46, 46, 46);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -72,7 +130,7 @@
 
     .navbar a {
         text-decoration: none;
-        color: #fff;
+        color: black;
         font-size: 20px;
         text-transform: none;
         margin: auto;
@@ -122,7 +180,7 @@
 
     .more a {
         text-decoration: none;
-        color: #fff;
+        color: black;
         font-size: 20px;
         text-transform: none;
         margin: auto;
@@ -485,7 +543,7 @@
     .p-container .part2 {
         width: 40%;
         aspect-ratio: 5 / 6;
-        background-color: rgb(42, 42, 42);
+        background-color: F7F8F0;
         border-radius: 10px;
     }
 
@@ -512,7 +570,7 @@
 
     .p-container .product_name a {
         text-decoration: none;
-        color: #fff;
+        color: black;
         text-transform: uppercase;
         margin: auto;
         height: 100%;
@@ -531,7 +589,7 @@
 
     .p-container .product_description a {
         text-decoration: none;
-        color: #fff;
+        color: black;
         text-transform: uppercase;
         margin: auto;
         height: 100%;
@@ -550,7 +608,7 @@
 
     .p-container .product_price a {
         text-decoration: none;
-        color: #fff;
+        color: black;
         text-transform: uppercase;
         margin: auto;
         height: 100%;
@@ -567,7 +625,7 @@
         width: 15%;
         height: 100%;
         margin: auto auto auto 0;
-        background-color: rgb(42, 42, 42);
+        background-color: F7F8F0;
         border-radius: 10px;
         
     }

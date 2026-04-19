@@ -9,33 +9,19 @@ html {
     margin: auto;
 }
 
-body {
-    background-color: rgb(21, 21, 21);
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    width: 100%;
-    margin: 3 auto auto auto;
-    
-}
 
-*{
-    padding: 0;
-    box-sizing: border-box;
-}
 
 li h1{
     font-family: "Fjalla One", sans-serif;
-    color: #fff;
-    text-shadow: 1px 2px 1px black;
+    color: #000000;
+    text-shadow: 1px 2px 1px rgb(255, 255, 255);
 
 
 }
 
 li a{
     font-family: "Space Mono", monospace;
-    color: #fff;
+    color: #000000;
 }
 
 
