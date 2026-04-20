@@ -10,7 +10,7 @@ html {
 }
 
 body {
-    background-color: F6F4E8;
+    background-color: #f6f6f6;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -68,7 +68,7 @@ a{
     .products {
         width: 70%;
         height: auto;
-        background-color: F7F8F0;
+        background-color: white;
         text-transform: none;
         margin: auto;
         position: relative;

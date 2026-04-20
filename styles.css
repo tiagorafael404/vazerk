@@ -14,7 +14,7 @@ html {
 }
 
 body {
-    background-color: F6F4E8;
+    background-color: #f6f6f6;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -543,7 +543,7 @@ body {
     .p-container .part2 {
         width: 40%;
         aspect-ratio: 5 / 6;
-        background-color: F7F8F0;
+        background-color: white;
         border-radius: 10px;
     }
 
@@ -625,7 +625,7 @@ body {
         width: 15%;
         height: 100%;
         margin: auto auto auto 0;
-        background-color: F7F8F0;
+        background-color: white;
         border-radius: 10px;
         
     }
