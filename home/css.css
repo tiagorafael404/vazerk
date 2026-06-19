@@ -285,7 +285,7 @@ a{
     body{
         display: flex;
         flex-direction: column;
-        background-color: #191919;
+        background-color: #f6f6f6;
        }
     
        .mypage {
@@ -312,7 +312,7 @@ a{
         .products {
             width: 90%;
             height: auto;
-            background-color: #202020;
+            background-color: white;
             text-transform: none;
             margin: auto;
         }
