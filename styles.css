@@ -681,6 +681,8 @@ body {
         background-size: cover;
         margin: 0 auto 15 auto;
         cursor: pointer;
+        background-position: center;
+        
 
     }
 
@@ -1627,6 +1629,7 @@ body {
         background-size: cover;
         align-items: center;
         justify-content: space-around;
+        background-position: center;
 
     }
 
