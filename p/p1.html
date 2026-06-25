@@ -18,7 +18,7 @@
     <script src="/script.js" defer></script>
 </head>
 
-<body>
+<body data-item-url="p/p1.html">
 
 
 
@@ -87,12 +87,8 @@
 
                     <ul>
 
-                        <li class="gallery-item" qual-imagem="p1/photo.png"
-                            style="background-image: url('p1/photo.png');"></li>
-                        <li class="gallery-item" qual-imagem="p1/photo2.png"
-                            style="background-image: url('p1/photo2.png');"></li>
-                        <li class="gallery-item" qual-imagem="p1/photo3.png"
-                            style="background-image: url('p1/photo3.png');"></li>
+                        <li id="photo1" class="gallery-item"></li>
+                        <li id="photo2" class="gallery-item"></li>
 
                     </ul>
 
@@ -100,7 +96,7 @@
 
 
 
-                <div id="photo" class="photo" style="background-image: url('p1/photo.png');"></div>
+                <div id="main_photo" class="main_photo"></div>
 
 
             </div>
@@ -111,43 +107,43 @@
 
                 <div class="info">
 
-                    <div class="product_name"><a>v1 sunglasses</a></div>
+                    <div class="product_name"><a>name</a></div>
+
                     <div class="product_description">
+                        
+                        <a>a merda que for sei la o que ta escrito aki mas olha so ya ya o pai natal existe e fodass irmao</a>
+
+                    </div>
+
+                    <div class="product_description_list">
                         <ul>
 
                             <li><a>Color: Black</a></li>
                             <li><a>Style: Unisex</a></li>
                             <li><a>Free Shipping</a></li>
 
-
-
                         </ul>
                     </div>
 
+                    <div class="options">
 
-                    <div class="choice">
+                        <div class="options_title"><a>Select</a></div>
 
-                        <div class="choice_title"><a>Select Size</a></div>
-
-                        <div class="choices">
+                        <div class="options_list">
                             <ul>
-                                <li><a href="#">40</a></li>
-                                <li><a href="#">41</a></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
+                                <li id="1"><a href="#">5 Speed</a></li>
+                                <li id="2"><a href="#">6 Speed</a></li>
 
                             </ul>
-                        </div>
+                            </div>
                     </div>
 
 
-                    <div class="product_price"><a>€7,99</a></div>
+                    <div class="product_price"><a>price</a></div>
 
                 </div>
 
-                <div class="buy_button"><a href="https://buy.stripe.com/28o03A1IYbGRbBK28b" target="_blank">buy now</a>
+                <div class="buy_button"><a id="buyLink" href="https://buy.stripe.com/28o03A1IYbGRbBK28b" target="_blank">buy now</a>
                 </div>
 
             </div>
@@ -244,6 +240,30 @@
     // Se você ativou o Analytics e incluiu o script firebase-analytics-compat.js,
     // pode inicializá-lo assim:
     // const analytics = firebase.analytics();
+  </script>
+
+  <script> 
+    const buyLink = document.getElementById('buyLink');
+    const optionItems = document.querySelectorAll('.options_list li');
+    let selectedOption = null;
+
+    optionItems.forEach(item => {
+      item.addEventListener('click', event => {
+        event.preventDefault();
+        selectedOption = item.id;
+
+        optionItems.forEach(li => li.classList.remove('selected'));
+        item.classList.add('selected');
+
+        if (selectedOption === '1') {
+          buyLink.href = 'https://www.youtube.com';
+        } else if (selectedOption === '2') {
+          buyLink.href = 'https://www.google.com';
+        } else {
+          buyLink.href = 'https://buy.stripe.com/28o03A1IYbGRbBK28b';
+        }
+      });
+    });
   </script>
 
   <!-- 4. Seu script personalizado (script.js). -->

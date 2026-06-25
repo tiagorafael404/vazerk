@@ -7,7 +7,7 @@
         vazerk
     </title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fjalla+One|Libre+Baskerville">
-    <link rel="stylesheet" href="p3/css.css">
+    <link rel="stylesheet" href="p1/css.css">
     <link rel="icon" href="../../logo.ico" type="image/x-icon">
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="../css.css">
@@ -15,11 +15,10 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <script src="../script.js" defer></script>
+    <script src="/script.js" defer></script>
 </head>
 
-<body>
+<body data-item-url="p/p3.html">
 
 
 
@@ -88,12 +87,8 @@
 
                     <ul>
 
-                        <li class="gallery-item" qual-imagem="p3/photo.png"
-                            style="background-image: url('p3/photo.png');"></li>
-                        <li class="gallery-item" qual-imagem="p3/photo2.png"
-                            style="background-image: url('p3/photo2.png');"></li>
-                        <li class="gallery-item" qual-imagem="p3/photo3.png"
-                            style="background-image: url('p3/photo3.png');"></li>
+                        <li id="photo1" class="gallery-item"></li>
+                        <li id="photo2" class="gallery-item"></li>
 
                     </ul>
 
@@ -101,8 +96,7 @@
 
 
 
-                <div id="photo" class="photo"
-                    style="background-image: url('p3/photo.png'); background-position: center;"></div>
+                <div id="main_photo" class="main_photo"></div>
 
 
             </div>
@@ -113,43 +107,43 @@
 
                 <div class="info">
 
-                    <div class="product_name"><a>Tshirt Outfielders</a></div>
+                    <div class="product_name"><a>name</a></div>
+
                     <div class="product_description">
+                        
+                        <a>a merda que for sei la o que ta escrito aki mas olha so ya ya o pai natal existe e fodass irmao</a>
+
+                    </div>
+
+                    <div class="product_description_list">
                         <ul>
 
-                            <li><a>Color: White</a></li>
+                            <li><a>Color: Black</a></li>
                             <li><a>Style: Unisex</a></li>
                             <li><a>Free Shipping</a></li>
-
-
 
                         </ul>
                     </div>
 
+                    <div class="options">
 
-                    <div class="choice">
+                        <div class="options_title"><a>Select</a></div>
 
-                        <div class="choice_title"><a>Select Size</a></div>
-
-                        <div class="choices">
+                        <div class="options_list">
                             <ul>
-                                <li><a href="#">40</a></li>
-                                <li><a href="#">41</a></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
+                                <li id="1"><a href="#">5 Speed</a></li>
+                                <li id="2"><a href="#">6 Speed</a></li>
 
                             </ul>
-                        </div>
+                            </div>
                     </div>
 
 
-                    <div class="product_price"><a>12,99€</a></div>
+                    <div class="product_price"><a>price</a></div>
 
                 </div>
 
-                <div class="buy_button"><a href="https://buy.stripe.com/28o03A1IYbGRbBK28b" target="_blank">buy now</a>
+                <div class="buy_button"><a id="buyLink" href="https://buy.stripe.com/28o03A1IYbGRbBK28b" target="_blank">buy now</a>
                 </div>
 
             </div>
@@ -248,10 +242,35 @@
     // const analytics = firebase.analytics();
   </script>
 
+  <script> 
+    const buyLink = document.getElementById('buyLink');
+    const optionItems = document.querySelectorAll('.options_list li');
+    let selectedOption = null;
+
+    optionItems.forEach(item => {
+      item.addEventListener('click', event => {
+        event.preventDefault();
+        selectedOption = item.id;
+
+        optionItems.forEach(li => li.classList.remove('selected'));
+        item.classList.add('selected');
+
+        if (selectedOption === '1') {
+          buyLink.href = 'https://www.youtube.com';
+        } else if (selectedOption === '2') {
+          buyLink.href = 'https://www.google.com';
+        } else {
+          buyLink.href = 'https://buy.stripe.com/28o03A1IYbGRbBK28b';
+        }
+      });
+    });
+  </script>
+
   <!-- 4. Seu script personalizado (script.js). -->
   <!-- Este script deve vir POR ÚLTIMO, pois ele vai usar as funções do Firebase -->
   <!-- que já foram carregadas e inicializadas pelos scripts anteriores. -->
   <script src="script.js"></script>
+
 
 </body>
 
