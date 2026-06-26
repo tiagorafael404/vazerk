@@ -6,16 +6,16 @@
     "price": "10.99€",
     "image": "p/p1/photo.png",
     "image2": "p/p1/photo2.png",
-    "url": "p/p1.html",
+    "url": "item.html?item=1",
     "select": "Select Speed"
   },
   {
     "id": 2,
-    "name": "5/6 Speed for VW Golf 4 2",
+    "name": "5/6 S 2",
     "price": "10.99€",
     "image": "p/p2/photo.png",
     "image2": "p/p2/photo2.png",
-    "url": "p/p2.html",
+    "url": "item.html?item=2",
     "select": "Select Speed"
 
   },
@@ -26,7 +26,7 @@
     "image": "p/p3/photo.png",
     "image2": "golf4/gearshift/3/2.jpg",
     "image3": "golf4/gearshift/3/3.jpg",
-    "url": "p/p3.html",
+    "url": "item.html?item=3",
     "select": "Select Speed"
 
     
@@ -37,7 +37,7 @@
     "price": "10.99€",
     "image": "p/p3/photo.png",
     "image2": "golf4/gearshift/4/2.jpg",
-    "url": "golf4/gearshift/4.html",
+    "url": "item.html?item=4",
     "select": "Select Speed"
   },
   {
@@ -47,7 +47,7 @@
     "image": "p/p5/photo.png",
     "image2": "golf4/gearshift/5/2.jpg",
     "image3": "golf4/gearshift/5/3.jpg",
-    "url": "golf4/gearshift/5.html",
+    "url": "item.html?item=5",
     "select": "Select Speed"
   }
 ]

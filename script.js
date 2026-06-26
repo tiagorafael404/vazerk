@@ -308,8 +308,11 @@ document.getElementById("contactme").addEventListener("click", function() {
           }
 
           if (!item) {
+            li.style.display = 'none';
             return;
           }
+
+          li.style.display = '';
 
           const productLink = li.querySelector('.product-link');
           const nameLink = li.querySelector('.name-link');
@@ -331,24 +334,95 @@ document.getElementById("contactme").addEventListener("click", function() {
           }
         });
 
-        function getDetailItemFromPageUrl() {
-          const bodyUrl = document.body.dataset.itemUrl;
-          if (bodyUrl && itemsByUrl.has(bodyUrl)) {
-            return itemsByUrl.get(bodyUrl);
+        function normalizeItemReference(reference) {
+          if (reference === undefined || reference === null) {
+            return '';
           }
 
-          const path = window.location.pathname.replace(/\\/g, '/').replace(/^\/+/, '');
-          for (const [itemUrl, item] of itemsByUrl) {
-            const normalizedItemUrl = itemUrl.replace(/\\/g, '/').replace(/^\/+/, '');
-            if (path.endsWith(normalizedItemUrl)) {
+          return String(reference)
+            .trim()
+            .split('#')[0]
+            .replace(/\\/g, '/')
+            .replace(/^\/+/, '');
+        }
+
+        function getItemByReference(reference) {
+          if (reference === undefined || reference === null) {
+            return null;
+          }
+
+          const normalizedReference = normalizeItemReference(reference);
+          if (!normalizedReference) {
+            return null;
+          }
+
+          if (itemsById.has(String(normalizedReference))) {
+            return itemsById.get(String(normalizedReference));
+          }
+
+          if (itemsByUrl.has(normalizedReference)) {
+            return itemsByUrl.get(normalizedReference);
+          }
+
+          for (const [itemUrl, item] of itemsByUrl.entries()) {
+            const normalizedItemUrl = normalizeItemReference(itemUrl);
+            if (normalizedItemUrl === normalizedReference) {
+              return item;
+            }
+
+            const queryMatch = normalizedItemUrl.match(/(?:^|[?&])item=([^&]+)/);
+            if (queryMatch && queryMatch[1] === normalizedReference) {
               return item;
             }
           }
+
           return null;
+        }
+
+        function getDetailItemFromPageUrl() {
+          const bodyUrl = document.body.dataset.itemUrl;
+          const bodyItem = getItemByReference(bodyUrl);
+          if (bodyItem) {
+            return bodyItem;
+          }
+
+          const params = new URLSearchParams(window.location.search);
+          for (const key of ['item', 'url', 'product', 'id']) {
+            const value = params.get(key);
+            const matchedItem = getItemByReference(value);
+            if (matchedItem) {
+              return matchedItem;
+            }
+          }
+
+          const path = window.location.pathname.replace(/\\/g, '/').replace(/^\/+/, '');
+          return getItemByReference(path);
         }
 
         const detailItem = getDetailItemFromPageUrl();
         currentDetailItem = detailItem;
+
+        if (!detailItem) {
+          const productName = document.querySelector('.product_name a');
+          const productPrice = document.querySelector('.product_price a');
+          const optionsTitle = document.querySelector('.options_title a');
+
+          if (productName) {
+            productName.textContent = 'Product not available';
+          }
+          if (productPrice) {
+            productPrice.textContent = '—';
+          }
+          if (optionsTitle) {
+            optionsTitle.textContent = 'Unavailable';
+          }
+
+          const main_photoElement = document.getElementById('main_photo');
+          if (main_photoElement) {
+            main_photoElement.style.backgroundImage = 'none';
+          }
+          return;
+        }
 
         if (detailItem) {
           const productName = document.querySelector('.product_name a');
@@ -409,3 +483,4 @@ document.getElementById("contactme").addEventListener("click", function() {
 
   document.addEventListener('DOMContentLoaded', loadProductItemsFromJson);
  
+
