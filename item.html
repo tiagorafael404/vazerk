@@ -130,12 +130,8 @@
                         <div class="options_title"><a>Select</a></div>
 
                         <div class="options_list">
-                            <ul>
-                                <li id="1"><a href="#">5 Speed</a></li>
-                                <li id="2"><a href="#">6 Speed</a></li>
-
-                            </ul>
-                            </div>
+                            <ul></ul>
+                        </div>
                     </div>
 
 
@@ -242,34 +238,11 @@
     // const analytics = firebase.analytics();
   </script>
 
-  <script> 
-    const buyLink = document.getElementById('buyLink');
-    const optionItems = document.querySelectorAll('.options_list li');
-    let selectedOption = null;
-
-    optionItems.forEach(item => {
-      item.addEventListener('click', event => {
-        event.preventDefault();
-        selectedOption = item.id;
-
-        optionItems.forEach(li => li.classList.remove('selected'));
-        item.classList.add('selected');
-
-        if (selectedOption === '1') {
-          buyLink.href = 'https://www.youtube.com';
-        } else if (selectedOption === '2') {
-          buyLink.href = 'https://www.google.com';
-        } else {
-          buyLink.href = 'https://buy.stripe.com/28o03A1IYbGRbBK28b';
-        }
-      });
-    });
-  </script>
+  <!-- Opções do produto serão preenchidas dinamicamente por script.js com base em items.json -->
 
   <!-- 4. Seu script personalizado (script.js). -->
   <!-- Este script deve vir POR ÚLTIMO, pois ele vai usar as funções do Firebase -->
   <!-- que já foram carregadas e inicializadas pelos scripts anteriores. -->
-  <script src="script.js"></script>
 
 
 </body>

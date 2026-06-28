@@ -429,6 +429,7 @@ document.getElementById("contactme").addEventListener("click", function() {
           const productPrice = document.querySelector('.product_price a');
           const optionsTitle = document.querySelector('.options_title a');
           const buyLink = document.getElementById('buyLink');
+          const optionsList = document.querySelector('.options_list ul');
 
           if (productName) {
             productName.textContent = detailItem.name || productName.textContent;
@@ -437,10 +438,33 @@ document.getElementById("contactme").addEventListener("click", function() {
             productPrice.textContent = detailItem.price || productPrice.textContent;
           }
           if (optionsTitle) {
-            optionsTitle.textContent = detailItem.select || optionsTitle.textContent;
+            if (typeof detailItem.select === 'string') {
+              optionsTitle.textContent = detailItem.select;
+            } else {
+              optionsTitle.textContent = detailItem.select?.label || optionsTitle.textContent;
+            }
           }
-          if (buyLink && detailItem.purchaseUrl) {
-            buyLink.href = detailItem.purchaseUrl;
+
+          if (optionsList && detailItem.select && Array.isArray(detailItem.select.options)) {
+            optionsList.innerHTML = '';
+            detailItem.select.options.forEach(option => {
+              const li = document.createElement('li');
+              li.id = String(option.id);
+              const a = document.createElement('a');
+              a.href = '#';
+              a.textContent = option.name || `Option ${option.id}`;
+              li.appendChild(a);
+              optionsList.appendChild(li);
+
+              li.addEventListener('click', event => {
+                event.preventDefault();
+                optionsList.querySelectorAll('li').forEach(el => el.classList.remove('selected'));
+                li.classList.add('selected');
+                if (buyLink && option.url) {
+                  buyLink.href = option.url;
+                }
+              });
+            });
           }
 
           const main_photoElement = document.getElementById('main_photo');
