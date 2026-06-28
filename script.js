@@ -447,7 +447,7 @@ document.getElementById("contactme").addEventListener("click", function() {
 
           if (optionsList && detailItem.select && Array.isArray(detailItem.select.options)) {
             optionsList.innerHTML = '';
-            detailItem.select.options.forEach(option => {
+            detailItem.select.options.forEach((option, index) => {
               const li = document.createElement('li');
               li.id = String(option.id);
               const a = document.createElement('a');
@@ -464,6 +464,13 @@ document.getElementById("contactme").addEventListener("click", function() {
                   buyLink.href = option.url;
                 }
               });
+
+              if (index === 0) {
+                li.classList.add('selected');
+                if (buyLink && option.url) {
+                  buyLink.href = option.url;
+                }
+              }
             });
           }
 
