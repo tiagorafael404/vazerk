@@ -1515,7 +1515,10 @@ body {
         justify-content: space-between;
     }
 
+
+
     .p-container .main_photo {
+        display: none;
         width: 100%;
         aspect-ratio: 1 / 1;
         background-image: url("main_photo.png");
@@ -1622,7 +1625,7 @@ body {
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
+        justify-content: left;
         margin: auto;
 
     }
@@ -1635,6 +1638,7 @@ body {
         align-items: center;
         justify-content: space-around;
         background-position: center;
+        margin: 0 20 0 0;
 
     }
 
