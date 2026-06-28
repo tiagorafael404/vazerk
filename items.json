@@ -36,7 +36,26 @@
     "image": "p/p2/photo.png",
     "image2": "p/p2/photo2.png",
     "url": "item.html?item=2",
-    "select": "Select Speed"
+    "select": {
+      "label": "Select Speed yo",
+      "options": [
+        {
+          "id": 1,
+          "name": "5 Speed",
+          "url": "amazon.es"
+        },
+        {
+          "id": 2,
+          "name": "6 Speed",
+          "url": "gmail.com"
+        },
+        {
+          "id": 3,
+          "name": "5/6 Speed",
+          "url": "netflix.com"
+        }
+      ]
+    }
 
   },
   {
@@ -47,9 +66,27 @@
     "image2": "golf4/gearshift/3/2.jpg",
     "image3": "golf4/gearshift/3/3.jpg",
     "url": "item.html?item=3",
-    "select": "Select Speed"
+    "select": {
+      "label": "Select Speed yo",
+      "options": [
+        {
+          "id": 1,
+          "name": "5 Speed",
+          "url": "amazon.es"
+        },
+        {
+          "id": 2,
+          "name": "6 Speed",
+          "url": "gmail.com"
+        },
+        {
+          "id": 3,
+          "name": "5/6 Speed",
+          "url": "netflix.com"
+        }
+      ]
+    }
 
-    
   },
   {
     "id": 4,
@@ -58,7 +95,26 @@
     "image": "p/p3/photo.png",
     "image2": "golf4/gearshift/4/2.jpg",
     "url": "item.html?item=4",
-    "select": "Select Speed"
+    "select": {
+      "label": "Select Speed yo",
+      "options": [
+        {
+          "id": 1,
+          "name": "5 Speed",
+          "url": "amazon.es"
+        },
+        {
+          "id": 2,
+          "name": "6 Speed",
+          "url": "gmail.com"
+        },
+        {
+          "id": 3,
+          "name": "5/6 Speed",
+          "url": "netflix.com"
+        }
+      ]
+    }
   },
   {
     "id": 5,
@@ -68,6 +124,25 @@
     "image2": "golf4/gearshift/5/2.jpg",
     "image3": "golf4/gearshift/5/3.jpg",
     "url": "item.html?item=5",
-    "select": "Select Speed"
+    "select": {
+      "label": "Select Speed yo",
+      "options": [
+        {
+          "id": 1,
+          "name": "5 Speed",
+          "url": "amazon.es"
+        },
+        {
+          "id": 2,
+          "name": "6 Speed",
+          "url": "gmail.com"
+        },
+        {
+          "id": 3,
+          "name": "5/6 Speed",
+          "url": "netflix.com"
+        }
+      ]
+    }
   }
 ]
