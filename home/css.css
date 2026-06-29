@@ -178,7 +178,7 @@ a{
         .products {
             width: 70%;
             height: auto;
-            background-color: #202020;
+            background-color: white;
             text-transform: none;
             margin: auto;
         }
@@ -253,7 +253,7 @@ a{
     
         .name a{
             text-decoration: none;
-            color: #fff;
+            color: black;
             font-size: 15px;
             text-transform: none;
             font-weight: bold;
@@ -266,7 +266,7 @@ a{
     
         .price a{
             text-decoration: none;
-            color: #fbfbfb;
+            color: black;
             font-size: 17px;
             text-transform: none;
             font-weight: lighter;
