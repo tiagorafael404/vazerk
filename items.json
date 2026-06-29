@@ -8,6 +8,7 @@
     "image": "p/p1/photo.png",
     "image2": "p/p1/photo2.png",
     "image3": "p/p1/photo3.png",
+    "description": "This is a 5/6 speed gearshift for VW Golf 4. It is made of high-quality materials and designed for durability and performance.",
 
     "select": {
       "label": "Select Speed yo",
@@ -37,6 +38,8 @@
     "image": "p/p2/photo.png",
     "image2": "p/p2/photo2.png",
     "url": "item.html?item=2",
+    "description": "This is a 5/6 speed gearshift for VW Golf 4. It is made of high-quality materials and designed for durability and performance.",
+
     "select": {
       "label": "Select Speed yo",
       "options": [

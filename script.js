@@ -427,6 +427,7 @@ document.getElementById("contactme").addEventListener("click", function() {
         if (detailItem) {
           const productName = document.querySelector('.product_name a');
           const productPrice = document.querySelector('.product_price a');
+          const productDescription = document.querySelector('.product_description a');
           const optionsTitle = document.querySelector('.options_title a');
           const buyLink = document.getElementById('buyLink');
           const optionsList = document.querySelector('.options_list ul');
@@ -436,6 +437,9 @@ document.getElementById("contactme").addEventListener("click", function() {
           }
           if (productPrice) {
             productPrice.textContent = detailItem.price || productPrice.textContent;
+          }
+          if (productDescription) {
+            productDescription.textContent = detailItem.description || '';
           }
           if (optionsTitle) {
             if (typeof detailItem.select === 'string') {
