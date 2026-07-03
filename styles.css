@@ -697,7 +697,7 @@ body {
 .options .options_list a {
         text-decoration: none;
         color: #fff;
-        text-transform: uppercase;
+        text-transform: none;
         margin: auto;
         height: 100%;
         width: 100%;
@@ -740,7 +740,7 @@ body {
 .options .options_list li a {
         text-decoration: none;
         color: #fff;
-        text-transform: uppercase;
+        text-transform: none;
         margin: auto;
         height: 100%;
         width: 100%;
@@ -1663,7 +1663,7 @@ body {
 .options .options_list li a {
         text-decoration: none;
         color: #fff;
-        text-transform: uppercase;
+        text-transform: none;
         height: 100%;
         justify-content: center;
         align-items: center;
