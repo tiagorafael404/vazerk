@@ -1,0 +1,106 @@
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        vazerk
+    </title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fjalla+One|Libre+Baskerville">
+    <link rel="icon" href="../../logo.ico" type="image/x-icon">
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="payment.css">
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/script.js" defer></script>
+</head>
+
+<body>
+  <main class="page">
+    <header class="topbar">
+      <a class="back" href="/home.html">← Voltar</a>
+      <div class="brand">Pagamento VW Golf</div>
+    </header>
+
+    <section class="payment-layout">
+      <article class="product-summary">
+        <div class="summary-image" id="productImage"></div>
+        <div class="summary-details">
+          <h1 id="productName">Carregando produto...</h1>
+          <p id="productDescription">Aguarde enquanto buscamos o produto.</p>
+          <div class="summary-price">
+            <span>Preço</span>
+            <strong id="productPrice">—</strong>
+          </div>
+          <div class="options-section" id="optionsSection">
+            <div class="options-title">Opções do produto</div>
+            <div class="option-grid" id="optionsGrid"></div>
+          </div>
+        </div>
+      </article>
+
+      <aside class="form-panel">
+        <form id="paymentForm">
+          <div class="section-title">Seu contato</div>
+          <label>
+            Nome completo
+            <input type="text" name="fullName" required>
+          </label>
+          <label>
+            E-mail
+            <input type="email" name="email" required>
+          </label>
+          <label>
+            Telefone
+            <input type="tel" name="phone" placeholder="912 345 678" required>
+          </label>
+
+          <div class="section-title">Endereço</div>
+          <label>
+            Rua e número
+            <input type="text" name="address" required>
+          </label>
+          <label>
+            Código postal
+            <input type="text" name="postal" required>
+          </label>
+          <label>
+            Cidade
+            <input type="text" name="city" required>
+          </label>
+          <label>
+            País
+            <div class="country-picker">
+              <input type="text" name="country" id="countryInput" placeholder="Escolha ou escreva o país" autocomplete="off" required>
+              <div class="country-list" id="countryList" role="listbox" aria-label="Lista de países"></div>
+            </div>
+          </label>
+
+          <div class="section-title">Método de pagamento</div>
+          <div class="payment-methods" role="list" aria-label="Métodos de pagamento">
+            <button type="button" class="payment-method selected" data-method="visa">Visa</button>
+            <button type="button" class="payment-method" data-method="paypal">PayPal</button>
+            <button type="button" class="payment-method" data-method="applepay">Apple Pay</button>
+            <button type="button" class="payment-method" data-method="mbway">MB WAY</button>
+          </div>
+
+          <div class="total-row">
+            <span>Total a pagar</span>
+            <strong id="detailTotal">—</strong>
+          </div>
+
+          <button class="submit-button" type="submit">Continuar para pagamento</button>
+          <div class="notice">Depois de enviar os dados, você será redirecionado para o link de pagamento da Stripe configurado para este produto.</div>
+          <div id="formError" class="form-error" hidden></div>
+        </form>
+      </aside>
+    </section>
+  </main>
+
+  <script src="payment.js"></script>
+</body>
+
+</html>
