@@ -433,7 +433,7 @@ document.getElementById("contactme").addEventListener("click", function() {
           const optionsList = document.querySelector('.options_list ul');
 
           if (buyLink) {
-            buyLink.href = `payment.html?item=${detailItem.id}`;
+            buyLink.href = detailItem.buyLink || '#';
             buyLink.removeAttribute('target');
           }
 
@@ -470,14 +470,14 @@ document.getElementById("contactme").addEventListener("click", function() {
                 optionsList.querySelectorAll('li').forEach(el => el.classList.remove('selected'));
                 li.classList.add('selected');
                 if (buyLink) {
-                  buyLink.href = `payment.html?item=${detailItem.id}&option=${option.id}`;
+                  buyLink.href = detailItem.buyLink || '#';
                 }
               });
 
               if (index === 0) {
                 li.classList.add('selected');
                 if (buyLink) {
-                  buyLink.href = `payment.html?item=${detailItem.id}&option=${option.id}`;
+                  buyLink.href = detailItem.buyLink || '#';
                 }
               }
             });
