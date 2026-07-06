@@ -134,7 +134,7 @@ function renderOptions({ detailItem, optionsGridEl, state }) {
 }
 
 function getStripeServerBaseUrl() {
-  const configured = window.STRIPE_SERVER_BASE_URL;
+  const configured = window.STRIPE_SERVER_BASE_URL || window.STRIPE_BACKEND_URL;
   if (configured) return String(configured).replace(/\/$/, '');
 
   const hostname = window.location.hostname;
@@ -142,11 +142,7 @@ function getStripeServerBaseUrl() {
     return 'http://127.0.0.1:3000';
   }
 
-  if (hostname === 'vazerk.com' || hostname.endsWith('.vazerk.com')) {
-    return 'https://vazerk.com';
-  }
-
-  return window.location.origin;
+  return '';
 }
 
 async function createCheckoutSessionAndRedirect({ payload, serverBaseUrl }) {
@@ -201,8 +197,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const formErrorEl = $('#formError');
 
   // 1) Choose the Stripe backend URL.
-  // Set this to your deployed server (must support HTTPS) if you are not using the same host.
+  // For production on vazerk.com hosted at Hostinger, this must point to a publicly reachable backend URL.
+  // Examples:
+  // - https://api.vazerk.com
+  // - https://your-node-app.hostingerapp.com
   const serverBaseUrl = getStripeServerBaseUrl();
+  if (!serverBaseUrl) {
+    throw new Error('Configure uma URL pública do backend Stripe para o domínio vazerk.com no Hostinger.');
+  }
 
   // 2) Load product details
   let detail;
