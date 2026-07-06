@@ -164,6 +164,10 @@ function renderPayPalButtons({ containerEl, amountText, detailItem, serverBaseUr
   containerEl.innerHTML = '';
 
   window.paypal.Buttons({
+    funding: {
+      allowed: [window.paypal.FUNDING.PAYPAL],
+      disallowed: [window.paypal.FUNDING.CARD],
+    },
     style: {
       shape: 'rect',
       color: 'gold',
