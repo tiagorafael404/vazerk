@@ -81,12 +81,6 @@ auth.onAuthStateChanged((user) => {
   console.log("Estado de autenticação mudou:", user ? "Logado" : "Não logado");
 });
 
-// Listener global para mudanças de auth (roda em todas as páginas)
-auth.onAuthStateChanged((user) => {
-  updateUserUI(user);
-  console.log("Estado de auth mudou:", user ? "Logado" : "Não logado");
-});
-
 // Seleciona elementos
 const cookieBox = document.getElementById('cookiesBox');
 const acceptBtn = document.getElementById('acceptBtn');
@@ -433,7 +427,8 @@ document.getElementById("contactme").addEventListener("click", function() {
           const optionsList = document.querySelector('.options_list ul');
 
           if (buyLink) {
-            buyLink.href = detailItem.buyLink || '#';
+            const itemParam = detailItem.id !== undefined ? `?item=${encodeURIComponent(detailItem.id)}` : '';
+            buyLink.href = `payment.html${itemParam}`;
             buyLink.removeAttribute('target');
           }
 
@@ -470,14 +465,16 @@ document.getElementById("contactme").addEventListener("click", function() {
                 optionsList.querySelectorAll('li').forEach(el => el.classList.remove('selected'));
                 li.classList.add('selected');
                 if (buyLink) {
-                  buyLink.href = detailItem.buyLink || '#';
+                  const itemParam = detailItem.id !== undefined ? `?item=${encodeURIComponent(detailItem.id)}` : '';
+                  buyLink.href = `payment.html${itemParam}`;
                 }
               });
 
               if (index === 0) {
                 li.classList.add('selected');
                 if (buyLink) {
-                  buyLink.href = detailItem.buyLink || '#';
+                  const itemParam = detailItem.id !== undefined ? `?item=${encodeURIComponent(detailItem.id)}` : '';
+                  buyLink.href = `payment.html${itemParam}`;
                 }
               }
             });
