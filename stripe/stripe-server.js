@@ -49,7 +49,7 @@ const stripe = stripeSecretKey
   : null;
 
 // 1) Create a Checkout Session.
-app.post('/api/checkout-session', async (req, res) => {
+async function createCheckoutSession(req, res) {
   try {
     if (!stripe) {
       return res.status(500).json({ error: 'Stripe is not configured on the server.' });
@@ -130,6 +130,17 @@ app.post('/api/checkout-session', async (req, res) => {
     console.error(err);
     return res.status(500).json({ error: err.message || 'Failed to create checkout session' });
   }
+}
+
+app.options('/api/checkout-session', (req, res) => res.sendStatus(204));
+app.all('/api/checkout-session', (req, res) => {
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed', allowedMethods: ['POST'] });
+  }
+  return createCheckoutSession(req, res);
 });
 
 // 2) Webhook to verify Stripe events
