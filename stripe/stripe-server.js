@@ -37,6 +37,12 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 8080;
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+const paypalClientId = process.env.PAYPAL_CLIENT_ID;
+const paypalClientSecret = process.env.PAYPAL_SECRET;
+const paypalMode = (process.env.PAYPAL_MODE || 'sandbox').toLowerCase();
+const paypalApiBaseUrl = paypalMode === 'live'
+  ? 'https://api-m.paypal.com'
+  : 'https://api-m.sandbox.paypal.com';
 
 if (!stripeSecretKey) {
   console.warn('STRIPE_SECRET_KEY is not configured. Set it before creating checkout sessions.');
@@ -49,6 +55,102 @@ const stripe = stripeSecretKey
   : null;
 
 // 1) Create a Checkout Session.
+async function getPayPalAccessToken() {
+  if (!paypalClientId || !paypalClientSecret) {
+    throw new Error('PayPal credentials are not configured on the server.');
+  }
+
+  const auth = Buffer.from(`${paypalClientId}:${paypalClientSecret}`).toString('base64');
+  const response = await fetch(`${paypalApiBaseUrl}/v1/oauth2/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${auth}`,
+    },
+    body: 'grant_type=client_credentials',
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data?.error_description || data?.error || 'Failed to obtain PayPal access token');
+  }
+
+  return data.access_token;
+}
+
+async function createPayPalOrder(req, res) {
+  try {
+    const { amount, currency = 'EUR', productName } = req.body || {};
+    if (!amount) {
+      return res.status(400).json({ error: 'Missing amount' });
+    }
+
+    const accessToken = await getPayPalAccessToken();
+    const response = await fetch(`${paypalApiBaseUrl}/v2/checkout/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: {
+              currency_code: String(currency || 'EUR').toUpperCase(),
+              value: String(amount),
+            },
+            description: productName || 'Produto Vazerk',
+          },
+        ],
+        application_context: {
+          return_url: process.env.SUCCESS_URL || 'https://vazerk.com/success.html',
+          cancel_url: process.env.CANCEL_URL || 'https://vazerk.com/cancel.html',
+          shipping_preference: 'NO_SHIPPING',
+        },
+      }),
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      return res.status(response.status).json({ error: data?.message || 'Failed to create PayPal order' });
+    }
+
+    return res.json({ orderId: data.id });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: err.message || 'Failed to create PayPal order' });
+  }
+}
+
+async function capturePayPalOrder(req, res) {
+  try {
+    const { orderId } = req.body || {};
+    if (!orderId) {
+      return res.status(400).json({ error: 'Missing orderId' });
+    }
+
+    const accessToken = await getPayPalAccessToken();
+    const response = await fetch(`${paypalApiBaseUrl}/v2/checkout/orders/${encodeURIComponent(orderId)}/capture`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      return res.status(response.status).json({ error: data?.message || 'Failed to capture PayPal order' });
+    }
+
+    return res.json({ ok: true, data });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: err.message || 'Failed to capture PayPal order' });
+  }
+}
+
 async function createCheckoutSession(req, res) {
   try {
     if (!stripe) {
@@ -141,6 +243,28 @@ app.all('/api/checkout-session', (req, res) => {
     return res.status(405).json({ error: 'Method not allowed', allowedMethods: ['POST'] });
   }
   return createCheckoutSession(req, res);
+});
+
+app.options('/api/paypal/create-order', (req, res) => res.sendStatus(204));
+app.all('/api/paypal/create-order', (req, res) => {
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed', allowedMethods: ['POST'] });
+  }
+  return createPayPalOrder(req, res);
+});
+
+app.options('/api/paypal/capture-order', (req, res) => res.sendStatus(204));
+app.all('/api/paypal/capture-order', (req, res) => {
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed', allowedMethods: ['POST'] });
+  }
+  return capturePayPalOrder(req, res);
 });
 
 // 2) Webhook to verify Stripe events

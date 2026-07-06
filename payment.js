@@ -89,6 +89,12 @@ function parseAmountToCents(priceText) {
   return Math.round(n * 100);
 }
 
+function parseAmountToDecimal(priceText) {
+  const n = typeof priceText === 'number' ? priceText : parseFloat(String(priceText).replace('€', '').trim().replace(',', '.'));
+  if (!Number.isFinite(n)) throw new Error('Invalid price');
+  return n.toFixed(2);
+}
+
 function setImageBackground(el, src, baseUrl) {
   if (!el || !src) return;
   const url = new URL(src, baseUrl).href;
@@ -145,6 +151,64 @@ function getStripeServerBaseUrl() {
   return '';
 }
 
+function renderPayPalButtons({ containerEl, amountText, detailItem, serverBaseUrl, onApprove, onError }) {
+  if (!containerEl || !window.paypal) {
+    if (containerEl) {
+      containerEl.hidden = true;
+      containerEl.innerHTML = '';
+    }
+    return;
+  }
+
+  containerEl.hidden = false;
+  containerEl.innerHTML = '';
+
+  window.paypal.Buttons({
+    style: {
+      shape: 'rect',
+      color: 'gold',
+      layout: 'vertical',
+      label: 'paypal',
+    },
+    createOrder: async function () {
+      const res = await fetch(`${serverBaseUrl.replace(/\/$/, '')}/api/paypal/create-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: parseAmountToDecimal(amountText),
+          currency: 'EUR',
+          productName: detailItem?.name || 'Produto Vazerk',
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data?.error || 'Erro ao criar a ordem PayPal');
+      }
+
+      return data.orderId;
+    },
+    onApprove: async function (data) {
+      const res = await fetch(`${serverBaseUrl.replace(/\/$/, '')}/api/paypal/capture-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: data.orderID }),
+      });
+
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(result?.error || 'Erro ao capturar o pagamento PayPal');
+      }
+
+      onApprove?.(result, data);
+    },
+    onError: function (err) {
+      console.error('PayPal button error', err);
+      onError?.(err);
+    },
+  }).render(containerEl);
+}
+
 async function createCheckoutSessionAndRedirect({ payload, serverBaseUrl }) {
   const endpoint = `${serverBaseUrl.replace(/\/$/, '')}/api/checkout-session`;
   const requestBody = JSON.stringify(payload);
@@ -195,6 +259,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const detailTotalEl = $('#detailTotal');
   const optionsGridEl = $('#optionsGrid');
   const formErrorEl = $('#formError');
+  const paypalContainerEl = $('#paypalContainer');
 
   // 1) Choose the Stripe backend URL.
   // For production on vazerk.com hosted at Hostinger, this must point to a publicly reachable backend URL.
@@ -245,10 +310,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.preventDefault();
       formErrorEl.hidden = true;
 
-      try {
-        const selectedPaymentMethodBtn = $('.payment-method.selected');
-        const paymentMethod = selectedPaymentMethodBtn?.dataset?.method || 'card';
+      const selectedPaymentMethodBtn = $('.payment-method.selected');
+      const paymentMethod = selectedPaymentMethodBtn?.dataset?.method || 'card';
 
+      if (paymentMethod === 'paypal') {
+        formErrorEl.hidden = false;
+        formErrorEl.textContent = 'Use o botão PayPal abaixo para concluir o pagamento.';
+        return;
+      }
+
+      try {
         const formData = getFormData(paymentFormEl);
 
         // Determine base amount from item price.
@@ -290,8 +361,47 @@ document.addEventListener('DOMContentLoaded', async () => {
       btn.addEventListener('click', () => {
         $$('.payment-method').forEach((b) => b.classList.remove('selected'));
         btn.classList.add('selected');
+
+        const selectedMethod = btn.dataset.method;
+        if (selectedMethod === 'paypal') {
+          renderPayPalButtons({
+            containerEl: paypalContainerEl,
+            amountText: detail.price || '0',
+            detailItem: detail,
+            serverBaseUrl,
+            onApprove: () => {
+              window.location.href = 'success.html';
+            },
+            onError: (err) => {
+              formErrorEl.hidden = false;
+              formErrorEl.textContent = err?.message || 'Erro ao iniciar o PayPal';
+            },
+          });
+        } else {
+          if (paypalContainerEl) {
+            paypalContainerEl.hidden = true;
+            paypalContainerEl.innerHTML = '';
+          }
+        }
       });
     });
+
+    const initialMethod = $('.payment-method.selected')?.dataset?.method || 'visa';
+    if (initialMethod === 'paypal') {
+      renderPayPalButtons({
+        containerEl: paypalContainerEl,
+        amountText: detail.price || '0',
+        detailItem: detail,
+        serverBaseUrl,
+        onApprove: () => {
+          window.location.href = 'success.html';
+        },
+        onError: (err) => {
+          formErrorEl.hidden = false;
+          formErrorEl.textContent = err?.message || 'Erro ao iniciar o PayPal';
+        },
+      });
+    }
 
   } catch (err) {
     console.error(err);

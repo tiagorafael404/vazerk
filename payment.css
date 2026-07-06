@@ -228,6 +228,18 @@ input:focus {
   background: #eef6ff;
 }
 
+.paypal-container {
+  margin-top: 8px;
+  padding: 12px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  background: #fafcff;
+}
+
+.paypal-container[hidden] {
+  display: none;
+}
+
 .submit-button {
   width: 100%;
   border: none;
