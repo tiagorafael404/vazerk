@@ -123,7 +123,7 @@ function renderOptions({ detailItem, optionsGridEl, state }) {
     }
 
     btn.addEventListener('click', () => {
-      $$('.option-pill', optionsGridEl).forEach((b) => b.classList.remove('selected'));
+      optionsGridEl.querySelectorAll('.option-pill').forEach((b) => b.classList.remove('selected'));
       btn.classList.add('selected');
       state.selectedOption = opt;
       state.selectedOptionId = opt.id;
@@ -133,8 +133,20 @@ function renderOptions({ detailItem, optionsGridEl, state }) {
   });
 }
 
+function getStripeServerBaseUrl() {
+  const configured = window.STRIPE_SERVER_BASE_URL;
+  if (configured) return String(configured).replace(/\/$/, '');
+
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'http://localhost:3000';
+  }
+
+  return window.location.origin;
+}
+
 async function createCheckoutSessionAndRedirect({ payload, serverBaseUrl }) {
-  const res = await fetch(`${serverBaseUrl}/api/checkout-session`, {
+  const endpoint = `${serverBaseUrl.replace(/\/$/, '')}/api/checkout-session`;
+  const res = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -177,11 +189,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const formErrorEl = $('#formError');
 
   // 1) Choose the Stripe backend URL.
-  // Set this to your deployed server (must support HTTPS).
-  // Examples:
-  // - https://your-domain.com
-  // - https://your-project.onrender.com
-  const serverBaseUrl = window.STRIPE_SERVER_BASE_URL || 'http://localhost:3000';
+  // Set this to your deployed server (must support HTTPS) if you are not using the same host.
+  const serverBaseUrl = getStripeServerBaseUrl();
 
   // 2) Load product details
   let detail;

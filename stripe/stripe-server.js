@@ -19,23 +19,35 @@ app.use('/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-06-20',
-});
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+
+if (!stripeSecretKey) {
+  console.warn('STRIPE_SECRET_KEY is not configured. Set it before creating checkout sessions.');
+}
+
+const stripe = stripeSecretKey
+  ? new Stripe(stripeSecretKey, {
+      apiVersion: '2024-06-20',
+    })
+  : null;
 
 // 1) Create a Checkout Session.
 app.post('/api/checkout-session', async (req, res) => {
   try {
-    const { 
-      amount, 
-      currency = 'eur', 
-      productName, 
-      email, 
-      fullName, 
-      phone, 
-      address, 
-      postal, 
-      city, 
+    if (!stripe) {
+      return res.status(500).json({ error: 'Stripe is not configured on the server.' });
+    }
+
+    const {
+      amount,
+      currency = 'eur',
+      productName,
+      email,
+      fullName,
+      phone,
+      address,
+      postal,
+      city,
       country,
       paymentMethod,
       optionName
@@ -132,4 +144,3 @@ app.post('/webhook', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Stripe server listening on port ${PORT}`);
 });
-refiro
