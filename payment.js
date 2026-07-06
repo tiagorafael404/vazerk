@@ -103,14 +103,21 @@ function renderOptions({ detailItem, optionsGridEl, state }) {
   const select = detailItem?.select;
   if (!select || !Array.isArray(select.options)) return;
 
+  const params = new URLSearchParams(window.location.search);
+  const preselectedOptionId = params.get('option');
+
   select.options.forEach((opt, index) => {
+    const isSelected = preselectedOptionId
+      ? String(opt.id) === String(preselectedOptionId)
+      : index === 0;
+
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'option-pill' + (index === 0 ? ' selected' : '');
+    btn.className = 'option-pill' + (isSelected ? ' selected' : '');
     btn.textContent = opt.name || `Option ${opt.id}`;
     btn.dataset.optionId = String(opt.id ?? '');
 
-    if (index === 0) {
+    if (isSelected) {
       state.selectedOption = opt;
       state.selectedOptionId = opt.id;
     }

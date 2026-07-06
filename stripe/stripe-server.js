@@ -4,8 +4,15 @@
 
 import express from 'express';
 import Stripe from 'stripe';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
+
+// Enable CORS so the static frontend can call this backend
+app.use(cors());
 
 // IMPORTANT: Stripe needs the raw body for signature verification.
 app.use('/webhook', express.raw({ type: 'application/json' }));
@@ -16,46 +23,64 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2024-06-20',
 });
 
-// 1) Create a PaymentIntent or Checkout Session.
-// This example uses Checkout Sessions.
-// You can swap to PaymentIntents if you prefer card elements.
+// 1) Create a Checkout Session.
 app.post('/api/checkout-session', async (req, res) => {
   try {
-    const { amount, currency, productName, email, fullName, phone, address, postal, city, country } = req.body || {};
+    const { 
+      amount, 
+      currency = 'eur', 
+      productName, 
+      email, 
+      fullName, 
+      phone, 
+      address, 
+      postal, 
+      city, 
+      country,
+      paymentMethod,
+      optionName
+    } = req.body || {};
 
-    if (!amount || !currency) {
-      return res.status(400).json({ error: 'Missing amount/currency' });
+    if (!amount) {
+      return res.status(400).json({ error: 'Missing amount' });
     }
 
-    // Use Stripe Price or build line_items with amount.
-    // For dynamic amounts, Checkout supports unit_amount.
-    // Amount must be in the smallest currency unit.
+    // Build the line item
     const lineItems = [
       {
         price_data: {
-          currency,
+          currency: currency.toLowerCase(),
           unit_amount: Math.round(amount),
           product_data: {
-            name: productName || 'Produto',
+            name: optionName ? `${productName} (${optionName})` : (productName || 'Produto'),
           },
         },
         quantity: 1,
       },
     ];
 
-    const session = await stripe.checkout.sessions.create({
+    // Map frontend payment method to Stripe payment_method_types
+    let paymentMethodTypes = ['card'];
+    if (paymentMethod === 'paypal') {
+      paymentMethodTypes = ['paypal'];
+    } else if (paymentMethod === 'mbway') {
+      paymentMethodTypes = ['mb_way'];
+    } else if (paymentMethod === 'applepay') {
+      paymentMethodTypes = ['card']; // Apple Pay is card-based in Stripe
+    }
+
+    const sessionOptions = {
       mode: 'payment',
       line_items: lineItems,
       customer_email: email,
       // Redirect URLs
-      success_url: process.env.SUCCESS_URL || 'https://example.com/success',
-      cancel_url: process.env.CANCEL_URL || 'https://example.com/cancel',
-      // Collect shipping/address-like fields (optional)
-      billing_address_collection: 'required',
-      shipping_address_collection: {
-        allowed_countries: ['PT', 'ES', 'FR', 'DE', 'GB', 'US'],
-      },
-      // Attach metadata to link to your order
+      success_url: process.env.SUCCESS_URL || 'https://vazerk.com/success.html',
+      cancel_url: process.env.CANCEL_URL || 'https://vazerk.com/cancel.html',
+      // We already collected the address in our custom form, so do not force the user
+      // to enter a shipping address again on the Stripe Checkout page.
+      billing_address_collection: 'auto',
+      // Attach the shipping/customer details to Stripe metadata so the store owner
+      // can see them in the Stripe Dashboard and process the order.
       metadata: {
         fullName: fullName || '',
         phone: phone || '',
@@ -63,15 +88,18 @@ app.post('/api/checkout-session', async (req, res) => {
         postal: postal || '',
         city: city || '',
         country: country || '',
+        paymentMethod: paymentMethod || '',
+        optionName: optionName || '',
       },
-      // Optional: allow payment methods
-      // payment_method_types: ['card', 'ideal', 'bancontact'],
-    });
+      payment_method_types: paymentMethodTypes,
+    };
+
+    const session = await stripe.checkout.sessions.create(sessionOptions);
 
     return res.json({ url: session.url, id: session.id });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: 'Failed to create checkout session' });
+    return res.status(500).json({ error: err.message || 'Failed to create checkout session' });
   }
 });
 
@@ -104,4 +132,4 @@ app.post('/webhook', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Stripe server listening on port ${PORT}`);
 });
-
+refiro

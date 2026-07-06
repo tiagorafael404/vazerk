@@ -432,6 +432,11 @@ document.getElementById("contactme").addEventListener("click", function() {
           const buyLink = document.getElementById('buyLink');
           const optionsList = document.querySelector('.options_list ul');
 
+          if (buyLink) {
+            buyLink.href = `payment.html?item=${detailItem.id}`;
+            buyLink.removeAttribute('target');
+          }
+
           if (productName) {
             productName.textContent = detailItem.name || productName.textContent;
           }
@@ -464,15 +469,15 @@ document.getElementById("contactme").addEventListener("click", function() {
                 event.preventDefault();
                 optionsList.querySelectorAll('li').forEach(el => el.classList.remove('selected'));
                 li.classList.add('selected');
-                if (buyLink && option.url) {
-                  buyLink.href = option.url;
+                if (buyLink) {
+                  buyLink.href = `payment.html?item=${detailItem.id}&option=${option.id}`;
                 }
               });
 
               if (index === 0) {
                 li.classList.add('selected');
-                if (buyLink && option.url) {
-                  buyLink.href = option.url;
+                if (buyLink) {
+                  buyLink.href = `payment.html?item=${detailItem.id}&option=${option.id}`;
                 }
               }
             });

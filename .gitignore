@@ -1,0 +1,11 @@
+# Dependency folders
+node_modules/
+stripe/node_modules/
+
+# Secrets
+.env
+stripe/.env
+
+# Local logs
+*.log
+.system_generated/
