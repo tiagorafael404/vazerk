@@ -146,13 +146,20 @@ function getStripeServerBaseUrl() {
 
 async function createCheckoutSessionAndRedirect({ payload, serverBaseUrl }) {
   const endpoint = `${serverBaseUrl.replace(/\/$/, '')}/api/checkout-session`;
+  const requestBody = JSON.stringify(payload);
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
+    body: requestBody,
   });
 
-  const data = await res.json().catch(() => ({}));
+  const text = await res.text();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch (err) {
+    data = { error: text || 'Invalid server response' };
+  }
 
   if (!res.ok) {
     const msg = data?.error || `HTTP ${res.status}`;
