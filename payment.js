@@ -6,12 +6,10 @@ const $$ = (sel) => document.querySelectorAll(sel);
 
 function getItemsJsonUrl() {
   const documentScript = document.currentScript || document.querySelector('script[src$="payment.js"]');
-  const baseUrl = documentScript && documentScript.src
-    ? new URL('items.json', documentScript.src)
-    : new URL('items.json', window.location.href);
-
-  baseUrl.searchParams.set('t', Date.now().toString());
-  return baseUrl.href;
+  if (documentScript && documentScript.src) {
+    return new URL('items.json', documentScript.src).href;
+  }
+  return 'items.json';
 }
 
 function normalizeItemReference(reference) {
@@ -44,10 +42,7 @@ function getItemByReference(itemsById, itemsByUrl, reference) {
 
 async function loadItemsAndResolveDetail() {
   const itemsUrl = getItemsJsonUrl();
-  const res = await fetch(itemsUrl, {
-    cache: 'no-store',
-    headers: { 'Cache-Control': 'no-cache' },
-  });
+  const res = await fetch(itemsUrl);
   if (!res.ok) throw new Error(`Failed to load items.json: ${res.status}`);
   const items = await res.json();
 
