@@ -37,8 +37,8 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 8080;
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-const paypalClientId = process.env.PAYPAL_CLIENT_ID;
-const paypalClientSecret = process.env.PAYPAL_SECRET;
+const paypalClientId = process.env.PAYPAL_CLIENT_ID || 'ASU0_auW1g6mIUR6SgjVny2BnnQFYQXZ-FgffMaVGJcmkyMVPuMcX5VGEnA2cMCJ3-pn2NZsVo7CVi04';
+const paypalClientSecret = process.env.PAYPAL_SECRET || 'EA3ZmmnM_QAY_dQVBEpT1fz8WV-5ewM9by2pgcrJP59fSe0Gq0_GxSNjXYf61QO8kSyomqrYl78kfF8s';
 const paypalMode = (process.env.PAYPAL_MODE || 'sandbox').toLowerCase();
 const paypalApiBaseUrl = paypalMode === 'live'
   ? 'https://api-m.paypal.com'
@@ -54,7 +54,6 @@ const stripe = stripeSecretKey
     })
   : null;
 
-// 1) Create a Checkout Session.
 async function getPayPalAccessToken() {
   if (!paypalClientId || !paypalClientSecret) {
     throw new Error('PayPal credentials are not configured on the server.');
@@ -151,6 +150,7 @@ async function capturePayPalOrder(req, res) {
   }
 }
 
+// 1) Create a Checkout Session.
 async function createCheckoutSession(req, res) {
   try {
     if (!stripe) {

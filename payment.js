@@ -1,417 +1,316 @@
-// Payment page logic: creates a Stripe Checkout Session and redirects the customer.
-// IMPORTANT: You must host this site over HTTPS for Stripe.
-
-const $ = (sel) => document.querySelector(sel);
-const $$ = (sel) => document.querySelectorAll(sel);
-
-function getItemsJsonUrl() {
-  const documentScript = document.currentScript || document.querySelector('script[src$="payment.js"]');
-  if (documentScript && documentScript.src) {
-    return new URL('items.json', documentScript.src).href;
-  }
-  return 'items.json';
-}
-
-function normalizeItemReference(reference) {
-  if (reference === undefined || reference === null) return '';
-  return String(reference)
-    .trim()
-    .split('#')[0]
-    .replace(/\\/g, '/')
-    .replace(/^\/+/, '');
-}
-
-function getItemByReference(itemsById, itemsByUrl, reference) {
-  if (reference === undefined || reference === null) return null;
-  const normalized = normalizeItemReference(reference);
-  if (!normalized) return null;
-
-  if (itemsById.has(String(normalized))) return itemsById.get(String(normalized));
-  if (itemsByUrl.has(normalized)) return itemsByUrl.get(normalized);
-
-  for (const [itemUrl, item] of itemsByUrl.entries()) {
-    const normalizedItemUrl = normalizeItemReference(itemUrl);
-    if (normalizedItemUrl === normalized) return item;
-
-    const queryMatch = normalizedItemUrl.match(/(?:^|[?&])item=([^&]+)/);
-    if (queryMatch && queryMatch[1] === normalized) return item;
-  }
-
-  return null;
-}
-
-async function loadItemsAndResolveDetail() {
-  const itemsUrl = getItemsJsonUrl();
-  const res = await fetch(itemsUrl);
-  if (!res.ok) throw new Error(`Failed to load items.json: ${res.status}`);
-  const items = await res.json();
-
-  const itemsById = new Map();
-  const itemsByUrl = new Map();
-
-  items.forEach((item) => {
-    if (item.id !== undefined) itemsById.set(String(item.id), item);
-    if (item.url) itemsByUrl.set(item.url, item);
-  });
-
-  // Determine which item we are paying for.
-  // Prefer body dataset if your HTML sets it, otherwise query params.
-  let detailItem = null;
-
+(function () {
   const params = new URLSearchParams(window.location.search);
-  for (const key of ['item', 'url', 'product', 'id']) {
-    const value = params.get(key);
-    detailItem = getItemByReference(itemsById, itemsByUrl, value);
-    if (detailItem) break;
-  }
+  const itemReference = params.get('item') || params.get('id') || params.get('product') || params.get('url') || '';
+  let currentItem = null;
+  let paypalButtons = null;
 
-  if (!detailItem) {
-    const path = window.location.pathname.replace(/\\/g, '/').replace(/^\/+/, '');
-    detailItem = getItemByReference(itemsById, itemsByUrl, path);
-  }
-
-  return { items, itemsUrl, detailItem };
-}
-
-function formatEuro(amount) {
-  // Stripe server expects amount in cents; UI expects €
-  // This assumes amount is already in euros as a decimal string like "10.99€" or "10.99".
-  const n = typeof amount === 'number' ? amount : parseFloat(String(amount).replace('€', '').trim().replace(',', '.'));
-  if (Number.isFinite(n)) {
-    return new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(n);
-  }
-  return String(amount);
-}
-
-function parseAmountToCents(priceText) {
-  const n = typeof priceText === 'number' ? priceText : parseFloat(String(priceText).replace('€', '').trim().replace(',', '.'));
-  if (!Number.isFinite(n)) throw new Error('Invalid price');
-  return Math.round(n * 100);
-}
-
-function parseAmountToDecimal(priceText) {
-  const n = typeof priceText === 'number' ? priceText : parseFloat(String(priceText).replace('€', '').trim().replace(',', '.'));
-  if (!Number.isFinite(n)) throw new Error('Invalid price');
-  return n.toFixed(2);
-}
-
-function setImageBackground(el, src, baseUrl) {
-  if (!el || !src) return;
-  const url = new URL(src, baseUrl).href;
-  el.style.backgroundImage = `url('${url}')`;
-}
-
-function renderOptions({ detailItem, optionsGridEl, state }) {
-  optionsGridEl.innerHTML = '';
-
-  // Your items.json uses: select: { label, options: [{id,name,url}] }
-  // We treat options selection just as metadata for Stripe; prices can be extended later.
-  const select = detailItem?.select;
-  if (!select || !Array.isArray(select.options)) return;
-
-  const params = new URLSearchParams(window.location.search);
-  const preselectedOptionId = params.get('option');
-
-  select.options.forEach((opt, index) => {
-    const isSelected = preselectedOptionId
-      ? String(opt.id) === String(preselectedOptionId)
-      : index === 0;
-
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'option-pill' + (isSelected ? ' selected' : '');
-    btn.textContent = opt.name || `Option ${opt.id}`;
-    btn.dataset.optionId = String(opt.id ?? '');
-
-    if (isSelected) {
-      state.selectedOption = opt;
-      state.selectedOptionId = opt.id;
+  function normalizeItemReference(reference) {
+    if (reference === undefined || reference === null) {
+      return '';
     }
 
-    btn.addEventListener('click', () => {
-      optionsGridEl.querySelectorAll('.option-pill').forEach((b) => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      state.selectedOption = opt;
-      state.selectedOptionId = opt.id;
-    });
-
-    optionsGridEl.appendChild(btn);
-  });
-}
-
-function getStripeServerBaseUrl() {
-  const configured = window.STRIPE_SERVER_BASE_URL || window.STRIPE_BACKEND_URL;
-  if (configured) return String(configured).replace(/\/$/, '');
-
-  const hostname = window.location.hostname;
-  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
-    return 'http://127.0.0.1:3000';
+    return String(reference)
+      .trim()
+      .split('#')[0]
+      .replace(/\\/g, '/')
+      .replace(/^\/+/, '');
   }
 
-  return '';
-}
-
-function renderPayPalButtons({ containerEl, amountText, detailItem, serverBaseUrl, onApprove, onError }) {
-  if (!containerEl || !window.paypal) {
-    if (containerEl) {
-      containerEl.hidden = true;
-      containerEl.innerHTML = '';
+  function parseAmountFromPrice(value) {
+    if (typeof value === 'number') {
+      return value;
     }
-    return;
+
+    if (!value) {
+      return 0;
+    }
+
+    const cleaned = String(value)
+      .replace(/[^0-9,.-]/g, '')
+      .replace(/\.(?=.*\.)/g, '')
+      .replace(/,(?=.*,)/g, '')
+      .replace(',', '.');
+
+    const amount = parseFloat(cleaned);
+    return Number.isFinite(amount) ? amount : 0;
   }
 
-  containerEl.hidden = false;
-  containerEl.innerHTML = '';
+  function getItemByReference(reference, itemsById, itemsByUrl) {
+    if (reference === undefined || reference === null) {
+      return null;
+    }
 
-  window.paypal.Buttons({
-    funding: {
-      allowed: [window.paypal.FUNDING.PAYPAL],
-      disallowed: [window.paypal.FUNDING.CARD],
-    },
-    style: {
-      shape: 'rect',
-      color: 'gold',
-      layout: 'vertical',
-      label: 'paypal',
-    },
-    createOrder: async function () {
-      const res = await fetch(`${serverBaseUrl.replace(/\/$/, '')}/api/paypal/create-order`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          amount: parseAmountToDecimal(amountText),
-          currency: 'EUR',
-          productName: detailItem?.name || 'Produto Vazerk',
-        }),
-      });
+    const normalizedReference = normalizeItemReference(reference);
+    if (!normalizedReference) {
+      return null;
+    }
 
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(data?.error || 'Erro ao criar a ordem PayPal');
+    if (itemsById.has(String(normalizedReference))) {
+      return itemsById.get(String(normalizedReference));
+    }
+
+    if (itemsByUrl.has(normalizedReference)) {
+      return itemsByUrl.get(normalizedReference);
+    }
+
+    for (const [itemUrl, item] of itemsByUrl.entries()) {
+      const normalizedItemUrl = normalizeItemReference(itemUrl);
+      if (normalizedItemUrl === normalizedReference) {
+        return item;
       }
 
-      return data.orderId;
-    },
-    onApprove: async function (data) {
-      const res = await fetch(`${serverBaseUrl.replace(/\/$/, '')}/api/paypal/capture-order`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId: data.orderID }),
-      });
-
-      const result = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(result?.error || 'Erro ao capturar o pagamento PayPal');
+      const queryMatch = normalizedItemUrl.match(/(?:^|[?&])item=([^&]+)/);
+      if (queryMatch && queryMatch[1] === normalizedReference) {
+        return item;
       }
+    }
 
-      onApprove?.(result, data);
-    },
-    onError: function (err) {
-      console.error('PayPal button error', err);
-      onError?.(err);
-    },
-  }).render(containerEl);
-}
-
-async function createCheckoutSessionAndRedirect({ payload, serverBaseUrl }) {
-  const endpoint = `${serverBaseUrl.replace(/\/$/, '')}/api/checkout-session`;
-  const requestBody = JSON.stringify(payload);
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: requestBody,
-  });
-
-  const text = await res.text();
-  let data = {};
-  try {
-    data = text ? JSON.parse(text) : {};
-  } catch (err) {
-    data = { error: text || 'Invalid server response' };
+    return null;
   }
 
-  if (!res.ok) {
-    const msg = data?.error || `HTTP ${res.status}`;
-    throw new Error(msg);
+  function renderItemSummary(detailItem) {
+    const productName = document.getElementById('productName');
+    const productDescription = document.getElementById('productDescription');
+    const productPrice = document.getElementById('productPrice');
+    const detailTotal = document.getElementById('detailTotal');
+    const productImage = document.getElementById('productImage');
+    const optionsGrid = document.getElementById('optionsGrid');
+    const optionsSection = document.getElementById('optionsSection');
+
+    if (productName) {
+      productName.textContent = detailItem.name || 'Produto';
+    }
+    if (productDescription) {
+      productDescription.textContent = detailItem.description || 'Descricao indisponivel.';
+    }
+    if (productPrice) {
+      productPrice.textContent = detailItem.price || '-';
+    }
+    if (detailTotal) {
+      detailTotal.textContent = detailItem.price || '-';
+    }
+    if (productImage && detailItem.image) {
+      const photoUrl = new URL(detailItem.image, itemsUrl).href;
+      productImage.style.backgroundImage = `url('${photoUrl}')`;
+    }
+
+    if (optionsSection && optionsGrid) {
+      if (detailItem.select && Array.isArray(detailItem.select.options) && detailItem.select.options.length) {
+        optionsSection.hidden = false;
+        optionsGrid.innerHTML = '';
+
+        detailItem.select.options.forEach((option) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'option-chip';
+          button.textContent = option.name || `Opcao ${option.id}`;
+          optionsGrid.appendChild(button);
+        });
+      } else {
+        optionsSection.hidden = true;
+        optionsGrid.innerHTML = '';
+      }
+    }
   }
 
-  if (!data.url) throw new Error('Stripe did not return session url');
-  window.location.href = data.url;
-}
+  function showPayPalButtons() {
+    const paypalContainer = document.getElementById('paypalContainer');
+    const submitButton = document.querySelector('.submit-button');
 
-function getFormData(paymentFormEl) {
-  const fd = new FormData(paymentFormEl);
-  const obj = Object.fromEntries(fd.entries());
-
-  // Ensure types
-  return {
-    fullName: obj.fullName || '',
-    email: obj.email || '',
-    phone: obj.phone || '',
-    address: obj.address || '',
-    postal: obj.postal || '',
-    city: obj.city || '',
-    country: obj.country || '',
-  };
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-  const paymentFormEl = $('#paymentForm');
-  const productNameEl = $('#productName');
-  const productDescriptionEl = $('#productDescription');
-  const productPriceEl = $('#productPrice');
-  const detailTotalEl = $('#detailTotal');
-  const optionsGridEl = $('#optionsGrid');
-  const formErrorEl = $('#formError');
-  const paypalContainerEl = $('#paypalContainer');
-
-  // 1) Choose the Stripe backend URL.
-  // For production on vazerk.com hosted at Hostinger, this must point to a publicly reachable backend URL.
-  // Examples:
-  // - https://api.vazerk.com
-  // - https://your-node-app.hostingerapp.com
-  const serverBaseUrl = getStripeServerBaseUrl();
-  if (!serverBaseUrl) {
-    throw new Error('Configure uma URL pública do backend Stripe para o domínio vazerk.com no Hostinger.');
-  }
-
-  // 2) Load product details
-  let detail;
-  try {
-    const loaded = await loadItemsAndResolveDetail();
-    detail = loaded.detailItem;
-
-    if (!detail) {
-      productNameEl.textContent = 'Produto não disponível';
-      productDescriptionEl.textContent = 'Não foi possível carregar os detalhes.';
-      productPriceEl.textContent = '—';
-      detailTotalEl.textContent = '—';
+    if (!paypalContainer || !window.paypal) {
       return;
     }
 
-    // Base url for relative images (for background-image)
-    const itemsUrl = loaded.itemsUrl;
-    const itemsBase = new URL('.', itemsUrl).href;
+    paypalContainer.hidden = false;
+    if (submitButton) {
+      submitButton.hidden = true;
+    }
 
-    productNameEl.textContent = detail.name || 'Produto';
-    productDescriptionEl.textContent = detail.description || '';
-    productPriceEl.textContent = detail.price || '';
-    detailTotalEl.textContent = detail.price ? formatEuro(detail.price) : '';
+    if (paypalButtons) {
+      paypalButtons.close();
+    }
 
-    // Use first available image as summary
-    const productImageEl = $('#productImage');
-    setImageBackground(productImageEl, detail.image || detail.image2 || detail.image3, itemsBase);
-
-    // Options (left card)
-    const state = { selectedOption: null, selectedOptionId: null };
-    renderOptions({ detailItem: detail, optionsGridEl, state });
-
-    // Track selected option inside closure via dataset
-    window.__paymentState = state;
-
-    // Attach submit listener for Stripe
-    paymentFormEl.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      formErrorEl.hidden = true;
-
-      const selectedPaymentMethodBtn = $('.payment-method.selected');
-      const paymentMethod = selectedPaymentMethodBtn?.dataset?.method || 'card';
-
-      if (paymentMethod === 'paypal') {
-        formErrorEl.hidden = false;
-        formErrorEl.textContent = 'Use o botão PayPal abaixo para concluir o pagamento.';
-        return;
-      }
-
-      try {
-        const formData = getFormData(paymentFormEl);
-
-        // Determine base amount from item price.
-        // NOTE: In your items.json prices look like "10.99€".
-        // Stripe server code expects "amount" and "currency".
-        const cents = parseAmountToCents(detail.price || '0');
-        const amountEUR = cents; // We will pass cents and let server treat it as smallest unit.
-
-        const payload = {
-          amount: amountEUR, // cents
-          currency: 'eur',
-          productName: detail.name,
-          email: formData.email,
-          fullName: formData.fullName,
-          phone: formData.phone,
-          address: formData.address,
-          postal: formData.postal,
-          city: formData.city,
-          country: formData.country,
-          // Extra metadata
-          paymentMethod,
-          optionId: window.__paymentState?.selectedOptionId ?? null,
-          optionName: window.__paymentState?.selectedOption?.name ?? null,
-        };
-
-        await createCheckoutSessionAndRedirect({
-          payload,
-          serverBaseUrl,
+    paypalButtons = window.paypal.Buttons({
+      style: {
+        layout: 'vertical',
+        color: 'gold',
+        shape: 'rect',
+        label: 'pay',
+      },
+      createOrder: async () => {
+        const amount = parseAmountFromPrice(currentItem?.price || 0).toFixed(2);
+        const response = await fetch('/api/paypal/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount,
+            currency: 'EUR',
+            productName: currentItem?.name || 'Produto Vazerk',
+          }),
         });
-      } catch (err) {
-        console.error(err);
-        formErrorEl.hidden = false;
-        formErrorEl.textContent = err?.message || 'Erro ao criar pagamento';
-      }
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Erro ao criar o pedido PayPal');
+        }
+
+        return data.orderId;
+      },
+      onApprove: async (data) => {
+        const response = await fetch('/api/paypal/capture-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId: data.orderID }),
+        });
+
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || 'Erro ao capturar o pagamento');
+        }
+
+        window.location.href = '/success.html';
+      },
+      onError: (err) => {
+        console.error('PayPal error:', err);
+        const errorBox = document.getElementById('formError');
+        if (errorBox) {
+          errorBox.hidden = false;
+          errorBox.textContent = 'Nao foi possivel concluir o pagamento com o PayPal.';
+        }
+      },
     });
 
-    // Keep your existing payment-method UI selection
-    $$('.payment-method').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        $$('.payment-method').forEach((b) => b.classList.remove('selected'));
-        btn.classList.add('selected');
+    paypalButtons.render('#paypalContainer');
+  }
 
-        const selectedMethod = btn.dataset.method;
-        if (selectedMethod === 'paypal') {
-          renderPayPalButtons({
-            containerEl: paypalContainerEl,
-            amountText: detail.price || '0',
-            detailItem: detail,
-            serverBaseUrl,
-            onApprove: () => {
-              window.location.href = 'success.html';
-            },
-            onError: (err) => {
-              formErrorEl.hidden = false;
-              formErrorEl.textContent = err?.message || 'Erro ao iniciar o PayPal';
-            },
-          });
+  function attachPaymentMethodHandlers() {
+    const paymentMethods = document.querySelectorAll('.payment-method');
+    const form = document.getElementById('paymentForm');
+    const errorBox = document.getElementById('formError');
+
+    paymentMethods.forEach((button) => {
+      button.addEventListener('click', () => {
+        paymentMethods.forEach((item) => item.classList.remove('selected'));
+        button.classList.add('selected');
+
+        if (button.dataset.method === 'paypal') {
+          showPayPalButtons();
         } else {
-          if (paypalContainerEl) {
-            paypalContainerEl.hidden = true;
-            paypalContainerEl.innerHTML = '';
+          const paypalContainer = document.getElementById('paypalContainer');
+          const submitButton = document.querySelector('.submit-button');
+          if (paypalContainer) {
+            paypalContainer.hidden = true;
+          }
+          if (submitButton) {
+            submitButton.hidden = false;
           }
         }
       });
     });
 
-    const initialMethod = $('.payment-method.selected')?.dataset?.method || 'visa';
-    if (initialMethod === 'paypal') {
-      renderPayPalButtons({
-        containerEl: paypalContainerEl,
-        amountText: detail.price || '0',
-        detailItem: detail,
-        serverBaseUrl,
-        onApprove: () => {
-          window.location.href = 'success.html';
-        },
-        onError: (err) => {
-          formErrorEl.hidden = false;
-          formErrorEl.textContent = err?.message || 'Erro ao iniciar o PayPal';
-        },
+    if (form) {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        if (errorBox) {
+          errorBox.hidden = true;
+          errorBox.textContent = '';
+        }
+
+        const selectedMethod = document.querySelector('.payment-method.selected')?.dataset.method || 'visa';
+
+        if (selectedMethod === 'paypal') {
+          showPayPalButtons();
+          return;
+        }
+
+        const formData = new FormData(form);
+        const payload = {
+          amount: parseAmountFromPrice(currentItem?.price || 0) * 100,
+          currency: 'eur',
+          productName: currentItem?.name || 'Produto Vazerk',
+          email: formData.get('email') || '',
+          fullName: formData.get('fullName') || '',
+          phone: formData.get('phone') || '',
+          address: formData.get('address') || '',
+          postal: formData.get('postal') || '',
+          city: formData.get('city') || '',
+          country: formData.get('country') || '',
+          paymentMethod: selectedMethod,
+          optionName: currentItem?.select?.options?.[0]?.name || '',
+        };
+
+        try {
+          const response = await fetch('/api/checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.error || 'Erro ao iniciar o pagamento');
+          }
+
+          if (data.url) {
+            window.location.href = data.url;
+          }
+        } catch (err) {
+          if (errorBox) {
+            errorBox.hidden = false;
+            errorBox.textContent = err.message || 'Erro ao iniciar o pagamento.';
+          }
+        }
       });
     }
-
-  } catch (err) {
-    console.error(err);
-    productNameEl.textContent = 'Erro ao carregar pagamento';
-    formErrorEl.hidden = false;
-    formErrorEl.textContent = err?.message || 'Erro';
   }
-});
 
+  const itemsUrl = new URL('items.json', window.location.href).href;
+
+  fetch(itemsUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Nao foi possivel carregar items.json: ' + response.status);
+      }
+      return response.json();
+    })
+    .then((items) => {
+      const itemsById = new Map();
+      const itemsByUrl = new Map();
+
+      items.forEach((item) => {
+        if (item.id !== undefined) {
+          itemsById.set(String(item.id), item);
+        }
+        if (item.url) {
+          itemsByUrl.set(normalizeItemReference(item.url), item);
+        }
+      });
+
+      const detailItem = getItemByReference(itemReference, itemsById, itemsByUrl)
+        || getItemByReference(window.location.pathname.replace(/\\/g, '/').replace(/^\/+/, ''), itemsById, itemsByUrl)
+        || items[0] || null;
+
+      if (!detailItem) {
+        const productName = document.getElementById('productName');
+        const productDescription = document.getElementById('productDescription');
+        const productPrice = document.getElementById('productPrice');
+        const detailTotal = document.getElementById('detailTotal');
+        const productImage = document.getElementById('productImage');
+
+        if (productName) productName.textContent = 'Produto nao encontrado';
+        if (productDescription) productDescription.textContent = 'Este item nao esta disponivel no momento.';
+        if (productPrice) productPrice.textContent = '-';
+        if (detailTotal) detailTotal.textContent = '-';
+        if (productImage) productImage.style.backgroundImage = 'none';
+        return;
+      }
+
+      currentItem = detailItem;
+      renderItemSummary(detailItem);
+      attachPaymentMethodHandlers();
+    })
+    .catch((error) => {
+      console.error('Erro ao carregar o item da pagina de pagamento:', error);
+    });
+})();
