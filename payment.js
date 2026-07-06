@@ -137,8 +137,13 @@ function getStripeServerBaseUrl() {
   const configured = window.STRIPE_SERVER_BASE_URL;
   if (configured) return String(configured).replace(/\/$/, '');
 
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://localhost:3000';
+  const hostname = window.location.hostname;
+  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+    return 'http://127.0.0.1:3000';
+  }
+
+  if (hostname === 'vazerk.com' || hostname.endsWith('.vazerk.com')) {
+    return 'https://vazerk.com';
   }
 
   return window.location.origin;
