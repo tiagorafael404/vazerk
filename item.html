@@ -13,8 +13,9 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="/shared-modals.js" defer></script>
-    <script src="/script.js" defer></script>
+    <script src="/navbar.js" defer></script>
+    <script src="/cookies.js" defer></script>
+    <script src="/item.js" defer></script>
 </head>
 
 <body>
@@ -150,7 +151,7 @@
 
   <!-- 3. Seu objeto de configuração do Firebase e a inicialização. -->
   <!-- ESTE BLOCO É CRÍTICO. Ele DEVE vir DEPOIS dos scripts do Firebase SDK acima, -->
-  <!-- e ANTES do seu script personalizado (script.js). -->
+    <!-- e ANTES dos scripts personalizados separados. -->
   <script>
     // Seus detalhes de configuração do Firebase, EXATAMENTE como obtidos do Firebase Console.
     const firebaseConfig = {
@@ -170,12 +171,6 @@
     // pode inicializá-lo assim:
     // const analytics = firebase.analytics();
   </script>
-
-  <!-- Opções do produto serão preenchidas dinamicamente por script.js com base em items.json -->
-
-  <!-- 4. Seu script personalizado (script.js). -->
-  <!-- Este script deve vir POR ÚLTIMO, pois ele vai usar as funções do Firebase -->
-  <!-- que já foram carregadas e inicializadas pelos scripts anteriores. -->
 
 
 </body>
