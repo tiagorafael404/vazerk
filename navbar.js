@@ -292,6 +292,8 @@
 
         var divmenu = document.getElementById("menu");
         var contentWrapper = divmenu ? divmenu.closest(".content") : document.querySelector(".content");
+        var accountModal = document.getElementById("account-modal");
+        var authModal = document.getElementById("auth-modal");
 
         if (contentWrapper) {
           contentWrapper.style.display = "none";
@@ -299,6 +301,21 @@
 
         if (divmenu) {
           divmenu.style.display = "none";
+        }
+
+        if (!isUserLoggedIn()) {
+          if (accountModal) {
+            accountModal.classList.remove("show");
+            accountModal.style.display = "none";
+          }
+
+          if (authModal) {
+            authModal.style.display = "block";
+            setTimeout(function () {
+              authModal.classList.add("show");
+            }, 10);
+          }
+          return;
         }
 
         openLoginEntryModal();
