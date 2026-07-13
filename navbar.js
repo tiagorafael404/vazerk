@@ -309,7 +309,11 @@ function bindNavbarEvents() {
   document.querySelectorAll('.nav3').forEach((element) => {
     element.addEventListener('click', (event) => {
       event.preventDefault();
-      toggleAccountModal();
+      const content = document.querySelector('.content');
+      if (!content) return;
+
+      const isHidden = content.style.display === 'none' || getComputedStyle(content).display === 'none';
+      content.style.display = isHidden ? 'block' : 'none';
     });
   });
 
