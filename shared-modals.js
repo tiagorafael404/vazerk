@@ -35,7 +35,7 @@
         '<div class="nav1"><i class="material-icons">menu</i></div>' +
         '<div class="nav2"><a href="/">Home</a></div>' +
         '<div class="nav3">' +
-          '<div class="name"><a>Name</a></div>' +
+          '<div class="name"><a class="nav3-label"></a></div>' +
           '<div class="pic"><a><i class="bx bx-user"></i></a></div>' +
         '</div>' +
         '<div class="nav4"><a href="cart.html"><i class="bx bx-cart"></i></a></div>' +

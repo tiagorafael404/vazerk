@@ -81,23 +81,27 @@ function loginComGoogle() {
 
 // Função para atualizar a UI quando o estado de autenticação do usuário muda.
 function updateUserUI(user) {
-  if (user) {
+  const isLoggedIn = Boolean(user) || localStorage.getItem('loggedIn') === 'true';
+
+  if (isLoggedIn) {
     localStorage.setItem('loggedIn', 'true');
-    // Exemplo: Mostra o nome do usuário em elementos com a classe 'user-name'.
-    // Você precisaria ter elementos como <span class="user-name"></span> no seu HTML.
     document.querySelectorAll('.user-name').forEach(el => {
-      el.innerText = user.displayName || user.email;
+      el.innerText = user?.displayName || user?.email || 'Account';
     });
-    // Esconde botão de login e mostra botão de logout
     document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'block');
+    document.querySelectorAll('.nav3-label').forEach(el => {
+      el.innerText = 'Account';
+    });
   } else {
     localStorage.setItem('loggedIn', 'false');
-    // Mostra botão de login e esconde botão de logout
     document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'block');
     document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.user-name').forEach(el => {
-        el.innerText = "Visitante";
+      el.innerText = 'Visitante';
+    });
+    document.querySelectorAll('.nav3-label').forEach(el => {
+      el.innerText = 'Sign in';
     });
   }
 }
