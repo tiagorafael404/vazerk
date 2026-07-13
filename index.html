@@ -52,37 +52,7 @@
 
 
 
-<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
-
-  <!-- 2. Carregue os SDKs dos produtos Firebase que você usa. -->
-  <!-- Como você está usando autenticação, precisamos do firebase-auth-compat.js. -->
-  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
-
-  <!-- Se você quiser usar o Analytics, adicione esta linha também: -->
-  <!-- <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics-compat.js"></script> -->
-
-  <!-- 3. Seu objeto de configuração do Firebase e a inicialização. -->
-  <!-- ESTE BLOCO É CRÍTICO. Ele DEVE vir DEPOIS dos scripts do Firebase SDK acima, -->
-    <!-- e ANTES dos scripts personalizados separados. -->
-  <script>
-    // Seus detalhes de configuração do Firebase, EXATAMENTE como obtidos do Firebase Console.
-    const firebaseConfig = {
-    apiKey: "AIzaSyDh9XxYy1bQ4GfcEF1tYkKqWWCQ7xPcxPQ",
-    authDomain: "vazerk-61e39.firebaseapp.com",
-    projectId: "vazerk-61e39",
-    storageBucket: "vazerk-61e39.firebasestorage.app",
-    messagingSenderId: "862934684683",
-    appId: "1:862934684683:web:0a76ac330cf9abaaa1630e",
-    measurementId: "G-8G5Q3YW7L6"
-  };
-
-    // Inicialize o Firebase com a sua configuração.
-    firebase.initializeApp(firebaseConfig);
-
-    // Se você ativou o Analytics e incluiu o script firebase-analytics-compat.js,
-    // pode inicializá-lo assim:
-    // const analytics = firebase.analytics();
-  </script>
+<script type="module" src="/firebase-config.js"></script>
 
     <script src="/shared-modals.js" defer></script>
     <script src="/navbar.js" defer></script>
