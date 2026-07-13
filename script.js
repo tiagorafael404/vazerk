@@ -203,12 +203,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const loggedIn = localStorage.getItem('loggedIn') === 'true';
   if (loggedIn) {
-    // Exibe logout, esconde login
     document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'block');
+    document.querySelectorAll('.nav3-label').forEach(el => {
+      el.textContent = 'Account';
+    });
   } else {
     document.querySelectorAll('.nav-login').forEach(el => el.style.display = 'block');
     document.querySelectorAll('.nav-logout').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.nav3-label').forEach(el => {
+      el.textContent = 'Sign in';
+    });
   }
 });
 
