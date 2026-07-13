@@ -1,47 +1,7 @@
 (function () {
   var fragments = [];
 
-  if (!document.querySelector(".navbar")) {
-    document.body.insertAdjacentHTML(
-      "afterbegin",
-      '<div class="navbar">' +
-        '<div class="mypage">' +
-          '<div class="menu">' +
-            '<ul>' +
-              '<li><a href="/">Home</a></li>' +
-              '<li id="contactme"><a href="#">Contact</a></li>' +
-              '<li><a href="aboutus.html">About us</a></li>' +
-            '</ul>' +
-          '</div>' +
-          '<div class="menu2" id="more">' +
-            '<i class="material-icons" style="color:white">menu</i>' +
-          '</div>' +
-          '<div class="logo">' +
-            '<a href="/">VW Golf</a>' +
-          '</div>' +
-          '<div class="more">' +
-            '<div class="nav-login" onclick="openAuthModal()"><a>Sign in</a></div>' +
-            '<div class="nav-logout" onclick="toggleAccountModal()" style="display:none"><a>Account</a></div>' +
-          '</div>' +
-        '</div>' +
-      '</div>'
-    );
-  }
 
-  if (!document.querySelector(".navbar-phone")) {
-    document.body.insertAdjacentHTML(
-      "afterbegin",
-      '<div class="navbar-phone">' +
-        '<div class="nav1"><i class="material-icons">menu</i></div>' +
-        '<div class="nav2"><a href="/">Home</a></div>' +
-        '<div class="nav3">' +
-          '<div class="name"><a class="nav3-label"></a></div>' +
-          '<div class="pic"><a><i class="bx bx-user"></i></a></div>' +
-        '</div>' +
-        '<div class="nav4"><a href="cart.html"><i class="bx bx-cart"></i></a></div>' +
-      '</div>'
-    );
-  }
 
 
 
