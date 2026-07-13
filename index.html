@@ -1,24 +1,218 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
+<html>
+
+<head lang="en">
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="refresh" content="0; url=./home.html">
-    <title>Popup Cookie Consent Box</title>
-    <link rel="icon" href="home/imagem.ico" type="image/x-icon">
-    <script src="script.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        vazerk
+    </title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fjalla+One|Libre+Baskerville">
+    <link rel="stylesheet" href="home/css.css">
+    <link rel="icon" href="logo.ico" type="image/x-icon">
+    
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
+
 <body>
 
-    
-</body>
-<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
 
-<!-- O teu script que já tens -->
-<script src="shared-modals.js" defer></script>
-<script src="script.js"></script>
+
+    <div class="navbar">
+        <div class="mypage">
+
+
+            <div class="menu">
+                <ul>
+
+                    <li><a href="/home.html">Home</a></li>
+                    <li id="contactme"><a href="#">Contact</a></li>
+                    <li><a href="aboutus.html">About us</a></li>
+
+                </ul>
+            </div>
+
+            <div class="menu2" id="more">
+
+                <i class="material-icons">menu</i>
+
+            </div>
+
+            <div class="logo">
+                <a href="/home.html">Vazerk</a>
+
+            </div>
+
+            <div class="more">
+                <div class="nav-login" onclick="openAuthModal()">
+                    <a>Sign in</a>
+                </div>
+                <div class="nav-logout" onclick="toggleAccountModal()" style="display:none">
+                    <a>Account</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="freeshipping"><a>--- <i class="fas fa-shopping-cart"></i> Free Shipping ---</a></div>
+
+
+
+    <div class="content">
+
+        <div class="menu3" id="menu">
+
+            <ul>
+                <li><a href="/home.html" class="menubutton">Home</a></li>
+                <li id="contactme-phone"><a class="menubutton">Contact</a></li>
+                <li><a class="menubutton" href="aboutus.html">About us</a></li>
+
+            </ul>
+
+
+        </div>
+
+    </div>
+
+    <div class="introdution">
+
+
+    </div>
+
+        <div class="products">
+            <ul>
+                <li class="first" data-item-id="1">
+                    <a class="product-link" href="#">
+                        <div class="image"></div>
+                    </a>
+                    <div class="info">
+                        <div class="name"><a class="name-link" href="#"></a></div>
+                        <div class="price"><a class="price-text"></a></div>
+                    </div>
+                </li>
+
+                <li class="second" data-item-id="2">
+                    <a class="product-link" href="#">
+                        <div class="image"></div>
+                    </a>
+                    <div class="info">
+                        <div class="name"><a class="name-link" href="#"></a></div>
+                        <div class="price"><a class="price-text"></a></div>
+                    </div>
+                </li>
+
+                <li class="third" data-item-id="3">
+                    <a class="product-link" href="#">
+                        <div class="image"></div>
+                    </a>
+                    <div class="info">
+                        <div class="name"><a class="name-link" href="#"></a></div>
+                        <div class="price"><a class="price-text"></a></div>
+                    </div>
+                </li>
+
+                <li class="fourth" data-item-id="4">
+                    <a class="product-link" href="#">
+                        <div class="image"></div>
+                    </a>
+                    <div class="info">
+                        <div class="name"><a class="name-link" href="#"></a></div>
+                        <div class="price"><a class="price-text"></a></div>
+                    </div>
+                </li>
+
+                <li class="fifth" data-item-id="5">
+                    <a class="product-link" href="#">
+                        <div class="image"></div>
+                    </a>
+                    <div class="info">
+                        <div class="name"><a class="name-link" href="#"></a></div>
+                        <div class="price"><a class="price-text"></a></div>
+                    </div>
+                </li>
+                <li class="sixth" data-item-id="6">
+                    <a class="product-link" href="#">
+                        <div class="image"></div>
+                    </a>
+                    <div class="info">
+                        <div class="name"><a class="name-link" href="#"></a></div>
+                        <div class="price"><a class="price-text"></a></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+<div class="account-modal" id="account-modal">
+  <div class="account-window">
+    <div class="account-header">
+      <div class="space"></div>
+
+      <div class="title">
+        <div class="title1">
+          <i class="fa fa-user"></i>
+        </div>
+        <div class="title2">
+          <a>My account</a>
+        </div>
+      </div>
+
+      <div class="close">
+        <i class="fa fa-close" id="account-close"></i>
+      </div>
+    </div>
+
+    <div class="account-content">
+      <button type="button" id="account-logout-btn" class="account-logout-btn">
+        Sign out
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+
+  <!-- 2. Carregue os SDKs dos produtos Firebase que você usa. -->
+  <!-- Como você está usando autenticação, precisamos do firebase-auth-compat.js. -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+
+  <!-- Se você quiser usar o Analytics, adicione esta linha também: -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics-compat.js"></script> -->
+
+  <!-- 3. Seu objeto de configuração do Firebase e a inicialização. -->
+  <!-- ESTE BLOCO É CRÍTICO. Ele DEVE vir DEPOIS dos scripts do Firebase SDK acima, -->
+  <!-- e ANTES do seu script personalizado (script.js). -->
+  <script>
+    // Seus detalhes de configuração do Firebase, EXATAMENTE como obtidos do Firebase Console.
+    const firebaseConfig = {
+    apiKey: "AIzaSyDh9XxYy1bQ4GfcEF1tYkKqWWCQ7xPcxPQ",
+    authDomain: "vazerk-61e39.firebaseapp.com",
+    projectId: "vazerk-61e39",
+    storageBucket: "vazerk-61e39.firebasestorage.app",
+    messagingSenderId: "862934684683",
+    appId: "1:862934684683:web:0a76ac330cf9abaaa1630e",
+    measurementId: "G-8G5Q3YW7L6"
+  };
+
+    // Inicialize o Firebase com a sua configuração.
+    firebase.initializeApp(firebaseConfig);
+
+    // Se você ativou o Analytics e incluiu o script firebase-analytics-compat.js,
+    // pode inicializá-lo assim:
+    // const analytics = firebase.analytics();
+  </script>
+
+  <!-- 4. Seu script personalizado (script.js). -->
+  <!-- Este script deve vir POR ÚLTIMO, pois ele vai usar as funções do Firebase -->
+  <!-- que já foram carregadas e inicializadas pelos scripts anteriores. -->
+  <script src="shared-modals.js" defer></script>
+  <script src="script.js"></script>
+
+
+</body>
+
 </html>
