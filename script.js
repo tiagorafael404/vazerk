@@ -1,9 +1,64 @@
+const GOOGLE_WEB_CLIENT_ID = "862934684683-6undunvn01hnq8cqakippk3cv9rt5j18.apps.googleusercontent.com";
+
 const auth = firebase.auth();
+
+function isUserLoggedIn() {
+  return localStorage.getItem('loggedIn') === 'true' || Boolean(auth.currentUser);
+}
+
+function openAuthModal() {
+  const modal = document.getElementById('auth-modal');
+  if (!modal) return;
+
+  modal.style.display = 'block';
+  requestAnimationFrame(() => modal.classList.add('show'));
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById('auth-modal');
+  if (!modal) return;
+
+  modal.classList.remove('show');
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 500);
+}
+
+function openAccountModal() {
+  const modal = document.getElementById('account-modal');
+  if (!modal) return;
+
+  modal.style.display = 'block';
+  requestAnimationFrame(() => modal.classList.add('show'));
+}
+
+function closeAccountModal() {
+  const modal = document.getElementById('account-modal');
+  if (!modal) return;
+
+  modal.classList.remove('show');
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 500);
+}
+
+function toggleAccountModal() {
+  if (!isUserLoggedIn()) {
+    openAuthModal();
+    return;
+  }
+
+  openAccountModal();
+}
 
 // Função para login com Google.
 // Esta função será chamada diretamente pelo 'onclick' no seu HTML.
 function loginComGoogle() {
   const provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({
+    client_id: GOOGLE_WEB_CLIENT_ID,
+    prompt: "select_account"
+  });
   auth.signInWithPopup(provider)
     .then((result) => {
       const user = result.user;
@@ -62,8 +117,77 @@ function logoutGoogle() {
 }
 
 
+function bindAuthModalEvents() {
+  document.querySelectorAll('.nav-login').forEach((element) => {
+    element.addEventListener('click', (event) => {
+      event.preventDefault();
+      openAuthModal();
+    });
+  });
+
+  document.querySelectorAll('.nav-logout').forEach((element) => {
+    element.addEventListener('click', (event) => {
+      event.preventDefault();
+      toggleAccountModal();
+    });
+  });
+
+  document.querySelectorAll('.nav3').forEach((element) => {
+    element.addEventListener('click', (event) => {
+      event.preventDefault();
+      toggleAccountModal();
+    });
+  });
+
+  const closeButton = document.getElementById('auth-close');
+  if (closeButton) {
+    closeButton.addEventListener('click', closeAuthModal);
+  }
+
+  const googleAuthButton = document.getElementById('google-auth-button');
+  if (googleAuthButton) {
+    googleAuthButton.addEventListener('click', () => {
+      closeAuthModal();
+      loginComGoogle();
+    });
+  }
+
+  const authModal = document.getElementById('auth-modal');
+  if (authModal) {
+    authModal.addEventListener('click', (event) => {
+      if (event.target === authModal) {
+        closeAuthModal();
+      }
+    });
+  }
+
+  const accountModal = document.getElementById('account-modal');
+  if (accountModal) {
+    accountModal.addEventListener('click', (event) => {
+      if (event.target === accountModal) {
+        closeAccountModal();
+      }
+    });
+  }
+
+  const accountCloseButton = document.getElementById('account-close');
+  if (accountCloseButton) {
+    accountCloseButton.addEventListener('click', closeAccountModal);
+  }
+
+  const accountLogoutButton = document.getElementById('account-logout-btn');
+  if (accountLogoutButton) {
+    accountLogoutButton.addEventListener('click', () => {
+      closeAccountModal();
+      logoutGoogle();
+    });
+  }
+}
+
 // Ao carregar a página, verifica o estado local e exibe instantaneamente
 window.addEventListener('DOMContentLoaded', () => {
+  bindAuthModalEvents();
+
   const loggedIn = localStorage.getItem('loggedIn') === 'true';
   if (loggedIn) {
     // Exibe logout, esconde login

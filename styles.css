@@ -75,6 +75,11 @@ body {
         flex-direction: inherit;
         justify-content: inherit;
     }
+    .navbar-phone{
+
+        display: none;
+
+    }
 
     .navbar {
         /*background-color: rgba(16, 16, 16, 0.5); colocar background no navbar todo*/
@@ -181,7 +186,7 @@ body {
 
     .more a {
         text-decoration: none;
-        color: rgb(0, 0, 0);
+        color: black;
         font-size: 20px;
         text-transform: none;
         margin: auto;
@@ -523,6 +528,314 @@ body {
         /* Centraliza horizontalmente */
     }
 
+    #account-modal {
+        display: none;
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    #account-modal.show {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .account-modal {
+        height: auto;
+        width: 1000;
+        margin: auto auto auto auto;
+        justify-content: center;
+        justify-items: center;
+        position: fixed;
+        top: 80px;
+        right: 0px;
+    }
+
+    .account-window {
+        height: auto;
+        width: 350px;
+        background-color: rgb(17, 16, 31);
+        margin: auto 70px auto auto;
+        justify-content: center;
+        justify-items: center;
+        display: flex;
+        flex-direction: column;
+        border: solid 5px #fff;
+        border-radius: 25px 25px 25px 25px;
+    }
+
+    .account-header {
+        height: 80px;
+        width: 100%;
+        justify-content: space-between;
+        justify-items: center;
+        align-items: center;
+        align-content: center;
+        display: flex;
+        margin: 10 auto 0 auto;
+    }
+
+
+    .account-modal .close {
+        width: 20px;
+        aspect-ratio: 1/1;
+        margin: 10 50 auto auto;
+        text-align: center;
+    }
+
+    .account-modal .space {
+        width: 20px;
+        height: auto;
+        margin: auto auto auto 50px;
+    }
+
+    .account-modal .title {
+        width: auto;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        
+    }
+
+    .account-modal .title1 {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 0 auto;
+        text-align: center;
+    }
+
+    .account-modal .title2 {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 0 auto;
+        text-align: center;
+    }
+
+    .account-modal .title i {
+        color: #fff;
+        font-size: 22px;
+    }
+
+    .account-modal .close i {
+        color: #fff;
+        font-size: 22px;
+        border: solid 5px #fff;
+        border-radius: 50%;
+        padding: 5px;
+        cursor: pointer;
+        height: 42px;
+        width: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .account-modal .title a {
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+    .account-content {
+        width: 100%;
+        justify-content: center;
+        justify-items: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+
+    .account-cart{
+        color: white;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        border: solid 2px #fff;
+        border-radius: 10px 10px 10px 10px;
+        font-size: 20px;
+        margin: 0px auto 15px auto;
+        width: 200px;
+        height: 40px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+    .account-login{
+        color: white;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        font-size: 20px;
+        margin: 0px auto 15px auto;
+        width: 200px;
+        height: 40px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+      border: solid 2px #fff;
+        border-radius: 10px 10px 10px 10px;
+    }
+
+    .account-cart a{
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        text-decoration: none;
+        color: white;
+    }
+    
+
+    .account-login a{
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        text-decoration: none;
+        color: white;
+        cursor: pointer;
+    }
+
+    .account-login a{
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        text-decoration: none;
+        color: white;
+        cursor: pointer;
+    }
+
+    .auth-modal {
+        height: 100vh;
+        width: 100%;
+        margin: 0;
+        justify-content: center;
+        justify-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    .auth-window {
+        height: auto;
+        width: 740px;
+        background-color: rgb(17, 16, 31);
+        margin: 0;
+        justify-content: center;
+        justify-items: center;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 46%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: solid 5px #fff;
+        border-radius: 25px 25px 25px 25px;
+    }
+
+    .auth-header {
+        height: 80px;
+        width: 100%;
+        justify-content: space-between;
+        justify-items: center;
+        align-items: center;
+        align-content: center;
+        display: flex;
+        margin: 10 auto 0 auto;
+    }
+
+    .auth-content {
+        width: 100%;
+        margin: 0 auto 30px auto;
+        justify-content: center;
+        justify-items: center;
+        display: flex;
+        padding: 0 50px 20px 50px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .auth-modal .close {
+        width: 20px;
+        aspect-ratio: 1/1;
+        margin: 10 50 auto auto;
+        text-align: center;
+    }
+
+    .auth-modal .space {
+        width: 20px;
+        height: auto;
+        margin: auto auto auto 50;
+    }
+
+    .auth-modal .title {
+        width: auto;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .auth-modal .title1 {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 0 auto;
+        text-align: center;
+    }
+
+    .auth-modal .title2 {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 0 auto;
+        text-align: center;
+    }
+
+    .auth-modal a {
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+    .auth-modal .title i {
+        color: #fff;
+        font-size: 22px;
+    }
+
+    .auth-modal .close i {
+        color: #fff;
+        font-size: 22px;
+        border: solid 5px #fff;
+        border-radius: 50%;
+        padding: 5px;
+        cursor: pointer;
+        height: 42px;
+        width: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #google-auth-button {
+        margin: 20px auto 20px auto;
+        width: 42px;
+        height: 42px;
+        display: block;
+        object-fit: contain;
+        cursor: pointer;
+        transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    #google-auth-button:hover,
+    #google-auth-button:focus {
+        transform: scale(1.08);
+        outline: none;
+    }
     /*Paginas "p/..." */
 
     .p-container {
@@ -959,155 +1272,74 @@ body {
     }
 
     .navbar {
-        /*background-color: rgba(16, 16, 16, 0.5); colocar background no navbar todo*/
-        min-width: 100%;
-        max-width: 100%;
-        width: 100vw;
-        height: 60px;
-        background-color: #f6f6f6;
+
+        display: none;
+
+    }
+
+    .navbar-phone{
         display: flex;
+        background-color:#f6f6f6;
+        height: 50px;
         flex-direction: row;
         justify-content: space-between;
-        position: relative;
-
-
-    }
-
-    .menu {
-        display: none;
-        width: 40%;
-        height: 100%;
-        flex-direction: row;
-        margin: auto auto auto auto;
-    }
-
-    .logo {
-        margin: auto auto auto auto;
-        width: 20%;
-        height: 100%;
-        display: flex;
-        
-    }
-
-
-    .more {
-        width: 40%;
-        height: 100%;
-        margin: auto auto auto auto;
-        
-    }
-
-    .nav-login {
-        font-size: 20;
-        margin: auto 15 auto auto;
-        height: 100%;
-        width: 50%;
-    }
-
-    .nav-logout {
-        font-size: 20;
-        margin: auto 15 auto auto;
-        height: 100%;
-        width: 50%;
-    }
-
-    .menu ul {
-        display: none;
-        justify-content: left;
-        display: flex;
-        flex-direction: row;
-        height: 100%;
-        width: auto;
-        margin: auto auto auto 5;
-        padding: 0;
-
-
-    }
-
-    .menu ul li {
-
-        /*background-color: rgba(16, 16, 16); colocar background em cada item*/
-        border-radius: 15px;
-        list-style: none;
-        height: 100%;
-        width: 50;
-    }
-
-    .menu li:hover {
-        background-color: rgb(16, 16, 16, 0.5);
-        /* Nova cor de fundo quando o mouse está sobre o botão */
-    }
-
-    .navbar a {
-        text-decoration: none;
-        color: black;
-        font-size: 14px;
-        text-transform: none;
-        margin: auto;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
         align-items: center;
     }
 
-    .menu2 {
-        width: 40%;
-        cursor: pointer;
+
+
+
+   .navbar-phone a, .navbar-phone i{
+        margin: auto;
+        display: flex;
+        margin: auto;
+
         color: black;
-    }
-
-    .menu2 i {
-        font-size: 22;
-        margin: auto auto auto 20%;
-        height: 100%;
-        align-content: center;
-        width: 50%;
-    }
-
-    .freeshipping {
-        width: 100%;
-        height: 18px;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        align-content: center;
-        font-size: 10;
-        text-transform: none;
+        font-size: 25px;
         text-decoration: none;
     }
 
+    .navbar-phone .nav1{
+ 
+        margin: auto 0 auto 15;
+  
+    }
 
-    .freeshipping a {
-        font-family: "Fjalla One", sans-serif;
+    .navbar-phone .nav2{
+        margin: auto auto auto 15;
+    }
+
+    .navbar-phone .nav3{
+        margin: auto 0 auto auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .navbar-phone .nav3 i{
+        font-size: 30px;
+    }
+
+    .navbar-phone .nav3 a{
+        font-size: 20px;
+        font-weight: normal;
+        margin: auto auto auto 5;
 
     }
 
+
+    .navbar-phone .nav4{
+        margin: auto 15 auto 15;
+    }
+
+    .navbar-phone .nav4 i{
+        font-size: 35;
+    }
 
     .content {
         position: relative;
     }
 
-
-
-
-    .more a {
-        text-decoration: none;
-        color: black;
-        font-size: 14px;
-        text-transform: none;
-        margin: auto;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .more a:hover {
-        background-color: rgb(16, 16, 16, 0.5);
-        /* Nova cor de fundo quando o mouse está sobre o botão */
-    }
 
     .menu3 {
         display: none;
@@ -1458,6 +1690,335 @@ body {
         justify-content: center;
         /* Centraliza horizontalmente */
     }
+
+    #auth-modal {
+        display: none;
+        opacity: 0;
+        transform: translateY(100%);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    #auth-modal.show {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    #account-modal {
+        display: none;
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    #account-modal.show {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .account-modal {
+        height: auto;
+        width: 100%;
+        margin: 0 auto auto auto;
+        justify-content: center;
+        justify-items: center;
+        display: none;
+        position: fixed;
+        top: 80px;
+    }
+
+    .account-window {
+        height: auto;
+        width: 90%;
+        background-color: rgb(17, 16, 31);
+        margin: auto auto auto auto;
+        justify-content: center;
+        justify-items: center;
+        display: flex;
+        flex-direction: column;
+        border: solid 5px #fff;
+        border-radius: 25px 25px 25px 25px;
+    }
+
+    .account-header {
+        height: 80px;
+        width: 100%;
+        justify-content: space-between;
+        justify-items: center;
+        align-items: center;
+        align-content: center;
+        display: flex;
+        margin: 10 auto 0 auto;
+    }
+
+
+
+    .account-modal .close {
+        width: 20px;
+        aspect-ratio: 1/1;
+        margin: 10 50 auto auto;
+        text-align: center;
+    }
+
+    .account-modal .space {
+        width: 20px;
+        height: auto;
+        margin: auto auto auto 50px;
+    }
+
+    .account-modal .title {
+        width: auto;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        
+    }
+
+    .account-modal .title1 {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 0 auto;
+        text-align: center;
+    }
+
+    .account-modal .title2 {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 0 auto;
+        text-align: center;
+    }
+
+    .account-modal .title i {
+        color: #fff;
+        font-size: 22px;
+    }
+
+    .account-modal .close i {
+        color: #fff;
+        font-size: 22px;
+        border: solid 5px #fff;
+        border-radius: 50%;
+        padding: 5px;
+        cursor: pointer;
+        height: 42px;
+        width: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .account-modal .title a {
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+    .account-content {
+        width: 100%;
+        justify-content: center;
+        justify-items: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+
+    .account-cart{
+        color: white;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        border: solid 2px #fff;
+        border-radius: 10px 10px 10px 10px;
+        font-size: 18;
+        margin: 0px auto 15px auto;
+        width: 160;
+        height: 40px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+    .account-login{
+        color: white;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        font-size: 18;
+        margin: 0px auto 15px auto;
+        width: 160;
+        height: 40px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+      border: solid 2px #fff;
+        border-radius: 10px 10px 10px 10px;
+    }
+
+    .account-cart a{
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        text-decoration: none;
+        color: white;
+    }
+    
+
+    .account-login a{
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        text-decoration: none;
+        color: white;
+        cursor: pointer;
+    }
+
+
+    .auth-modal {
+        height: 100vh;
+        width: 100%;
+        margin: 0;
+        justify-content: center;
+        justify-items: center;
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    .auth-window {
+        height: auto;
+        width: 90%;
+        background-color: rgb(17, 16, 31);
+        margin: 0;
+        justify-content: center;
+        justify-items: center;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 46%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: solid 5px #fff;
+        border-radius: 25px 25px 25px 25px;
+    }
+
+    .auth-header {
+        height: 100%;
+        width: 100%;
+        justify-content: space-between;
+        justify-items: center;
+        align-items: center;
+        align-content: center;
+        display: flex;
+        margin: 10 auto 10 auto;
+    }
+
+    .auth-content {
+        width: 100%;
+        margin: 0 auto 25px auto;
+        justify-content: center;
+        justify-items: center;
+        display: flex;
+        padding: 0 30px 20px 30px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .auth-modal .close {
+        width: 20px;
+        height: auto;
+        margin: 10 30 auto auto;
+        text-align: center;
+    }
+
+    .auth-modal .space {
+        width: 20px;
+        height: auto;
+        margin: auto auto auto 30;
+    }
+
+    .auth-modal .title {
+        width: auto;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .auth-modal .title1 {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 0 auto;
+        text-align: center;
+    }
+
+    .auth-modal .title2 {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 0 auto;
+        text-align: center;
+    }
+
+    #google-auth-button {
+        width: 40px;
+        height: 40px;
+        margin: 20px auto 0 auto;
+        display: block;
+        object-fit: contain;
+    }
+
+    .auth-modal a {
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+    .auth-modal .title i {
+        color: #fff;
+        font-size: 22px;
+    }
+
+    .auth-modal .close i {
+        color: #fff;
+        font-size: 22px;
+        border: solid 5px;
+        border-radius: 100%;
+        border-style: solid;
+        padding: 5px;
+        cursor: pointer;
+        height: 32px;
+        width: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+
+
+    .freeshipping {
+        width: 100%;
+        height: 18px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        align-content: center;
+        font-size: 10;
+        text-transform: none;
+        text-decoration: none;
+    }
+
+
+    .freeshipping a {
+        font-family: "Fjalla One", sans-serif;
+
+    }
+
+
 
 
     /*Paginas "p/..." */

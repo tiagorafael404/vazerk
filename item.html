@@ -13,6 +13,7 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/shared-modals.js" defer></script>
     <script src="/script.js" defer></script>
 </head>
 
@@ -46,11 +47,11 @@
             </div>
 
             <div class="more">
-                <div class="nav-login" onclick="loginComGoogle()">
-                    <a>Login</a>
+                <div class="nav-login" onclick="openAuthModal()">
+                    <a>Sign in</a>
                 </div>
-                <div class="nav-logout" onclick="logoutGoogle()" style="display:none">
-                    <a>Logout</a>
+                <div class="nav-logout" onclick="toggleAccountModal()" style="display:none">
+                    <a>Account</a>
                 </div>
             </div>
 
@@ -212,13 +213,13 @@
   <script>
     // Seus detalhes de configuração do Firebase, EXATAMENTE como obtidos do Firebase Console.
     const firebaseConfig = {
-    apiKey: "AIzaSyBFU-qShFQ41BMCAKZ6LrODJpT_9SyBW60",
-    authDomain: "vazerk-firebase.firebaseapp.com",
-    projectId: "vazerk-firebase",
-    storageBucket: "vazerk-firebase.firebasestorage.app",
-    messagingSenderId: "984741758936",
-    appId: "1:984741758936:web:e307ce6d349796bb9054ad",
-    measurementId: "G-FQPQH211BL"
+    apiKey: "AIzaSyDh9XxYy1bQ4GfcEF1tYkKqWWCQ7xPcxPQ",
+    authDomain: "vazerk-61e39.firebaseapp.com",
+    projectId: "vazerk-61e39",
+    storageBucket: "vazerk-61e39.firebasestorage.app",
+    messagingSenderId: "862934684683",
+    appId: "1:862934684683:web:0a76ac330cf9abaaa1630e",
+    measurementId: "G-8G5Q3YW7L6"
   };
 
     // Inicialize o Firebase com a sua configuração.
