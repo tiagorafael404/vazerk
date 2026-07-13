@@ -1,6 +1,33 @@
 (function () {
   var fragments = [];
 
+  if (!document.querySelector(".navbar")) {
+    document.body.insertAdjacentHTML(
+      "afterbegin",
+      '<div class="navbar">' +
+        '<div class="mypage">' +
+          '<div class="menu">' +
+            '<ul>' +
+              '<li><a href="/">Home</a></li>' +
+              '<li id="contactme"><a href="#">Contact</a></li>' +
+              '<li><a href="aboutus.html">About us</a></li>' +
+            '</ul>' +
+          '</div>' +
+          '<div class="menu2" id="more">' +
+            '<i class="material-icons" style="color:white">menu</i>' +
+          '</div>' +
+          '<div class="logo">' +
+            '<a href="/">VW Golf</a>' +
+          '</div>' +
+          '<div class="more">' +
+            '<div class="nav-login" onclick="openAuthModal()"><a>Sign in</a></div>' +
+            '<div class="nav-logout" onclick="toggleAccountModal()" style="display:none"><a>Account</a></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
 
 
 
