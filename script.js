@@ -182,6 +182,15 @@ function bindAuthModalEvents() {
       logoutGoogle();
     });
   }
+
+  const accountLogoutLink = document.querySelector('.account-login a');
+  if (accountLogoutLink) {
+    accountLogoutLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      closeAccountModal();
+      logoutGoogle();
+    });
+  }
 }
 
 // Ao carregar a página, verifica o estado local e exibe instantaneamente

@@ -47,7 +47,7 @@
 
   if (!document.getElementById("auth-modal")) {
     fragments.push(
-      '<div class="auth-modal" id="auth-modal">' +
+      '<div class="auth-modal" id="auth-modal" style="display:none">' +
         '<div class="auth-window">' +
           '<div class="auth-header">' +
             '<div class="space"></div>' +
@@ -80,6 +80,27 @@
         '<div class="buttons">' +
           '<button class="button" id="acceptBtn">Accept</button>' +
           '<button class="button" id="declineBtn">Decline</button>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  if (!document.getElementById("account-modal")) {
+    fragments.push(
+      '<div class="account-modal" id="account-modal">' +
+        '<div class="account-window">' +
+          '<div class="account-header">' +
+            '<div class="space"></div>' +
+            '<div class="title">' +
+              '<div class="title1"><i class="fa fa-user-circle"></i></div>' +
+              '<div class="title2"><a>My account</a></div>' +
+            '</div>' +
+            '<div class="close"><i class="fa fa-close" id="account-close"></i></div>' +
+          '</div>' +
+          '<div class="account-content">' +
+            '<div class="account-cart"><a href="cart.html">Cart</a></div>' +
+            '<div class="account-login"><a>Logout</a></div>' +
+          '</div>' +
         '</div>' +
       '</div>'
     );
