@@ -228,18 +228,22 @@ const setDeclineCookie = () => {
 
 // Função para exibir a caixa de cookies
 const showCookieBox = () => {
+  if (!cookieBox) return;
   cookieBox.classList.add("show");
   cookieBox.style.display = "block";
 };
 
 // Função para esconder a caixa de cookies
 const hideCookieBox = () => {
+  if (!cookieBox) return;
   cookieBox.classList.remove("show");
   cookieBox.style.display = "none";
 };
 
 // Função para executar a lógica dos cookies
 const executeCookiesLogic = () => {
+  if (!cookieBox || !acceptBtn || !declineBtn) return;
+
   // Se o cookie de consentimento ou recusa já estiver configurado, não exibe a caixa de cookies
   if (isCookieSet() || isCookieDeclined()) return;
 
@@ -293,15 +297,18 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-document.getElementById("more").addEventListener("click", function() {
-  var divmenu = document.getElementById("menu");
-  
-  if (divmenu.style.display === "block") {
-    divmenu.style.display = "none";  // Mostrar a div
-  } else {
-    divmenu.style.display = "block";   // Esconder a div
-  }
-});
+const moreButton = document.getElementById("more");
+if (moreButton) {
+  moreButton.addEventListener("click", function() {
+    var divmenu = document.getElementById("menu");
+
+    if (divmenu && divmenu.style.display === "block") {
+      divmenu.style.display = "none";
+    } else if (divmenu) {
+      divmenu.style.display = "block";
+    }
+  });
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const divsFodass = document.querySelectorAll(".menubutton"); // Seleciona todas as divs com a classe 'fodass'
@@ -320,68 +327,65 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-document.getElementById("contactme").addEventListener("click", function() {
-    var divmenu = document.getElementById("contact");
-  
-    // Verifica se a div já está visível com a classe "show"
-    if (divmenu.classList.contains("show")) {
-      // Se a div estiver visível, remova a classe "show" para aplicar a animação de esconder
-      divmenu.classList.remove("show");
-  
-      // Espera o tempo da animação e depois coloca o display de volta para "none"
-      setTimeout(function() {
-        divmenu.style.display = "none"; // Esconde a div após a animação
-      }, 500); // Tempo de duração da animação (0.5s)
-    } else {
-      // Se a div não estiver visível, exibe a div e aplica a animação
-      divmenu.style.display = "block"; // Torna a div visível
-      setTimeout(function() {
-        divmenu.classList.add("show"); // Inicia a animação de exibição (de baixo para cima)
-      }, 10); // Pequeno delay para garantir que o display seja alterado antes de aplicar a animação
-    }
-  });
+const contactMeButton = document.getElementById("contactme");
+if (contactMeButton) {
+  contactMeButton.addEventListener("click", function() {
+    const divmenu = document.getElementById("contact");
+    if (!divmenu) return;
 
-  document.getElementById("contactme-phone").addEventListener("click", function() {
-    var divmenu = document.getElementById("contact");
-  
-    // Verifica se a div já está visível com a classe "show"
     if (divmenu.classList.contains("show")) {
-      // Se a div estiver visível, remova a classe "show" para aplicar a animação de esconder
       divmenu.classList.remove("show");
-  
-      // Espera o tempo da animação e depois coloca o display de volta para "none"
       setTimeout(function() {
-        divmenu.style.display = "none"; // Esconde a div após a animação
-      }, 500); // Tempo de duração da animação (0.5s)
+        divmenu.style.display = "none";
+      }, 500);
     } else {
-      // Se a div não estiver visível, exibe a div e aplica a animação
-      divmenu.style.display = "block"; // Torna a div visível
+      divmenu.style.display = "block";
       setTimeout(function() {
-        divmenu.classList.add("show"); // Inicia a animação de exibição (de baixo para cima)
-      }, 10); // Pequeno delay para garantir que o display seja alterado antes de aplicar a animação
+        divmenu.classList.add("show");
+      }, 10);
     }
   });
+}
 
-  document.getElementById("close").addEventListener("click", function() {
-    var divmenu = document.getElementById("contact");
-  
-    // Verifica se a div já está visível com a classe "show"
+const contactMePhoneButton = document.getElementById("contactme-phone");
+if (contactMePhoneButton) {
+  contactMePhoneButton.addEventListener("click", function() {
+    const divmenu = document.getElementById("contact");
+    if (!divmenu) return;
+
     if (divmenu.classList.contains("show")) {
-      // Se a div estiver visível, remova a classe "show" para aplicar a animação de esconder
       divmenu.classList.remove("show");
-  
-      // Espera o tempo da animação e depois coloca o display de volta para "none"
       setTimeout(function() {
-        divmenu.style.display = "none"; // Esconde a div após a animação
-      }, 500); // Tempo de duração da animação (0.5s)
+        divmenu.style.display = "none";
+      }, 500);
     } else {
-      // Se a div não estiver visível, exibe a div e aplica a animação
-      divmenu.style.display = "block"; // Torna a div visível
+      divmenu.style.display = "block";
       setTimeout(function() {
-        divmenu.classList.add("show"); // Inicia a animação de exibição (de baixo para cima)
-      }, 10); // Pequeno delay para garantir que o display seja alterado antes de aplicar a animação
+        divmenu.classList.add("show");
+      }, 10);
     }
   });
+}
+
+const closeContactButton = document.getElementById("close");
+if (closeContactButton) {
+  closeContactButton.addEventListener("click", function() {
+    const divmenu = document.getElementById("contact");
+    if (!divmenu) return;
+
+    if (divmenu.classList.contains("show")) {
+      divmenu.classList.remove("show");
+      setTimeout(function() {
+        divmenu.style.display = "none";
+      }, 500);
+    } else {
+      divmenu.style.display = "block";
+      setTimeout(function() {
+        divmenu.classList.add("show");
+      }, 10);
+    }
+  });
+}
 
   function getItemsJsonUrl() {
     const documentScript = document.currentScript || document.querySelector('script[src$="script.js"]');
