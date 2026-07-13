@@ -266,6 +266,20 @@
       phoneNav1Button.dataset.menuBound = "true";
       phoneNav1Button.addEventListener("click", function (event) {
         event.preventDefault();
+
+        var accountModal = document.getElementById("account-modal");
+        var authModal = document.getElementById("auth-modal");
+
+        if (accountModal) {
+          accountModal.classList.remove("show");
+          accountModal.style.display = "none";
+        }
+
+        if (authModal) {
+          authModal.classList.remove("show");
+          authModal.style.display = "none";
+        }
+
         toggleMobileMenuContent();
       });
     }
@@ -280,7 +294,7 @@
         var contentWrapper = divmenu ? divmenu.closest(".content") : document.querySelector(".content");
 
         if (contentWrapper) {
-          contentWrapper.style.display = "block";
+          contentWrapper.style.display = "none";
         }
 
         if (divmenu) {
