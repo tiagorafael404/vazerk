@@ -65,25 +65,7 @@
     );
   }
 
-  if (!document.getElementById("account-modal")) {
-    fragments.push(
-      '<div class="account-modal" id="account-modal">' +
-        '<div class="account-window">' +
-          '<div class="account-header">' +
-            '<div class="space"></div>' +
-            '<div class="title">' +
-              '<div class="title1"><i class="fa fa-user"></i></div>' +
-              '<div class="title2"><a>My account</a></div>' +
-            '</div>' +
-            '<div class="close"><i class="fa fa-close" id="account-close"></i></div>' +
-          '</div>' +
-          '<div class="account-content">' +
-            '<button type="button" id="account-logout-btn" class="account-logout-btn">Sign out</button>' +
-          '</div>' +
-        '</div>' +
-      '</div>'
-    );
-  }
+
 
   if (!document.getElementById("cookiesBox")) {
     fragments.push(
