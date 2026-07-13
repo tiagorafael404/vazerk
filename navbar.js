@@ -336,10 +336,12 @@ function bindNavbarEvents() {
     });
   });
 
-  const nav1 = document.querySelector('.nav1');
-  const content = document.querySelector('.content');
-  if (nav1 && content) {
-    nav1.addEventListener('click', () => {
+  const mobileNav1 = document.querySelector('.navbar-phone .nav1');
+  if (mobileNav1) {
+    mobileNav1.addEventListener('click', () => {
+      const content = document.querySelector('.content');
+      if (!content) return;
+
       content.style.display = 'block';
     });
   }
