@@ -1309,11 +1309,19 @@ body {
         margin: auto auto auto 15;
     }
 
+    .navbar-phone .nav2 a{
+        margin: auto auto auto 0;
+        font-family: "Space Mono", monospace;
+
+    }
+
     .navbar-phone .nav3{
         margin: auto 0 auto auto;
         display: flex;
         flex-direction: row;
         align-items: center;
+        font-family: "Space Mono", monospace;
+
     }
 
     .navbar-phone .nav3 i{
@@ -1324,6 +1332,8 @@ body {
         font-size: 20px;
         font-weight: normal;
         margin: auto auto auto 5;
+        font-family: "Space Mono", monospace;
+
 
     }
 
