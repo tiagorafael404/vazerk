@@ -659,3 +659,45 @@ if (closeContactButton) {
   document.addEventListener('DOMContentLoaded', loadProductItemsFromJson);
  
 
+fetch("items.json")
+    .then(response => response.json())
+    .then(items => {
+        const list = document.getElementById("products-list");
+
+        items.forEach(item => {
+            const li = document.createElement("li");
+            li.dataset.itemId = item.id;
+
+            li.innerHTML = `
+                <a class="product-link" href="${item.url}">
+                    <div class="image" style="background-image: url('${item.image}')"></div>
+                </a>
+
+                <div class="info">
+                    <div class="name">
+                        <a class="name-link" href="${item.url}">
+                            ${item.name}
+                        </a>
+                    </div>
+
+                    <div class="price">
+                        <a class="price-text">
+                            ${item.price}
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            list.appendChild(li);
+        });
+    })
+    .catch(error => console.error(error));
+
+    const nav1 = document.querySelector(".nav1");
+const content = document.querySelector(".content");
+
+if (nav1 && content) {
+    nav1.addEventListener("click", () => {
+        content.style.display = "block";
+    });
+}
