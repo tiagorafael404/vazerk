@@ -78,28 +78,30 @@
             </div>
           </label>
 
+          <div class="section-title">Método de pagamento</div>
+          <div class="payment-methods" role="list" aria-label="Métodos de pagamento">
+            <button type="button" class="payment-method selected" data-method="visa">Visa</button>
+            <button type="button" class="payment-method" data-method="paypal">PayPal</button>
+            <button type="button" class="payment-method" data-method="applepay">Apple Pay</button>
+            <button type="button" class="payment-method" data-method="mbway">MB WAY</button>
+          </div>
+
           <div class="total-row">
             <span>Total a pagar</span>
             <strong id="detailTotal">—</strong>
           </div>
 
-          <div class="section-title">Metodos de pagamento</div>
-          <div class="payment-methods" role="list" aria-label="Metodos PayPal Checkout">
-            <button type="button" class="payment-method selected" disabled>PayPal Checkout</button>
-            <button type="button" class="payment-method selected" disabled>Cartao de debito ou credito</button>
-          </div>
+          <div id="paypalContainer" class="paypal-container" hidden></div>
 
-          <div id="paypalContainer" class="paypal-container"></div>
-
-          <button class="submit-button" type="submit">Atualizar botoes de pagamento</button>
-          <div class="notice">Para pagar agora, use os botoes oficiais do PayPal Checkout acima.</div>
+          <button class="submit-button" type="submit">Continuar para pagamento</button>
+          <div class="notice">Depois de enviar os dados, você será redirecionado para o link de pagamento da Stripe configurado para este produto.</div>
           <div id="formError" class="form-error" hidden></div>
         </form>
       </aside>
     </section>
   </main>
 
-  <script src="https://www.paypal.com/sdk/js?client-id=ASU0_auW1g6mIUR6SgjVny2BnnQFYQXZ-FgffMaVGJcmkyMVPuMcX5VGEnA2cMCJ3-pn2NZsVo7CVi04&currency=EUR&locale=pt_PT&components=buttons&enable-funding=card"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=ASU0_auW1g6mIUR6SgjVny2BnnQFYQXZ-FgffMaVGJcmkyMVPuMcX5VGEnA2cMCJ3-pn2NZsVo7CVi04&currency=EUR&locale=pt_PT&components=buttons"></script>
   <script src="/payment.js"></script>
 
 </html>
