@@ -1,26 +1,24 @@
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-<head lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        vazerk
-    </title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fjalla+One|Libre+Baskerville">
-    <link rel="icon" href="../../logo.ico" type="image/x-icon">
-    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="payment.css">
-
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento - VW Golf</title>
+  <link rel="icon" href="logo.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="payment.css">
+  <script
+    src="https://www.paypal.com/sdk/js?client-id=BAA2_HM5zptp2B5qQ-aVEUivvuHLPDtoQPZBa5zxh0eB2WaqRHD7WP4w8DnOiH_I5kMvGlR5okLjI4roos&currency=EUR&intent=capture&components=buttons&enable-funding=card">
+  </script>
 </head>
 
 <body>
+
+  
   <main class="page">
     <header class="topbar">
-      <a class="back" href="/home.html">← Voltar</a>
+      <a class="back" href="home.html">&larr; Voltar</a>
       <div class="brand">Pagamento VW Golf</div>
     </header>
 
@@ -31,11 +29,11 @@
           <h1 id="productName">Carregando produto...</h1>
           <p id="productDescription">Aguarde enquanto buscamos o produto.</p>
           <div class="summary-price">
-            <span>Preço</span>
-            <strong id="productPrice">—</strong>
+            <span>Preco</span>
+            <strong id="productPrice">-</strong>
           </div>
           <div class="options-section" id="optionsSection">
-            <div class="options-title">Opções do produto</div>
+            <div class="options-title">Opcoes do produto</div>
             <div class="option-grid" id="optionsGrid"></div>
           </div>
         </div>
@@ -57,13 +55,13 @@
             <input type="tel" name="phone" placeholder="912 345 678" required>
           </label>
 
-          <div class="section-title">Endereço</div>
+          <div class="section-title">Endereco</div>
           <label>
-            Rua e número
+            Rua e numero
             <input type="text" name="address" required>
           </label>
           <label>
-            Código postal
+            Codigo postal
             <input type="text" name="postal" required>
           </label>
           <label>
@@ -71,37 +69,35 @@
             <input type="text" name="city" required>
           </label>
           <label>
-            País
+            Pais
             <div class="country-picker">
-              <input type="text" name="country" id="countryInput" placeholder="Escolha ou escreva o país" autocomplete="off" required>
-              <div class="country-list" id="countryList" role="listbox" aria-label="Lista de países"></div>
+              <input type="text" name="country" id="countryInput" placeholder="Escolha ou escreva o pais" autocomplete="off" required>
+              <div class="country-list" id="countryList" role="listbox" aria-label="Lista de paises"></div>
             </div>
           </label>
 
-          <div class="section-title">Método de pagamento</div>
-          <div class="payment-methods" role="list" aria-label="Métodos de pagamento">
-            <button type="button" class="payment-method selected" data-method="visa">Visa</button>
-            <button type="button" class="payment-method" data-method="paypal">PayPal</button>
-            <button type="button" class="payment-method" data-method="applepay">Apple Pay</button>
-            <button type="button" class="payment-method" data-method="mbway">MB WAY</button>
-          </div>
-
           <div class="total-row">
             <span>Total a pagar</span>
-            <strong id="detailTotal">—</strong>
+            <strong id="detailTotal">-</strong>
           </div>
 
-          <div id="paypalContainer" class="paypal-container" hidden></div>
+          <div id="paypal-section" class="payment-section">
+            <div id="paypal-buttons-container"></div>
+          </div>
 
-          <button class="submit-button" type="submit">Continuar para pagamento</button>
-          <div class="notice">Depois de enviar os dados, você será redirecionado para o link de pagamento da Stripe configurado para este produto.</div>
+          <div id="card-section" class="payment-section" hidden>
+            <div id="card-buttons-container"></div>
+            <div class="notice">O PayPal processa o pagamento com cartao de debito/credito em um popup seguro.</div>
+          </div>
+
           <div id="formError" class="form-error" hidden></div>
         </form>
       </aside>
     </section>
   </main>
 
-  <script src="https://www.paypal.com/sdk/js?client-id=ASU0_auW1g6mIUR6SgjVny2BnnQFYQXZ-FgffMaVGJcmkyMVPuMcX5VGEnA2cMCJ3-pn2NZsVo7CVi04&currency=EUR&locale=pt_PT&components=buttons"></script>
-  <script src="/payment.js"></script>
+  <script src="payment.js"></script>
+</body>
 
 </html>
+

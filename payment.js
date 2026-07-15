@@ -1,316 +1,408 @@
 (function () {
-  const params = new URLSearchParams(window.location.search);
-  const itemReference = params.get('item') || params.get('id') || params.get('product') || params.get('url') || '';
-  let currentItem = null;
-  let paypalButtons = null;
+  var PRODUCT_FIELDS = {
+    image: document.getElementById("productImage"),
+    name: document.getElementById("productName"),
+    description: document.getElementById("productDescription"),
+    price: document.getElementById("productPrice"),
+    total: document.getElementById("detailTotal"),
+    optionsSection: document.getElementById("optionsSection"),
+    optionsGrid: document.getElementById("optionsGrid"),
+    error: document.getElementById("formError")
+  };
 
-  function normalizeItemReference(reference) {
-    if (reference === undefined || reference === null) {
-      return '';
+  var UI_FIELDS = {
+    form: document.getElementById("paymentForm"),
+    countryInput: document.getElementById("countryInput"),
+    countryList: document.getElementById("countryList"),
+    paypalSection: document.getElementById("paypal-section"),
+    cardSection: document.getElementById("card-section")
+  };
+
+  var state = {
+    item: null,
+    selectedOption: null,
+    currentPayUrl: ""
+  };
+
+  function showError(message) {
+    if (!PRODUCT_FIELDS.error) {
+      return;
     }
 
-    return String(reference)
-      .trim()
-      .split('#')[0]
-      .replace(/\\/g, '/')
-      .replace(/^\/+/, '');
+    if (!message) {
+      PRODUCT_FIELDS.error.hidden = true;
+      PRODUCT_FIELDS.error.textContent = "";
+      return;
+    }
+
+    PRODUCT_FIELDS.error.hidden = false;
+    PRODUCT_FIELDS.error.textContent = message;
   }
 
-  function parseAmountFromPrice(value) {
-    if (typeof value === 'number') {
-      return value;
+  function getItemsJsonUrl() {
+    var script = document.currentScript || document.querySelector('script[src$="payment.js"]');
+    if (script && script.src) {
+      return new URL("items.json", script.src).href;
     }
 
-    if (!value) {
-      return 0;
-    }
-
-    const cleaned = String(value)
-      .replace(/[^0-9,.-]/g, '')
-      .replace(/\.(?=.*\.)/g, '')
-      .replace(/,(?=.*,)/g, '')
-      .replace(',', '.');
-
-    const amount = parseFloat(cleaned);
-    return Number.isFinite(amount) ? amount : 0;
+    return "items.json";
   }
 
-  function getItemByReference(reference, itemsById, itemsByUrl) {
-    if (reference === undefined || reference === null) {
+  function parsePriceToNumber(priceText) {
+    if (!priceText) {
+      return NaN;
+    }
+
+    var cleaned = String(priceText)
+      .replace(/[^\d.,]/g, "")
+      .replace(/\./g, "")
+      .replace(",", ".");
+
+    return Number(cleaned);
+  }
+
+  function formatEuro(priceText) {
+    var numeric = parsePriceToNumber(priceText);
+
+    if (!Number.isFinite(numeric)) {
+      return priceText || "-";
+    }
+
+    return numeric.toFixed(2) + " EUR";
+  }
+
+  function getItemFromQuery(items) {
+    var params = new URLSearchParams(window.location.search);
+    var itemId = params.get("item");
+
+    if (!itemId) {
       return null;
     }
 
-    const normalizedReference = normalizeItemReference(reference);
-    if (!normalizedReference) {
-      return null;
-    }
+    var byId = items.find(function (item) {
+      return String(item.id) === String(itemId);
+    });
 
-    if (itemsById.has(String(normalizedReference))) {
-      return itemsById.get(String(normalizedReference));
-    }
-
-    if (itemsByUrl.has(normalizedReference)) {
-      return itemsByUrl.get(normalizedReference);
-    }
-
-    for (const [itemUrl, item] of itemsByUrl.entries()) {
-      const normalizedItemUrl = normalizeItemReference(itemUrl);
-      if (normalizedItemUrl === normalizedReference) {
-        return item;
-      }
-
-      const queryMatch = normalizedItemUrl.match(/(?:^|[?&])item=([^&]+)/);
-      if (queryMatch && queryMatch[1] === normalizedReference) {
-        return item;
-      }
+    if (byId) {
+      return byId;
     }
 
     return null;
   }
 
-  function renderItemSummary(detailItem) {
-    const productName = document.getElementById('productName');
-    const productDescription = document.getElementById('productDescription');
-    const productPrice = document.getElementById('productPrice');
-    const detailTotal = document.getElementById('detailTotal');
-    const productImage = document.getElementById('productImage');
-    const optionsGrid = document.getElementById('optionsGrid');
-    const optionsSection = document.getElementById('optionsSection');
-
-    if (productName) {
-      productName.textContent = detailItem.name || 'Produto';
-    }
-    if (productDescription) {
-      productDescription.textContent = detailItem.description || 'Descricao indisponivel.';
-    }
-    if (productPrice) {
-      productPrice.textContent = detailItem.price || '-';
-    }
-    if (detailTotal) {
-      detailTotal.textContent = detailItem.price || '-';
-    }
-    if (productImage && detailItem.image) {
-      const photoUrl = new URL(detailItem.image, itemsUrl).href;
-      productImage.style.backgroundImage = `url('${photoUrl}')`;
+  function getInitialPayUrl(item) {
+    if (item.select && Array.isArray(item.select.options) && item.select.options.length > 0) {
+      return item.select.options[0].url || item.buy || "";
     }
 
-    if (optionsSection && optionsGrid) {
-      if (detailItem.select && Array.isArray(detailItem.select.options) && detailItem.select.options.length) {
-        optionsSection.hidden = false;
-        optionsGrid.innerHTML = '';
-
-        detailItem.select.options.forEach((option) => {
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.className = 'option-chip';
-          button.textContent = option.name || `Opcao ${option.id}`;
-          optionsGrid.appendChild(button);
-        });
-      } else {
-        optionsSection.hidden = true;
-        optionsGrid.innerHTML = '';
-      }
-    }
+    return item.buy || "";
   }
 
-  function showPayPalButtons() {
-    const paypalContainer = document.getElementById('paypalContainer');
-    const submitButton = document.querySelector('.submit-button');
+  function renderItem(item) {
+    PRODUCT_FIELDS.name.textContent = item.name || "Produto";
+    PRODUCT_FIELDS.description.textContent = item.description || "Sem descricao disponivel.";
+    PRODUCT_FIELDS.price.textContent = formatEuro(item.price);
+    PRODUCT_FIELDS.total.textContent = formatEuro(item.price);
 
-    if (!paypalContainer || !window.paypal) {
+    if (PRODUCT_FIELDS.image) {
+      if (item.image) {
+        PRODUCT_FIELDS.image.style.backgroundImage = "url('" + item.image + "')";
+      } else {
+        PRODUCT_FIELDS.image.style.backgroundImage = "none";
+      }
+    }
+
+    renderOptions(item);
+  }
+
+  function setSelectedOption(option, button) {
+    state.selectedOption = option || null;
+    state.currentPayUrl = (option && option.url) || (state.item && state.item.buy) || "";
+
+    if (!PRODUCT_FIELDS.optionsGrid) {
       return;
     }
 
-    paypalContainer.hidden = false;
-    if (submitButton) {
-      submitButton.hidden = true;
-    }
-
-    if (paypalButtons) {
-      paypalButtons.close();
-    }
-
-    paypalButtons = window.paypal.Buttons({
-      style: {
-        layout: 'vertical',
-        color: 'gold',
-        shape: 'rect',
-        label: 'pay',
-      },
-      createOrder: async () => {
-        const amount = parseAmountFromPrice(currentItem?.price || 0).toFixed(2);
-        const response = await fetch('/api/paypal/create-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount,
-            currency: 'EUR',
-            productName: currentItem?.name || 'Produto Vazerk',
-          }),
-        });
-
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.error || 'Erro ao criar o pedido PayPal');
-        }
-
-        return data.orderId;
-      },
-      onApprove: async (data) => {
-        const response = await fetch('/api/paypal/capture-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderId: data.orderID }),
-        });
-
-        const result = await response.json();
-        if (!response.ok) {
-          throw new Error(result.error || 'Erro ao capturar o pagamento');
-        }
-
-        window.location.href = '/success.html';
-      },
-      onError: (err) => {
-        console.error('PayPal error:', err);
-        const errorBox = document.getElementById('formError');
-        if (errorBox) {
-          errorBox.hidden = false;
-          errorBox.textContent = 'Nao foi possivel concluir o pagamento com o PayPal.';
-        }
-      },
+    Array.prototype.slice.call(PRODUCT_FIELDS.optionsGrid.querySelectorAll(".option-pill")).forEach(function (pill) {
+      pill.classList.remove("selected");
     });
 
-    paypalButtons.render('#paypalContainer');
-  }
-
-  function attachPaymentMethodHandlers() {
-    const paymentMethods = document.querySelectorAll('.payment-method');
-    const form = document.getElementById('paymentForm');
-    const errorBox = document.getElementById('formError');
-
-    paymentMethods.forEach((button) => {
-      button.addEventListener('click', () => {
-        paymentMethods.forEach((item) => item.classList.remove('selected'));
-        button.classList.add('selected');
-
-        if (button.dataset.method === 'paypal') {
-          showPayPalButtons();
-        } else {
-          const paypalContainer = document.getElementById('paypalContainer');
-          const submitButton = document.querySelector('.submit-button');
-          if (paypalContainer) {
-            paypalContainer.hidden = true;
-          }
-          if (submitButton) {
-            submitButton.hidden = false;
-          }
-        }
-      });
-    });
-
-    if (form) {
-      form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        if (errorBox) {
-          errorBox.hidden = true;
-          errorBox.textContent = '';
-        }
-
-        const selectedMethod = document.querySelector('.payment-method.selected')?.dataset.method || 'visa';
-
-        if (selectedMethod === 'paypal') {
-          showPayPalButtons();
-          return;
-        }
-
-        const formData = new FormData(form);
-        const payload = {
-          amount: parseAmountFromPrice(currentItem?.price || 0) * 100,
-          currency: 'eur',
-          productName: currentItem?.name || 'Produto Vazerk',
-          email: formData.get('email') || '',
-          fullName: formData.get('fullName') || '',
-          phone: formData.get('phone') || '',
-          address: formData.get('address') || '',
-          postal: formData.get('postal') || '',
-          city: formData.get('city') || '',
-          country: formData.get('country') || '',
-          paymentMethod: selectedMethod,
-          optionName: currentItem?.select?.options?.[0]?.name || '',
-        };
-
-        try {
-          const response = await fetch('/api/checkout-session', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          });
-
-          const data = await response.json();
-          if (!response.ok) {
-            throw new Error(data.error || 'Erro ao iniciar o pagamento');
-          }
-
-          if (data.url) {
-            window.location.href = data.url;
-          }
-        } catch (err) {
-          if (errorBox) {
-            errorBox.hidden = false;
-            errorBox.textContent = err.message || 'Erro ao iniciar o pagamento.';
-          }
-        }
-      });
+    if (button) {
+      button.classList.add("selected");
     }
   }
 
-  const itemsUrl = new URL('items.json', window.location.href).href;
+  function renderOptions(item) {
+    var hasOptions = item.select && Array.isArray(item.select.options) && item.select.options.length > 0;
 
-  fetch(itemsUrl)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Nao foi possivel carregar items.json: ' + response.status);
+    if (!hasOptions) {
+      if (PRODUCT_FIELDS.optionsSection) {
+        PRODUCT_FIELDS.optionsSection.style.display = "none";
       }
-      return response.json();
-    })
-    .then((items) => {
-      const itemsById = new Map();
-      const itemsByUrl = new Map();
+      state.selectedOption = null;
+      state.currentPayUrl = item.buy || "";
+      return;
+    }
 
-      items.forEach((item) => {
-        if (item.id !== undefined) {
-          itemsById.set(String(item.id), item);
-        }
-        if (item.url) {
-          itemsByUrl.set(normalizeItemReference(item.url), item);
-        }
+    PRODUCT_FIELDS.optionsSection.style.display = "block";
+    PRODUCT_FIELDS.optionsGrid.innerHTML = "";
+
+    item.select.options.forEach(function (option, index) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "option-pill";
+      btn.textContent = option.name || ("Option " + (index + 1));
+
+      btn.addEventListener("click", function () {
+        setSelectedOption(option, btn);
       });
 
-      const detailItem = getItemByReference(itemReference, itemsById, itemsByUrl)
-        || getItemByReference(window.location.pathname.replace(/\\/g, '/').replace(/^\/+/, ''), itemsById, itemsByUrl)
-        || items[0] || null;
+      PRODUCT_FIELDS.optionsGrid.appendChild(btn);
 
-      if (!detailItem) {
-        const productName = document.getElementById('productName');
-        const productDescription = document.getElementById('productDescription');
-        const productPrice = document.getElementById('productPrice');
-        const detailTotal = document.getElementById('detailTotal');
-        const productImage = document.getElementById('productImage');
+      if (index === 0) {
+        setSelectedOption(option, btn);
+      }
+    });
+  }
 
-        if (productName) productName.textContent = 'Produto nao encontrado';
-        if (productDescription) productDescription.textContent = 'Este item nao esta disponivel no momento.';
-        if (productPrice) productPrice.textContent = '-';
-        if (detailTotal) detailTotal.textContent = '-';
-        if (productImage) productImage.style.backgroundImage = 'none';
+  function createPayButton(label) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "submit-button";
+    button.textContent = label;
+
+    button.addEventListener("click", function () {
+      showError("");
+
+      if (UI_FIELDS.form && !UI_FIELDS.form.checkValidity()) {
+        UI_FIELDS.form.reportValidity();
         return;
       }
 
-      currentItem = detailItem;
-      renderItemSummary(detailItem);
-      attachPaymentMethodHandlers();
-    })
-    .catch((error) => {
-      console.error('Erro ao carregar o item da pagina de pagamento:', error);
+      if (!state.currentPayUrl) {
+        showError("Nao existe URL de pagamento configurada para este produto.");
+        return;
+      }
+
+      var targetUrl = new URL(state.currentPayUrl, window.location.href);
+      var currentUrl = new URL(window.location.href);
+      if (targetUrl.pathname === currentUrl.pathname && targetUrl.search === currentUrl.search) {
+        showError("Este produto ainda nao tem checkout final configurado.");
+        return;
+      }
+
+      window.location.href = state.currentPayUrl;
     });
+
+    return button;
+  }
+
+  function getCurrentAmount() {
+    if (!state.item) {
+      return "0.00";
+    }
+
+    var numeric = parsePriceToNumber(state.item.price);
+    if (!Number.isFinite(numeric) || numeric <= 0) {
+      return "0.00";
+    }
+
+    return numeric.toFixed(2);
+  }
+
+  function validateCheckoutForm() {
+    showError("");
+
+    if (UI_FIELDS.form && !UI_FIELDS.form.checkValidity()) {
+      UI_FIELDS.form.reportValidity();
+      showError("Preencha todos os campos obrigatorios antes de pagar.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function renderPaypalButtons(container, fundingSource) {
+    if (!container || !window.paypal || typeof window.paypal.Buttons !== "function") {
+      return false;
+    }
+
+    var config = {
+      onClick: function (data, actions) {
+        if (!validateCheckoutForm()) {
+          return actions.reject();
+        }
+
+        return actions.resolve();
+      },
+      createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                currency_code: "EUR",
+                value: getCurrentAmount()
+              },
+              description: state.item && state.item.name ? state.item.name : "VW Golf product"
+            }
+          ]
+        });
+      },
+      onApprove: function (data, actions) {
+        return actions.order.capture().then(function () {
+          showError("");
+          alert("Pagamento concluido com sucesso.");
+        });
+      },
+      onError: function () {
+        showError("Falha ao processar pagamento. Tente novamente.");
+      }
+    };
+
+    if (fundingSource) {
+      config.fundingSource = fundingSource;
+    }
+
+    window.paypal.Buttons(config).render(container);
+    return true;
+  }
+
+  function renderPayActions() {
+    var paypalContainer = document.getElementById("paypal-buttons-container");
+    var cardContainer = document.getElementById("card-buttons-container");
+    var paypalRendered = false;
+    var cardRendered = false;
+
+    if (paypalContainer) {
+      paypalContainer.innerHTML = "";
+      paypalRendered = renderPaypalButtons(paypalContainer, null);
+      if (!paypalRendered) {
+        paypalContainer.appendChild(createPayButton("Pagar agora"));
+      }
+    }
+
+    if (cardContainer) {
+      cardContainer.innerHTML = "";
+      if (window.paypal && window.paypal.FUNDING) {
+        cardRendered = renderPaypalButtons(cardContainer, window.paypal.FUNDING.CARD);
+      }
+      if (!cardRendered) {
+        cardContainer.appendChild(createPayButton("Pagar com cartao"));
+      }
+    }
+  }
+
+
+
+  function setupCountryPicker() {
+    if (!UI_FIELDS.countryInput || !UI_FIELDS.countryList) {
+      return;
+    }
+
+    var countries = [
+      "Portugal",
+      "Spain",
+      "France",
+      "Germany",
+      "Italy",
+      "Netherlands",
+      "Belgium",
+      "United Kingdom",
+      "Ireland",
+      "United States",
+      "Brazil"
+    ];
+
+    function renderCountryList(filter) {
+      var normalizedFilter = (filter || "").trim().toLowerCase();
+      var matches = countries.filter(function (country) {
+        return country.toLowerCase().indexOf(normalizedFilter) !== -1;
+      });
+
+      UI_FIELDS.countryList.innerHTML = "";
+
+      if (matches.length === 0) {
+        UI_FIELDS.countryList.classList.remove("show");
+        return;
+      }
+
+      matches.forEach(function (country) {
+        var option = document.createElement("button");
+        option.type = "button";
+        option.className = "country-option";
+        option.textContent = country;
+
+        option.addEventListener("click", function () {
+          UI_FIELDS.countryInput.value = country;
+          UI_FIELDS.countryList.classList.remove("show");
+        });
+
+        UI_FIELDS.countryList.appendChild(option);
+      });
+
+      UI_FIELDS.countryList.classList.add("show");
+    }
+
+    UI_FIELDS.countryInput.addEventListener("focus", function () {
+      renderCountryList(UI_FIELDS.countryInput.value);
+    });
+
+    UI_FIELDS.countryInput.addEventListener("input", function () {
+      renderCountryList(UI_FIELDS.countryInput.value);
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!event.target.closest(".country-picker")) {
+        UI_FIELDS.countryList.classList.remove("show");
+      }
+    });
+  }
+
+  function loadItem() {
+    return fetch(getItemsJsonUrl())
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("Nao foi possivel carregar items.json");
+        }
+
+        return response.json();
+      })
+      .then(function (items) {
+        var item = getItemFromQuery(items);
+
+        if (!item) {
+          throw new Error("Produto nao encontrado para este link.");
+        }
+
+        state.item = item;
+        state.currentPayUrl = getInitialPayUrl(item);
+        renderItem(item);
+      });
+  }
+
+  function init() {
+    setupCountryPicker();
+    renderPayActions();
+
+    loadItem().catch(function (error) {
+      PRODUCT_FIELDS.name.textContent = "Produto indisponivel";
+      PRODUCT_FIELDS.description.textContent = "Nao foi possivel carregar os dados deste produto.";
+      PRODUCT_FIELDS.price.textContent = "-";
+      PRODUCT_FIELDS.total.textContent = "-";
+      if (PRODUCT_FIELDS.image) {
+        PRODUCT_FIELDS.image.style.backgroundImage = "none";
+      }
+      if (PRODUCT_FIELDS.optionsSection) {
+        PRODUCT_FIELDS.optionsSection.style.display = "none";
+      }
+
+      showError(error.message || "Falha ao carregar produto.");
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();
