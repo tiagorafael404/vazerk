@@ -1,316 +1,275 @@
 (function () {
-  const params = new URLSearchParams(window.location.search);
-  const itemReference = params.get('item') || params.get('id') || params.get('product') || params.get('url') || '';
-  let currentItem = null;
-  let paypalButtons = null;
+	const params = new URLSearchParams(window.location.search);
+	const requestedReference = params.get('item') || params.get('id') || params.get('product') || params.get('url') || '';
+	const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+	const API_BASE_CANDIDATES = [
+		window.VAZERK_API_BASE_URL,
+		!isLocalHost ? 'https://vazerk-stripe.fly.dev' : null,
+		'',
+		isLocalHost ? 'http://localhost:8080' : null,
+	].filter(Boolean);
 
-  function normalizeItemReference(reference) {
-    if (reference === undefined || reference === null) {
-      return '';
-    }
+	const itemsUrl = new URL('items.json', window.location.href).href;
+	let currentItem = null;
+	let selectedOptionName = '';
 
-    return String(reference)
-      .trim()
-      .split('#')[0]
-      .replace(/\\/g, '/')
-      .replace(/^\/+/, '');
-  }
+	function getReadableErrorMessage(error, fallbackMessage) {
+		if (!error) return fallbackMessage;
+		if (typeof error === 'string') return error;
+		if (error.message) return error.message;
+		return fallbackMessage;
+	}
 
-  function parseAmountFromPrice(value) {
-    if (typeof value === 'number') {
-      return value;
-    }
+	async function postJsonWithFallback(path, payload) {
+		let lastError = null;
 
-    if (!value) {
-      return 0;
-    }
+		for (const baseUrl of API_BASE_CANDIDATES) {
+			const normalizedBase = String(baseUrl).replace(/\/$/, '');
+			const url = `${normalizedBase}${path}`;
 
-    const cleaned = String(value)
-      .replace(/[^0-9,.-]/g, '')
-      .replace(/\.(?=.*\.)/g, '')
-      .replace(/,(?=.*,)/g, '')
-      .replace(',', '.');
+			try {
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(payload || {}),
+				});
 
-    const amount = parseFloat(cleaned);
-    return Number.isFinite(amount) ? amount : 0;
-  }
+				const data = await response.json().catch(() => ({}));
+				if (!response.ok) {
+					lastError = new Error(data?.error || `Erro HTTP ${response.status}`);
+					continue;
+				}
 
-  function getItemByReference(reference, itemsById, itemsByUrl) {
-    if (reference === undefined || reference === null) {
-      return null;
-    }
+				return data;
+			} catch (error) {
+				lastError = error;
+			}
+		}
 
-    const normalizedReference = normalizeItemReference(reference);
-    if (!normalizedReference) {
-      return null;
-    }
+		throw lastError || new Error('Nao foi possivel contactar o servidor de pagamento.');
+	}
 
-    if (itemsById.has(String(normalizedReference))) {
-      return itemsById.get(String(normalizedReference));
-    }
+	function normalizeItemReference(reference) {
+		if (reference === undefined || reference === null) {
+			return '';
+		}
 
-    if (itemsByUrl.has(normalizedReference)) {
-      return itemsByUrl.get(normalizedReference);
-    }
+		return String(reference)
+			.trim()
+			.split('#')[0]
+			.replace(/\\/g, '/')
+			.replace(/^\/+/, '');
+	}
 
-    for (const [itemUrl, item] of itemsByUrl.entries()) {
-      const normalizedItemUrl = normalizeItemReference(itemUrl);
-      if (normalizedItemUrl === normalizedReference) {
-        return item;
-      }
+	function parseAmountFromPrice(value) {
+		if (typeof value === 'number') {
+			return value;
+		}
 
-      const queryMatch = normalizedItemUrl.match(/(?:^|[?&])item=([^&]+)/);
-      if (queryMatch && queryMatch[1] === normalizedReference) {
-        return item;
-      }
-    }
+		if (!value) {
+			return 0;
+		}
 
-    return null;
-  }
+		const cleaned = String(value)
+			.replace(/[^0-9,.-]/g, '')
+			.replace(/\.(?=.*\.)/g, '')
+			.replace(/,(?=.*,)/g, '')
+			.replace(',', '.');
 
-  function renderItemSummary(detailItem) {
-    const productName = document.getElementById('productName');
-    const productDescription = document.getElementById('productDescription');
-    const productPrice = document.getElementById('productPrice');
-    const detailTotal = document.getElementById('detailTotal');
-    const productImage = document.getElementById('productImage');
-    const optionsGrid = document.getElementById('optionsGrid');
-    const optionsSection = document.getElementById('optionsSection');
+		const amount = parseFloat(cleaned);
+		return Number.isFinite(amount) ? amount : 0;
+	}
 
-    if (productName) {
-      productName.textContent = detailItem.name || 'Produto';
-    }
-    if (productDescription) {
-      productDescription.textContent = detailItem.description || 'Descricao indisponivel.';
-    }
-    if (productPrice) {
-      productPrice.textContent = detailItem.price || '-';
-    }
-    if (detailTotal) {
-      detailTotal.textContent = detailItem.price || '-';
-    }
-    if (productImage && detailItem.image) {
-      const photoUrl = new URL(detailItem.image, itemsUrl).href;
-      productImage.style.backgroundImage = `url('${photoUrl}')`;
-    }
+	function getItemByReference(reference, itemsById, itemsByUrl) {
+		if (reference === undefined || reference === null) {
+			return null;
+		}
 
-    if (optionsSection && optionsGrid) {
-      if (detailItem.select && Array.isArray(detailItem.select.options) && detailItem.select.options.length) {
-        optionsSection.hidden = false;
-        optionsGrid.innerHTML = '';
+		const normalizedReference = normalizeItemReference(reference);
+		if (!normalizedReference) {
+			return null;
+		}
 
-        detailItem.select.options.forEach((option) => {
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.className = 'option-chip';
-          button.textContent = option.name || `Opcao ${option.id}`;
-          optionsGrid.appendChild(button);
-        });
-      } else {
-        optionsSection.hidden = true;
-        optionsGrid.innerHTML = '';
-      }
-    }
-  }
+		if (itemsById.has(String(normalizedReference))) {
+			return itemsById.get(String(normalizedReference));
+		}
 
-  function showPayPalButtons() {
-    const paypalContainer = document.getElementById('paypalContainer');
-    const submitButton = document.querySelector('.submit-button');
+		if (itemsByUrl.has(normalizedReference)) {
+			return itemsByUrl.get(normalizedReference);
+		}
 
-    if (!paypalContainer || !window.paypal) {
-      return;
-    }
+		for (const [itemUrl, item] of itemsByUrl.entries()) {
+			const normalizedItemUrl = normalizeItemReference(itemUrl);
+			if (normalizedItemUrl === normalizedReference) {
+				return item;
+			}
 
-    paypalContainer.hidden = false;
-    if (submitButton) {
-      submitButton.hidden = true;
-    }
+			const queryMatch = normalizedItemUrl.match(/(?:^|[?&])item=([^&]+)/);
+			if (queryMatch && queryMatch[1] === normalizedReference) {
+				return item;
+			}
+		}
 
-    if (paypalButtons) {
-      paypalButtons.close();
-    }
+		return null;
+	}
 
-    paypalButtons = window.paypal.Buttons({
-      style: {
-        layout: 'vertical',
-        color: 'gold',
-        shape: 'rect',
-        label: 'pay',
-      },
-      createOrder: async () => {
-        const amount = parseAmountFromPrice(currentItem?.price || 0).toFixed(2);
-        const response = await fetch('/api/paypal/create-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount,
-            currency: 'EUR',
-            productName: currentItem?.name || 'Produto Vazerk',
-          }),
-        });
+	function renderItemSummary(item) {
+		const productName = document.getElementById('productName');
+		const productDescription = document.getElementById('productDescription');
+		const productPrice = document.getElementById('productPrice');
+		const detailTotal = document.getElementById('detailTotal');
+		const productImage = document.getElementById('productImage');
+		const optionsGrid = document.getElementById('optionsGrid');
+		const optionsSection = document.getElementById('optionsSection');
 
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.error || 'Erro ao criar o pedido PayPal');
-        }
+		if (productName) productName.textContent = item.name || 'Produto';
+		if (productDescription) productDescription.textContent = item.description || 'Descricao indisponivel.';
+		if (productPrice) productPrice.textContent = item.price || '-';
+		if (detailTotal) detailTotal.textContent = item.price || '-';
 
-        return data.orderId;
-      },
-      onApprove: async (data) => {
-        const response = await fetch('/api/paypal/capture-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderId: data.orderID }),
-        });
+		if (productImage) {
+			if (item.image) {
+				const photoUrl = new URL(item.image, itemsUrl).href;
+				productImage.style.backgroundImage = `url('${photoUrl}')`;
+			} else {
+				productImage.style.backgroundImage = 'none';
+			}
+		}
 
-        const result = await response.json();
-        if (!response.ok) {
-          throw new Error(result.error || 'Erro ao capturar o pagamento');
-        }
+		if (!optionsSection || !optionsGrid) {
+			return;
+		}
 
-        window.location.href = '/success.html';
-      },
-      onError: (err) => {
-        console.error('PayPal error:', err);
-        const errorBox = document.getElementById('formError');
-        if (errorBox) {
-          errorBox.hidden = false;
-          errorBox.textContent = 'Nao foi possivel concluir o pagamento com o PayPal.';
-        }
-      },
-    });
+		if (item.select && Array.isArray(item.select.options) && item.select.options.length) {
+			optionsSection.hidden = false;
+			optionsGrid.innerHTML = '';
 
-    paypalButtons.render('#paypalContainer');
-  }
+			item.select.options.forEach((option, index) => {
+				const button = document.createElement('button');
+				button.type = 'button';
+				button.className = 'option-pill';
+				button.textContent = option.name || `Opcao ${option.id}`;
 
-  function attachPaymentMethodHandlers() {
-    const paymentMethods = document.querySelectorAll('.payment-method');
-    const form = document.getElementById('paymentForm');
-    const errorBox = document.getElementById('formError');
+				if (index === 0) {
+					button.classList.add('selected');
+					selectedOptionName = option.name || '';
+				}
 
-    paymentMethods.forEach((button) => {
-      button.addEventListener('click', () => {
-        paymentMethods.forEach((item) => item.classList.remove('selected'));
-        button.classList.add('selected');
+				button.addEventListener('click', () => {
+					optionsGrid.querySelectorAll('.option-pill').forEach((el) => el.classList.remove('selected'));
+					button.classList.add('selected');
+					selectedOptionName = option.name || '';
+				});
 
-        if (button.dataset.method === 'paypal') {
-          showPayPalButtons();
-        } else {
-          const paypalContainer = document.getElementById('paypalContainer');
-          const submitButton = document.querySelector('.submit-button');
-          if (paypalContainer) {
-            paypalContainer.hidden = true;
-          }
-          if (submitButton) {
-            submitButton.hidden = false;
-          }
-        }
-      });
-    });
+				optionsGrid.appendChild(button);
+			});
+		} else {
+			optionsSection.hidden = true;
+			optionsGrid.innerHTML = '';
+			selectedOptionName = '';
+		}
+	}
 
-    if (form) {
-      form.addEventListener('submit', async (event) => {
-        event.preventDefault();
+	function bindFormSubmission() {
+		const form = document.getElementById('paymentForm');
+		const errorBox = document.getElementById('formError');
 
-        if (errorBox) {
-          errorBox.hidden = true;
-          errorBox.textContent = '';
-        }
+		if (!form) {
+			return;
+		}
 
-        const selectedMethod = document.querySelector('.payment-method.selected')?.dataset.method || 'visa';
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
 
-        if (selectedMethod === 'paypal') {
-          showPayPalButtons();
-          return;
-        }
+			if (errorBox) {
+				errorBox.hidden = true;
+				errorBox.textContent = '';
+			}
 
-        const formData = new FormData(form);
-        const payload = {
-          amount: parseAmountFromPrice(currentItem?.price || 0) * 100,
-          currency: 'eur',
-          productName: currentItem?.name || 'Produto Vazerk',
-          email: formData.get('email') || '',
-          fullName: formData.get('fullName') || '',
-          phone: formData.get('phone') || '',
-          address: formData.get('address') || '',
-          postal: formData.get('postal') || '',
-          city: formData.get('city') || '',
-          country: formData.get('country') || '',
-          paymentMethod: selectedMethod,
-          optionName: currentItem?.select?.options?.[0]?.name || '',
-        };
+			const formData = new FormData(form);
+			const payload = {
+				amount: parseAmountFromPrice(currentItem?.price || 0) * 100,
+				currency: 'eur',
+				productName: currentItem?.name || 'Produto Vazerk',
+				email: formData.get('email') || '',
+				fullName: formData.get('fullName') || '',
+				phone: formData.get('phone') || '',
+				address: formData.get('address') || '',
+				postal: formData.get('postal') || '',
+				city: formData.get('city') || '',
+				country: formData.get('country') || '',
+				paymentMethod: '',
+				optionName: selectedOptionName || '',
+			};
 
-        try {
-          const response = await fetch('/api/checkout-session', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          });
+			try {
+				const data = await postJsonWithFallback('/api/checkout-session', payload);
+				if (data && data.url) {
+					window.location.href = data.url;
+				}
+			} catch (error) {
+				if (errorBox) {
+					errorBox.hidden = false;
+					errorBox.textContent = getReadableErrorMessage(error, 'Erro ao iniciar o pagamento.');
+				}
+			}
+		});
+	}
 
-          const data = await response.json();
-          if (!response.ok) {
-            throw new Error(data.error || 'Erro ao iniciar o pagamento');
-          }
+	function showItemNotFound() {
+		const productName = document.getElementById('productName');
+		const productDescription = document.getElementById('productDescription');
+		const productPrice = document.getElementById('productPrice');
+		const detailTotal = document.getElementById('detailTotal');
+		const productImage = document.getElementById('productImage');
+		const optionsSection = document.getElementById('optionsSection');
 
-          if (data.url) {
-            window.location.href = data.url;
-          }
-        } catch (err) {
-          if (errorBox) {
-            errorBox.hidden = false;
-            errorBox.textContent = err.message || 'Erro ao iniciar o pagamento.';
-          }
-        }
-      });
-    }
-  }
+		if (productName) productName.textContent = 'Produto nao encontrado';
+		if (productDescription) productDescription.textContent = 'Este item nao esta disponivel no momento.';
+		if (productPrice) productPrice.textContent = '-';
+		if (detailTotal) detailTotal.textContent = '-';
+		if (productImage) productImage.style.backgroundImage = 'none';
+		if (optionsSection) optionsSection.hidden = true;
+	}
 
-  const itemsUrl = new URL('items.json', window.location.href).href;
+	fetch(itemsUrl)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(`Nao foi possivel carregar items.json: ${response.status}`);
+			}
+			return response.json();
+		})
+		.then((items) => {
+			const itemsById = new Map();
+			const itemsByUrl = new Map();
 
-  fetch(itemsUrl)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Nao foi possivel carregar items.json: ' + response.status);
-      }
-      return response.json();
-    })
-    .then((items) => {
-      const itemsById = new Map();
-      const itemsByUrl = new Map();
+			items.forEach((item) => {
+				if (item.id !== undefined) {
+					itemsById.set(String(item.id), item);
+				}
+				if (item.url) {
+					itemsByUrl.set(normalizeItemReference(item.url), item);
+				}
+			});
 
-      items.forEach((item) => {
-        if (item.id !== undefined) {
-          itemsById.set(String(item.id), item);
-        }
-        if (item.url) {
-          itemsByUrl.set(normalizeItemReference(item.url), item);
-        }
-      });
+			const matchedItem = getItemByReference(requestedReference, itemsById, itemsByUrl)
+				|| getItemByReference(window.location.pathname.replace(/\\/g, '/').replace(/^\/+/, ''), itemsById, itemsByUrl)
+				|| items[0]
+				|| null;
 
-      const detailItem = getItemByReference(itemReference, itemsById, itemsByUrl)
-        || getItemByReference(window.location.pathname.replace(/\\/g, '/').replace(/^\/+/, ''), itemsById, itemsByUrl)
-        || items[0] || null;
+			currentItem = matchedItem;
 
-      if (!detailItem) {
-        const productName = document.getElementById('productName');
-        const productDescription = document.getElementById('productDescription');
-        const productPrice = document.getElementById('productPrice');
-        const detailTotal = document.getElementById('detailTotal');
-        const productImage = document.getElementById('productImage');
+			if (!matchedItem) {
+				showItemNotFound();
+				return;
+			}
 
-        if (productName) productName.textContent = 'Produto nao encontrado';
-        if (productDescription) productDescription.textContent = 'Este item nao esta disponivel no momento.';
-        if (productPrice) productPrice.textContent = '-';
-        if (detailTotal) detailTotal.textContent = '-';
-        if (productImage) productImage.style.backgroundImage = 'none';
-        return;
-      }
+			renderItemSummary(matchedItem);
+		})
+		.catch((error) => {
+			console.error('Erro ao carregar o item da pagina de pagamento:', error);
+			showItemNotFound();
+		});
 
-      currentItem = detailItem;
-      renderItemSummary(detailItem);
-      attachPaymentMethodHandlers();
-    })
-    .catch((error) => {
-      console.error('Erro ao carregar o item da pagina de pagamento:', error);
-    });
+	bindFormSubmission();
 })();
