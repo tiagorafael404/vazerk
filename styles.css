@@ -1094,6 +1094,65 @@ body {
         font-family: "Space Mono", monospace;
     }
 
+    .delivery {
+        width: 100%;
+        height: auto;
+        margin: 25 auto 0 35;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .delivery .delivery_title {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 10 0;
+        color: black;
+        text-transform: none;
+        text-decoration: none;
+
+    }
+
+    .delivery .delivery_title a {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 10 0;
+        color: black;
+        text-transform: none;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 20;
+
+    }
+
+    .delivery .delivery_info {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 10 0;
+        color: black;
+        text-transform: none;
+        text-decoration: none;
+        display: flex;
+        flex-direction: row;
+
+    }
+
+    .delivery .delivery_info a {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 10 0;
+        color: black;
+        text-transform: none;
+        text-decoration: none;
+        font-weight: normal;
+        font-size: 18;
+
+    }
+
+    .delivery .pt1{
+        margin: auto 10px auto 0;
+
+    }
+
     @media screen and (max-width: 1600px) {
 
     .cookies-box {
@@ -2294,6 +2353,65 @@ body {
         word-spacing: 0;
         letter-spacing: 1;
         font-family: "Space Mono", monospace;
+    }
+
+    .delivery {
+        width: 100%;
+        height: auto;
+        margin: 25 auto 20 35;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .delivery .delivery_title {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 10 0;
+        color: black;
+        text-transform: none;
+        text-decoration: none;
+
+    }
+
+    .delivery .delivery_title a {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 10 0;
+        color: black;
+        text-transform: none;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 18;
+
+    }
+
+    .delivery .delivery_info {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 10 0;
+        color: black;
+        text-transform: none;
+        text-decoration: none;
+        display: flex;
+        flex-direction: row;
+
+    }
+
+    .delivery .delivery_info a {
+        width: 100%;
+        height: auto;
+        margin: 0 auto 10 0;
+        color: black;
+        text-transform: none;
+        text-decoration: none;
+        font-weight: normal;
+        font-size: 16px;
+
+    }
+
+    .delivery .pt1{
+        margin: auto 10px auto 0;
+
     }
 
 
