@@ -168,61 +168,20 @@
         }
 
         if (isIndexPage && productsContainer) {
-          var groupedByGolf = filteredItems.reduce(function (acc, item) {
-            var golfKey = item.golf !== undefined && item.golf !== null ? String(item.golf) : "Outros";
-
-            if (!acc[golfKey]) {
-              acc[golfKey] = [];
-            }
-
-            acc[golfKey].push(item);
-            return acc;
-          }, {});
-
-          var orderedGolfKeys = Object.keys(groupedByGolf).sort(function (a, b) {
-            var numberA = Number(a);
-            var numberB = Number(b);
-            var isNumberA = !Number.isNaN(numberA);
-            var isNumberB = !Number.isNaN(numberB);
-
-            if (isNumberA && isNumberB) {
-              return numberA - numberB;
-            }
-
-            if (isNumberA) {
-              return -1;
-            }
-
-            if (isNumberB) {
-              return 1;
-            }
-
-            return a.localeCompare(b, "pt", { sensitivity: "base" });
-          });
+          var orderedItems = filteredItems
+            .slice()
+            .sort(function (a, b) {
+              return Number(a.id || 0) - Number(b.id || 0);
+            });
 
           productsContainer.innerHTML = "";
 
-          orderedGolfKeys.forEach(function (golfKey) {
-            var groupSection = document.createElement("section");
-            groupSection.className = "products-golf-group";
-
-            var groupTitle = document.createElement("h2");
-            groupTitle.className = "products-golf-title";
-            groupTitle.textContent = golfKey === "Outros" ? "Outros" : "Golf " + golfKey;
-
-            var groupList = document.createElement("ul");
-
-            groupedByGolf[golfKey]
-              .slice()
-              .sort(compareByNameThenId)
-              .forEach(function (item) {
-                groupList.appendChild(createProductLi(item));
-              });
-
-            groupSection.appendChild(groupTitle);
-            groupSection.appendChild(groupList);
-            productsContainer.appendChild(groupSection);
+          var flatList = document.createElement("ul");
+          orderedItems.forEach(function (item) {
+            flatList.appendChild(createProductLi(item));
           });
+
+          productsContainer.appendChild(flatList);
         } else {
           if (productsContainer && !productsList) {
             productsList = document.createElement("ul");
