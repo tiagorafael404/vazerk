@@ -15,12 +15,12 @@
     "id": 2,
     "category": "tshirt",
     "name": "black tshirt",
-    "price": "1.00€",
+    "price": "1,00€",
     "image": "p/p2/photo.png",
     "image2": "p/p2/photo2.png",
     "url": "item.html?item=2",
     "description": "This is a 5/6 speed gearshift for VW Golf 4. It is made of high-quality materials and designed for durability and performance.",
-    "buy": "https://buy.stripe.com/test_",
+    "buy": "payment.html?item=2",
 
     "select": {
       "label": "Select Speed yo",
@@ -28,17 +28,17 @@
         {
           "id": 1,
           "name": "5 Speed",
-          "url": "amazon.es"
+          "url": "payment.html?item=2&option=1"
         },
         {
           "id": 2,
           "name": "6 Speed",
-          "url": "gmail.com"
+          "url": "payment.html?item=2&option=2"
         },
         {
           "id": 3,
           "name": "5/6 Speed",
-          "url": "netflix.com"
+          "url": "payment.html?item=2&option=3"
         }
       ]
     }
@@ -53,24 +53,24 @@
     "image2": "golf4/gearshift/3/2.jpg",
     "image3": "golf4/gearshift/3/3.jpg",
     "url": "item.html?item=3",
-    "buy": "https://buy.stripe.com/test_",
+    "buy": "payment.html?item=3",
     "select": {
       "label": "Select Speed yo",
       "options": [
         {
           "id": 1,
           "name": "5 Speed",
-          "url": "amazon.es"
+          "url": "payment.html?item=3&option=1"
         },
         {
           "id": 2,
           "name": "6 Speed",
-          "url": "gmail.com"
+          "url": "payment.html?item=3&option=2"
         },
         {
           "id": 3,
           "name": "5/6 Speed",
-          "url": "netflix.com"
+          "url": "payment.html?item=3&option=3"
         }
       ]
     }
@@ -84,24 +84,24 @@
     "image": "p/p3/photo.png",
     "image2": "golf4/gearshift/4/2.jpg",
     "url": "item.html?item=4",
-    "buy": "https://buy.stripe.com/test_",
+    "buy": "payment.html?item=4",
     "select": {
       "label": "Select Speed yo",
       "options": [
         {
           "id": 1,
           "name": "5 Speed",
-          "url": "amazon.es"
+          "url": "payment.html?item=4&option=1"
         },
         {
           "id": 2,
           "name": "6 Speed",
-          "url": "gmail.com"
+          "url": "payment.html?item=4&option=2"
         },
         {
           "id": 3,
           "name": "5/6 Speed",
-          "url": "netflix.com"
+          "url": "payment.html?item=4&option=3"
         }
       ]
     }
@@ -114,24 +114,24 @@
     "image2": "golf4/gearshift/5/2.jpg",
     "image3": "golf4/gearshift/5/3.jpg",
     "url": "item.html?item=5",
-    "buy": "https://buy.stripe.com/test_",
+    "buy": "payment.html?item=5",
     "select": {
       "label": "Select Speed yo",
       "options": [
         {
           "id": 1,
           "name": "5 Speed",
-          "url": "amazon.es"
+          "url": "payment.html?item=5&option=1"
         },
         {
           "id": 2,
           "name": "6 Speed",
-          "url": "gmail.com"
+          "url": "payment.html?item=5&option=2"
         },
         {
           "id": 3,
           "name": "5/6 Speed",
-          "url": "netflix.com"
+          "url": "payment.html?item=5&option=3"
         }
       ]
     }

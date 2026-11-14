@@ -98,34 +98,6 @@ body {
   font-weight: 600;
 }
 
-.options-title {
-  margin-top: 30px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--muted);
-}
-
-.option-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.option-pill {
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px 16px;
-  background: white;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
-}
-
-.option-pill.selected {
-  border-color: var(--primary);
-  background-color: #eef6ff;
-}
-
 .form-panel form {
   display: grid;
   gap: 16px;
@@ -202,26 +174,23 @@ input:focus {
   background: #f3f7ff;
 }
 
-.paypal-container {
+.pay-button {
   margin-top: 8px;
-  padding: 12px;
-  border: 1px dashed var(--border);
-  border-radius: 16px;
-  background: #fafcff;
-}
-
-.paypal-container[hidden] {
-  display: none;
-}
-
-.paypal-button-slot {
   width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.notice {
-  color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.6;
+.pay-button:hover {
+  background: var(--primary-strong);
+  transform: translateY(-1px);
 }
 
 .form-error {
@@ -242,9 +211,5 @@ input:focus {
 @media (max-width: 640px) {
   body {
     padding: 16px;
-  }
-
-  .option-grid {
-    grid-template-columns: 1fr;
   }
 }

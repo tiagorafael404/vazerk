@@ -211,6 +211,18 @@
           }
         }
 
+        function buildPaymentUrl(item, option) {
+          if (!item || item.id === undefined) {
+            return item && item.buy ? item.buy : "payment.html";
+          }
+
+          if (option && option.id !== undefined) {
+            return "payment.html?item=" + item.id + "&option=" + encodeURIComponent(String(option.id));
+          }
+
+          return "payment.html?item=" + item.id;
+        }
+
         function normalizeItemReference(reference) {
           if (reference === undefined || reference === null) {
             return "";
@@ -343,6 +355,10 @@
           }
         }
 
+        if (detailItem.buy === undefined || detailItem.buy === null || !String(detailItem.buy).includes("payment.html")) {
+          detailItem.buy = buildPaymentUrl(detailItem);
+        }
+
         if (buyLink) {
           buyLink.href = detailItem.buy || buyLink.getAttribute("href") || "#";
         }
@@ -350,11 +366,13 @@
         if (optionsList && detailItem.select && Array.isArray(detailItem.select.options) && detailItem.select.options.length > 0) {
           optionsList.innerHTML = "";
           detailItem.select.options.forEach(function (option, index) {
+            option.url = option.url && String(option.url).includes("payment.html") ? option.url : buildPaymentUrl(detailItem, option);
+
             var li = document.createElement("li");
             li.id = String(option.id);
 
             var anchor = document.createElement("a");
-            anchor.href = "#";
+            anchor.href = option.url || "#";
             anchor.textContent = option.name || ("Option " + option.id);
 
             li.appendChild(anchor);

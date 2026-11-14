@@ -14,8 +14,6 @@
 </head>
 
 <body>
-
-  
   <main class="page">
     <header class="topbar">
       <a class="back" href="home.html">&larr; Voltar</a>
@@ -31,10 +29,6 @@
           <div class="summary-price">
             <span>Preco</span>
             <strong id="productPrice">-</strong>
-          </div>
-          <div class="options-section" id="optionsSection">
-            <div class="options-title">Opcoes do produto</div>
-            <div class="option-grid" id="optionsGrid"></div>
           </div>
         </div>
       </article>
@@ -81,14 +75,7 @@
             <strong id="detailTotal">-</strong>
           </div>
 
-          <div id="paypal-section" class="payment-section">
-            <div id="paypal-buttons-container"></div>
-          </div>
-
-          <div id="card-section" class="payment-section" hidden>
-            <div id="card-buttons-container"></div>
-            <div class="notice">O PayPal processa o pagamento com cartao de debito/credito em um popup seguro.</div>
-          </div>
+          <button type="button" id="payButton" class="pay-button">Pagar</button>
 
           <div id="formError" class="form-error" hidden></div>
         </form>
@@ -100,4 +87,3 @@
 </body>
 
 </html>
-
