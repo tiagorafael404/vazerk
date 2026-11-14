@@ -127,6 +127,20 @@
     openExclusiveSlidingWindow(authModal, accountModal);
   }
 
+  function toggleAccountModal() {
+    if (!isUserLoggedIn()) {
+      openAuthModal();
+      return;
+    }
+
+    var accountModal = document.getElementById("account-modal");
+    if (!accountModal) {
+      return;
+    }
+
+    toggleSlidingWindow(accountModal);
+  }
+
   function handleContactClick() {
     var contactModal = document.getElementById("contact");
     var authModal = document.getElementById("auth-modal");
@@ -231,21 +245,6 @@
       });
     }
 
-    document.querySelectorAll(".nav-logout").forEach(function (button) {
-      if (button.dataset.authBound) {
-        return;
-      }
-
-      button.dataset.authBound = "true";
-      button.addEventListener("click", function () {
-        localStorage.setItem(authVisualStateKey, "false");
-        updateAuthUi(null);
-
-        firebaseSdk.signOut(auth).catch(function (error) {
-          console.error("Erro ao terminar sessao:", error);
-        });
-      });
-    });
   }
 
   function bindNavigationHandlers() {
@@ -382,27 +381,6 @@
         hideSlidingWindow(document.getElementById("account-modal"));
       });
     }
-
-    document.querySelectorAll(".account-login").forEach(function (button) {
-      if (button.dataset.authBound) {
-        return;
-      }
-
-      button.dataset.authBound = "true";
-      button.addEventListener("click", function (event) {
-        event.preventDefault();
-
-        if (firebaseAuthInstance) {
-          window.VWGolfFirebase.signOut(firebaseAuthInstance).catch(function (error) {
-            console.error("Erro ao terminar sessao:", error);
-          });
-        } else {
-          updateAuthUi(null);
-        }
-
-        hideSlidingWindow(document.getElementById("account-modal"));
-      });
-    });
 
     var contactCloseButton = document.getElementById("close");
     if (contactCloseButton && !contactCloseButton.dataset.closeBound) {
