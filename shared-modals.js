@@ -1,5 +1,15 @@
 (function () {
   var fragments = [];
+  var authVisualStateKey = 'loggedIn';
+  var accountLabel = 'Sign in';
+
+  try {
+    if (localStorage.getItem(authVisualStateKey) === 'true') {
+      accountLabel = 'Account';
+    }
+  } catch (e) {
+    // localStorage may be unavailable in some environments
+  }
 
   if (!document.querySelector(".navbar")) {
     document.body.insertAdjacentHTML(
@@ -20,8 +30,8 @@
             '<a href="/">VW Golf</a>' +
           '</div>' +
           '<div class="more">' +
-            '<div class="nav-login" onclick="openAuthModal()"><a>Sign in</a></div>' +
-            '<div class="nav-logout" onclick="toggleAccountModal()" style="display:none"><a>Account</a></div>' +
+            '<div class="nav-login"><a>' + accountLabel + '</a></div>' +
+            '<div class="nav-logout" style="display:none"><a>Logout</a></div>' +
           '</div>' +
         '</div>' +
       '</div>'
@@ -44,12 +54,9 @@
   }
 
 
-
-
-
   if (!document.getElementById("auth-modal")) {
     fragments.push(
-      '<div class="auth-modal" id="auth-modal" style="display:none">' +
+      '<div class="auth-modal" id="auth-modal">' +
         '<div class="auth-window">' +
           '<div class="auth-header">' +
             '<div class="space"></div>' +
@@ -67,8 +74,6 @@
     );
   }
 
-
-
   if (!document.getElementById("cookiesBox")) {
     fragments.push(
       '<div class="cookies-box" id="cookiesBox">' +
@@ -82,27 +87,6 @@
         '<div class="buttons">' +
           '<button class="button" id="acceptBtn">Accept</button>' +
           '<button class="button" id="declineBtn">Decline</button>' +
-        '</div>' +
-      '</div>'
-    );
-  }
-
-  if (!document.getElementById("account-modal")) {
-    fragments.push(
-      '<div class="account-modal" id="account-modal">' +
-        '<div class="account-window">' +
-          '<div class="account-header">' +
-            '<div class="space"></div>' +
-            '<div class="title">' +
-              '<div class="title1"><i class="fa fa-user-circle"></i></div>' +
-              '<div class="title2"><a>My account</a></div>' +
-            '</div>' +
-            '<div class="close"><i class="fa fa-close" id="account-close"></i></div>' +
-          '</div>' +
-          '<div class="account-content">' +
-            '<div class="account-cart"><a href="cart.html">Cart</a></div>' +
-            '<div class="account-login"><a>Logout</a></div>' +
-          '</div>' +
         '</div>' +
       '</div>'
     );
@@ -138,6 +122,28 @@
         '</div>' +
       '</div>'
     );
+
+  }
+
+  if (!document.getElementById("account-modal")) {
+    fragments.push(
+      '<div class="account-modal" id="account-modal">' +
+        '<div class="account-window">' +
+          '<div class="account-header">' +
+            '<div class="space"></div>' +
+            '<div class="title">' +
+              '<div class="title1"><i class="fa fa-user-circle"></i></div>' +
+              '<div class="title2"><a>My account</a></div>' +
+            '</div>' +
+            '<div class="close"><i class="fa fa-close" id="account-close"></i></div>' +
+          '</div>' +
+          '<div class="account-content">' +
+            '<div class="account-cart"><a href="cart.html">Cart</a></div>' +
+            '<div class="account-login"><a>Logout</a></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
   }
 
   if (!document.querySelector(".content")) {
@@ -157,4 +163,7 @@
   if (fragments.length > 0) {
     document.body.insertAdjacentHTML("beforeend", fragments.join(""));
   }
+
 })();
+
+
