@@ -2138,7 +2138,7 @@ body {
         aspect-ratio: 5 / 5;
         background-color: white;
         border-radius: 10px;
-        box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);        
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);    
 
     }
 
@@ -2356,11 +2356,10 @@ body {
     }
 
     .delivery {
-        width: 100%;
+        width: auto;
         height: auto;
-        margin: 25 auto 20 35;
-        display: flex;
-        flex-direction: column;
+        margin: 25 auto 20 30;
+
     }
 
     .delivery .delivery_title {
