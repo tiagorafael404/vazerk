@@ -2132,7 +2132,7 @@ body {
         background-size: cover;
         background-position: center;
         border-radius: 10px;
-        margin: auto;
+        margin: 0 auto auto auto;
     }
 
     .p-container .part2 {
