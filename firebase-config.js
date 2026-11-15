@@ -1,4 +1,4 @@
-window.VazerkFirebaseConfig = {
+window.FirebaseConfig = {
   apiKey: "AIzaSyDh9XxYy1bQ4GfcEF1tYkKqWWCQ7xPcxPQ",
   authDomain: "vazerk-61e39.firebaseapp.com",
   projectId: "vazerk-61e39",

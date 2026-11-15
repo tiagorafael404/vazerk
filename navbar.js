@@ -202,7 +202,7 @@
       return;
     }
 
-    var firebaseConfig = window.VazerkFirebaseConfig;
+    var firebaseConfig = window.FirebaseConfig;
 
     if (!hasConfiguredFirebase(firebaseConfig)) {
       console.warn("Firebase nao configurado. Preencha firebase-config.js com as credenciais do seu projeto.");
