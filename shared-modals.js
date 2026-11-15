@@ -53,6 +53,29 @@
     );
   }
 
+  var sharedHeader = "";
+
+  if (!document.querySelector(".freeshipping")) {
+    sharedHeader +=
+      '<div class="freeshipping"><a>--- <i class="fas fa-shopping-cart"></i> Free Shipping ---</a></div>';
+  }
+
+  if (!document.querySelector(".content")) {
+    sharedHeader +=
+      '<div class="content">' +
+        '<div class="menu3" id="menu">' +
+          '<ul>' +
+            '<li><a href="/home.html" class="menubutton">Home</a></li>' +
+            '<li id="contactme-phone"><a class="menubutton">Contact</a></li>' +
+            '<li><a class="menubutton" href="aboutus.html">About us</a></li>' +
+          '</ul>' +
+        '</div>' +
+      '</div>';
+  }
+
+  if (sharedHeader) {
+    document.querySelector(".navbar-phone").insertAdjacentHTML("afterend", sharedHeader);
+  }
 
   if (!document.getElementById("auth-modal")) {
     fragments.push(
@@ -146,19 +169,7 @@
     );
   }
 
-  if (!document.querySelector(".content")) {
-    fragments.push(
-      '<div class="content">' +
-        '<div class="menu3" id="menu">' +
-          '<ul>' +
-            '<li><a href="/home.html" class="menubutton">Home</a></li>' +
-            '<li id="contactme-phone"><a class="menubutton">Contact</a></li>' +
-            '<li><a class="menubutton" href="aboutus.html">About us</a></li>' +
-          '</ul>' +
-        '</div>' +
-      '</div>'
-    );
-  }
+
 
   if (fragments.length > 0) {
     document.body.insertAdjacentHTML("beforeend", fragments.join(""));
