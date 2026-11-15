@@ -43,7 +43,7 @@
       "afterbegin",
       '<div class="navbar-phone">' +
         '<div class="nav1"><i class="material-icons">menu</i></div>' +
-        '<div class="nav2"><a href="/">Home oioi</a></div>' +
+        '<div class="nav2"><a href="/">Home yo</a></div>' +
         '<div class="nav3">' +
           '<div class="name"><a class="nav3-label"></a></div>' +
           '<div class="pic"><a><i class="bx bx-user"></i></a></div>' +
