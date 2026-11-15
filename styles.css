@@ -1415,7 +1415,7 @@ body {
     .menu3 {
         display: none;
         width: 100%;
-        height: 300;
+        height: 300px;
         background-color: #f6f6f6;
         position: absolute;
         border-radius: 0 0 50px 50px;
