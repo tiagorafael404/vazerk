@@ -1,9 +1,9 @@
-window.VWGolfFirebaseConfig = {
-  apiKey: "AIzaSyBq-J1EftCEIpEIDuR88VsdNfwynLD4-is",
-  authDomain: "vwgolf-7011b.firebaseapp.com",
-  projectId: "vwgolf-7011b",
-  storageBucket: "vwgolf-7011b.firebasestorage.app",
-  messagingSenderId: "202144039435",
-  appId: "1:202144039435:web:28ea4646e5608279b67d0e",
-  measurementId: "G-R8EW0NYGJS"
+const firebaseConfig = {
+  apiKey: "AIzaSyDh9XxYy1bQ4GfcEF1tYkKqWWCQ7xPcxPQ",
+  authDomain: "vazerk-61e39.firebaseapp.com",
+  projectId: "vazerk-61e39",
+  storageBucket: "vazerk-61e39.firebasestorage.app",
+  messagingSenderId: "862934684683",
+  appId: "1:862934684683:web:0a76ac330cf9abaaa1630e",
+  measurementId: "G-8G5Q3YW7L6"
 };
