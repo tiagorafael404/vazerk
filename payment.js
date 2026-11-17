@@ -184,7 +184,25 @@
     }
 
     UI_FIELDS.payButton.disabled = true;
-    showError("Pagamentos indisponiveis no momento.");
+    UI_FIELDS.payButton.addEventListener("click", function () {
+      if (!validateCheckoutForm()) {
+        return;
+      }
+
+      if (!state.item || state.item.id === undefined || state.item.id === null) {
+        showError("Produto indisponivel para pagamento.");
+        return;
+      }
+
+      showError("");
+      UI_FIELDS.payButton.disabled = true;
+
+      comprar(state.item.id).catch(function (error) {
+        console.error("Nao foi possivel iniciar o pagamento.", error);
+        showError(error.message || "Erro ao criar pagamento.");
+        UI_FIELDS.payButton.disabled = false;
+      });
+    });
   }
 
   function setupCountryPicker() {
@@ -270,6 +288,10 @@
         state.item = item;
         state.currentPayUrl = getInitialPayUrl(item);
         renderItem(item);
+
+        if (UI_FIELDS.payButton) {
+          UI_FIELDS.payButton.disabled = false;
+        }
       });
   }
 
@@ -278,6 +300,10 @@
     bindPayButton();
 
     loadItem().catch(function (error) {
+      if (UI_FIELDS.payButton) {
+        UI_FIELDS.payButton.disabled = true;
+      }
+
       PRODUCT_FIELDS.name.textContent = "Produto indisponivel";
       PRODUCT_FIELDS.description.textContent = "Nao foi possivel carregar os dados deste produto.";
       PRODUCT_FIELDS.price.textContent = "-";
