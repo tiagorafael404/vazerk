@@ -74,7 +74,7 @@
   }
 
   if (sharedHeader) {
-    document.querySelector(".navbar-phone").insertAdjacentHTML("afterend", sharedHeader);
+    document.querySelector(".navbar").insertAdjacentHTML("afterend", sharedHeader);
   }
 
   if (!document.getElementById("auth-modal")) {
