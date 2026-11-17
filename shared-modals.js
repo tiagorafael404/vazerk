@@ -27,7 +27,7 @@
             '<i class="material-icons" style="color:white">menu</i>' +
           '</div>' +
           '<div class="logo">' +
-            '<a href="/">VW Golf</a>' +
+            '<a href="/">Vazerk</a>' +
           '</div>' +
           '<div class="more">' +
             '<div class="nav-login"><a>' + accountLabel + '</a></div>' +
