@@ -1,27 +1,17 @@
-async function comprar(productId) {
+async function comprar(productId, optionId) {
   if (productId === undefined || productId === null || String(productId).trim() === "") {
     throw new Error("Produto invalido.");
   }
 
-  const form = document.getElementById("paymentForm");
-  if (!form) {
-    throw new Error("Formulario de pagamento nao encontrado.");
+  const payload = { productId: String(productId) };
+  if (optionId !== undefined && optionId !== null) {
+    payload.optionId = String(optionId);
   }
 
-  const formData = new FormData(form);
   const res = await fetch("https://x2scale.tiagorgc2002.workers.dev", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      productId: String(productId),
-      email: formData.get("email"),
-      name: formData.get("fullName"),
-      phone: formData.get("phone"),
-      address: formData.get("address"),
-      postal: formData.get("postal"),
-      city: formData.get("city"),
-      country: formData.get("country"),
-    }),
+    body: JSON.stringify(payload),
   });
 
   let data;

@@ -211,18 +211,6 @@
           }
         }
 
-        function buildPaymentUrl(item, option) {
-          if (!item || item.id === undefined) {
-            return item && item.buy ? item.buy : "payment.html";
-          }
-
-          if (option && option.id !== undefined) {
-            return "payment.html?item=" + item.id + "&option=" + encodeURIComponent(String(option.id));
-          }
-
-          return "payment.html?item=" + item.id;
-        }
-
         function normalizeItemReference(reference) {
           if (reference === undefined || reference === null) {
             return "";
@@ -334,6 +322,7 @@
         var optionsTitle = document.querySelector(".options_title a");
         var buyLink = document.getElementById("buyLink");
         var optionsList = document.querySelector(".options_list ul");
+        var selectedOption = null;
 
         if (productName) {
           productName.textContent = detailItem.name || productName.textContent;
@@ -355,24 +344,44 @@
           }
         }
 
-        if (detailItem.buy === undefined || detailItem.buy === null || !String(detailItem.buy).includes("payment.html")) {
-          detailItem.buy = buildPaymentUrl(detailItem);
-        }
-
         if (buyLink) {
-          buyLink.href = detailItem.buy || buyLink.getAttribute("href") || "#";
+          buyLink.href = "#";
+          buyLink.setAttribute("aria-disabled", "false");
+          buyLink.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            if (buyLink.dataset.pending === "true") {
+              return;
+            }
+
+            if (typeof comprar !== "function") {
+              alert("O servico de pagamento nao esta disponivel.");
+              return;
+            }
+
+            var originalText = buyLink.textContent;
+            buyLink.dataset.pending = "true";
+            buyLink.setAttribute("aria-busy", "true");
+            buyLink.textContent = "A processar...";
+
+            comprar(detailItem.id, selectedOption && selectedOption.id).catch(function (error) {
+              console.error("Nao foi possivel iniciar o pagamento.", error);
+              alert(error.message || "Erro ao criar pagamento.");
+              buyLink.dataset.pending = "false";
+              buyLink.removeAttribute("aria-busy");
+              buyLink.textContent = originalText;
+            });
+          });
         }
 
         if (optionsList && detailItem.select && Array.isArray(detailItem.select.options) && detailItem.select.options.length > 0) {
           optionsList.innerHTML = "";
           detailItem.select.options.forEach(function (option, index) {
-            option.url = option.url && String(option.url).includes("payment.html") ? option.url : buildPaymentUrl(detailItem, option);
-
             var li = document.createElement("li");
             li.id = String(option.id);
 
             var anchor = document.createElement("a");
-            anchor.href = option.url || "#";
+            anchor.href = "#";
             anchor.textContent = option.name || ("Option " + option.id);
 
             li.appendChild(anchor);
@@ -384,17 +393,12 @@
                 el.classList.remove("selected");
               });
               li.classList.add("selected");
-
-              if (buyLink) {
-                buyLink.href = option.url || detailItem.buy || buyLink.getAttribute("href") || "#";
-              }
+              selectedOption = option;
             });
 
             if (index === 0) {
               li.classList.add("selected");
-              if (buyLink) {
-                buyLink.href = option.url || detailItem.buy || buyLink.getAttribute("href") || "#";
-              }
+              selectedOption = option;
             }
           });
         }
