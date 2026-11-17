@@ -359,17 +359,14 @@
               return;
             }
 
-            var originalText = buyLink.textContent;
             buyLink.dataset.pending = "true";
             buyLink.setAttribute("aria-busy", "true");
-            buyLink.textContent = "A processar...";
 
             comprar(detailItem.id, selectedOption && selectedOption.id).catch(function (error) {
               console.error("Nao foi possivel iniciar o pagamento.", error);
               alert(error.message || "Erro ao criar pagamento.");
               buyLink.dataset.pending = "false";
               buyLink.removeAttribute("aria-busy");
-              buyLink.textContent = originalText;
             });
           });
         }
