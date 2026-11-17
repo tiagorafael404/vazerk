@@ -183,14 +183,8 @@
       return;
     }
 
-    UI_FIELDS.payButton.addEventListener("click", function () {
-      if (!validateCheckoutForm()) {
-        return;
-      }
-
-      showError("");
-      alert("Pagamento concluido com sucesso.");
-    });
+    UI_FIELDS.payButton.disabled = true;
+    showError("Pagamentos indisponiveis no momento.");
   }
 
   function setupCountryPicker() {
