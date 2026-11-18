@@ -128,20 +128,19 @@
   }
 
   function forceOpenAuthModal() {
-    var authModal = document.getElementById("auth-modal");
-    var accountModal = document.getElementById("account-modal");
+    var authModal = document.querySelector(".auth-modal");
+    var accountModal = document.querySelector(".account-modal");
 
     if (!authModal) {
       return;
     }
 
     if (accountModal) {
-      hideSlidingWindow(accountModal);
+      accountModal.classList.remove("show");
+      accountModal.style.display = "none";
     }
 
-    if (!authModal.classList.contains("show")) {
-      showSlidingWindow(authModal);
-    }
+    showSlidingWindow(authModal);
   }
 
   function handleContactClick() {
@@ -149,7 +148,7 @@
     var authModal = document.getElementById("auth-modal");
 
     if (!isUserLoggedIn()) {
-      openLoginEntryModal();
+      forceOpenAuthModal();
       return;
     }
 
