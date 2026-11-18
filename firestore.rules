@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/cartItems/{itemId} {
+      allow read, delete: if request.auth != null
+        && request.auth.uid == userId;
+
+      allow create, update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasOnly([
+          'productId',
+          'optionId',
+          'quantity',
+          'updatedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'productId',
+          'optionId',
+          'quantity',
+          'updatedAt'
+        ])
+        && request.resource.data.productId is string
+        && (request.resource.data.optionId == null
+          || request.resource.data.optionId is string)
+        && request.resource.data.quantity is int
+        && request.resource.data.quantity >= 1
+        && request.resource.data.quantity <= 99
+        && request.resource.data.updatedAt is timestamp;
+    }
+  }
+}

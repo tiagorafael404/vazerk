@@ -215,6 +215,9 @@
                         <li class="cart-row empty-cart" id="cart-empty-row" role="row">
                             <span role="cell" aria-colspan="5">Your cart is empty.</span>
                         </li>
+                        <li class="cart-row" id="cart-login-required" role="row" hidden>
+                            <span role="cell" aria-colspan="5">Please sign in to view your cart.</span>
+                        </li>
                     </ul>
                     <template id="cart-item-template">
                         <li class="cart-row" role="row">
@@ -233,7 +236,7 @@
                         </li>
                     </template>
                 </div>
-                <p class="cart-error" id="cart-error" role="alert" hidden>Unable to load cart data. Please check your browser storage.</p>
+                <p class="cart-error" id="cart-error" role="alert" hidden>Unable to load your cloud cart. Please try again.</p>
                 <a class="continue-shopping" href="/">Continue shopping</a>
             </section>
 
@@ -252,8 +255,9 @@
     <script src="firebase-config.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="cookies.js"></script>
-    <script src="cart.js"></script>
     <script src="navbar.js"></script>
+    <script src="cart.js"></script>
 </body>
 </html>

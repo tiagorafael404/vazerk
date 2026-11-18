@@ -1,94 +1,135 @@
 (function () {
-  var storageKey = "vazerkCart";
+  var cartCollectionName = "cartItems";
+  var firebaseAuth = null;
+  var firestore = null;
+  var currentUser = null;
+  var initializationError = null;
+  var authStateResolved = false;
+  var resolveAuthState;
+  var authStatePromise = new Promise(function (resolve) {
+    resolveAuthState = resolve;
+  });
+  var cartElements = null;
+  var productsById = new Map();
+  var catalogPromise = null;
+  var unsubscribeCart = null;
+  var catalogUrl = new URL("items.json", window.location.href).href;
 
-  function readCart() {
-    var storedItems = localStorage.getItem(storageKey);
-    if (!storedItems) {
-      return [];
-    }
+  function getCurrentUser() {
+    return currentUser || (firebaseAuth && firebaseAuth.currentUser) || null;
+  }
 
-    var items = JSON.parse(storedItems);
-    if (!Array.isArray(items)) {
-      throw new Error("Cart data is invalid.");
-    }
+  function getCartCollection(user) {
+    return firestore.collection("users").doc(user.uid).collection(cartCollectionName);
+  }
 
-    items.forEach(function (item) {
-      if (!item
-        || typeof item.productId !== "string"
-        || !item.productId
-        || typeof item.name !== "string"
-        || typeof item.image !== "string"
-        || !Number.isInteger(item.unitPriceCents)
-        || item.unitPriceCents < 0
-        || !Number.isInteger(item.quantity)
-        || item.quantity < 1
-        || (item.optionId !== null && typeof item.optionId !== "string")
-        || typeof item.optionName !== "string") {
-        throw new Error("Cart data is invalid.");
+  function getCartDocumentId(productId, optionId) {
+    var encodedOptionId = optionId === null ? "none" : encodeURIComponent(optionId);
+    return encodeURIComponent(productId) + "__" + encodedOptionId;
+  }
+
+  function createAuthRequiredError() {
+    var error = new Error("Please sign in before adding items to your cart.");
+    error.code = "auth-required";
+    return error;
+  }
+
+  function add(product, option) {
+    return authStatePromise.then(function () {
+      if (initializationError) {
+        throw initializationError;
       }
-    });
 
-    return items;
-  }
+      var user = getCurrentUser();
+      if (!user) {
+        throw createAuthRequiredError();
+      }
 
-  function getPriceInCents(price) {
-    var normalizedPrice = String(price || "")
-      .replace(/[^\d.,]/g, "")
-      .replace(",", ".");
+      if (!product || product.id === undefined || product.id === null || !product.name) {
+        throw new Error("Product details are incomplete.");
+      }
 
-    if (!/^\d+(?:\.\d{1,2})?$/.test(normalizedPrice)) {
-      throw new Error("This product has an invalid price.");
-    }
+      var productId = String(product.id);
+      var optionId = option && option.id !== undefined && option.id !== null
+        ? String(option.id)
+        : null;
+      var itemReference = getCartCollection(user).doc(getCartDocumentId(productId, optionId));
 
-    return Math.round(Number(normalizedPrice) * 100);
-  }
+      return firestore.runTransaction(function (transaction) {
+        return transaction.get(itemReference).then(function (snapshot) {
+          var quantity = 0;
+          if (snapshot.exists) {
+            var existingItem = snapshot.data();
+            if (existingItem.productId !== productId
+              || existingItem.optionId !== optionId
+              || !Number.isInteger(existingItem.quantity)
+              || existingItem.quantity < 1
+              || existingItem.quantity >= 99) {
+              throw new Error("Cart item data is invalid or has reached its quantity limit.");
+            }
 
-  function add(product, option, imageUrl) {
-    if (!product || product.id === undefined || product.id === null || !product.name || !imageUrl) {
-      throw new Error("Product details are incomplete.");
-    }
+            quantity = existingItem.quantity;
+          }
 
-    var productId = String(product.id);
-    var optionId = option && option.id !== undefined && option.id !== null
-      ? String(option.id)
-      : null;
-    var optionName = option && option.name ? String(option.name) : "";
-    var items = readCart();
-    var existingItem = items.find(function (item) {
-      return item.productId === productId && item.optionId === optionId;
-    });
-
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      items.push({
-        productId: productId,
-        optionId: optionId,
-        name: String(product.name),
-        image: imageUrl,
-        unitPriceCents: getPriceInCents(product.price),
-        quantity: 1,
-        optionName: optionName
+          transaction.set(itemReference, {
+            productId: productId,
+            optionId: optionId,
+            quantity: quantity + 1,
+            updatedAt: window.firebase.firestore.FieldValue.serverTimestamp()
+          });
+        });
       });
-    }
-
-    localStorage.setItem(storageKey, JSON.stringify(items));
-    return items;
+    });
   }
 
   function remove(productId, optionId) {
-    var items = readCart();
-    var itemIndex = items.findIndex(function (item) {
-      return item.productId === productId && item.optionId === optionId;
-    });
+    return authStatePromise.then(function () {
+      if (initializationError) {
+        throw initializationError;
+      }
 
-    if (itemIndex === -1) {
-      throw new Error("Cart item was not found.");
+      var user = getCurrentUser();
+      if (!user) {
+        throw createAuthRequiredError();
+      }
+
+      return getCartCollection(user)
+        .doc(getCartDocumentId(productId, optionId))
+        .delete();
+    });
+  }
+
+  function getProductCatalog() {
+    if (!catalogPromise) {
+      catalogPromise = fetch(catalogUrl)
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error("Unable to load product data (" + response.status + ").");
+          }
+
+          return response.json();
+        })
+        .then(function (products) {
+          if (!Array.isArray(products)) {
+            throw new Error("Product data is invalid.");
+          }
+
+          productsById = new Map();
+          products.forEach(function (product) {
+            if (product && product.id !== undefined && product.id !== null) {
+              productsById.set(String(product.id), product);
+            }
+          });
+
+          return productsById;
+        })
+        .catch(function (error) {
+          catalogPromise = null;
+          throw error;
+        });
     }
 
-    items.splice(itemIndex, 1);
-    localStorage.setItem(storageKey, JSON.stringify(items));
-    return items;
+    return catalogPromise;
   }
 
   function formatPrice(priceInCents) {
@@ -98,72 +139,222 @@
     }).format(priceInCents / 100);
   }
 
-  function createCartRow(item, template) {
-    var row = template.content.firstElementChild.cloneNode(true);
+  function getPriceInCents(price) {
+    var normalizedPrice = String(price || "")
+      .replace(/[^\d.,]/g, "")
+      .replace(",", ".");
+
+    if (!/^\d+(?:\.\d{1,2})?$/.test(normalizedPrice)) {
+      throw new Error("Product price is invalid.");
+    }
+
+    return Math.round(Number(normalizedPrice) * 100);
+  }
+
+  function getOptionName(product, optionId) {
+    if (optionId === null || !product.select || !Array.isArray(product.select.options)) {
+      return "";
+    }
+
+    var option = product.select.options.find(function (item) {
+      return String(item.id) === optionId;
+    });
+
+    return option ? option.name : "Option " + optionId;
+  }
+
+  function showCartError(message, error) {
+    console.error(message, error);
+    if (!cartElements) {
+      return;
+    }
+
+    cartElements.emptyRow.hidden = true;
+    cartElements.loginRequiredRow.hidden = true;
+    cartElements.total.textContent = "—";
+    cartElements.error.textContent = message;
+    cartElements.error.hidden = false;
+    cartElements.buyButton.disabled = true;
+  }
+
+  function clearCartRows() {
+    cartElements.list.querySelectorAll(".cart-item").forEach(function (row) {
+      row.remove();
+    });
+  }
+
+  function createCartRow(cartItem, product) {
+    var row = cartElements.template.content.firstElementChild.cloneNode(true);
     var cells = row.querySelectorAll('[role="cell"]');
     var image = row.querySelector(".cart-product-image");
     var name = row.querySelector(".cart-product-name");
     var removeButton = row.querySelector(".cart-remove-button");
+    var displayName = product ? product.name : "Unavailable product (" + cartItem.productId + ")";
+    var priceInCents = product ? getPriceInCents(product.price) : null;
 
-    image.src = item.image;
-    image.alt = item.name;
-    name.textContent = item.optionName
-      ? item.name + " - " + item.optionName
-      : item.name;
-    cells[1].textContent = formatPrice(item.unitPriceCents);
-    cells[2].textContent = String(item.quantity);
-    cells[3].textContent = formatPrice(item.unitPriceCents * item.quantity);
+    name.textContent = displayName;
+    var optionName = product ? getOptionName(product, cartItem.optionId) : "";
+    if (optionName) {
+      name.textContent += " - " + optionName;
+    }
+
+    if (product && product.image) {
+      image.src = new URL(product.image, catalogUrl).href;
+      image.alt = displayName;
+    } else {
+      image.hidden = true;
+    }
+
+    cells[1].textContent = priceInCents === null ? "—" : formatPrice(priceInCents);
+    cells[2].textContent = String(cartItem.quantity);
+    cells[3].textContent = priceInCents === null
+      ? "—"
+      : formatPrice(priceInCents * cartItem.quantity);
+
     removeButton.addEventListener("click", function () {
-      try {
-        remove(item.productId, item.optionId);
-        renderCart();
-      } catch (error) {
-        console.error("Could not remove cart item.", error);
-        var errorMessage = document.getElementById("cart-error");
-        errorMessage.textContent = "Unable to remove this item. Please try again.";
-        errorMessage.hidden = false;
-      }
+      remove(cartItem.productId, cartItem.optionId).catch(function (error) {
+        showCartError("Unable to remove this item. Please try again.", error);
+      });
     });
-    return row;
+
+    return {
+      row: row,
+      subtotalInCents: priceInCents === null ? null : priceInCents * cartItem.quantity
+    };
   }
 
-  function renderCart() {
-    var cartList = document.querySelector(".cart-table");
-    if (!cartList) {
+  function renderCart(items) {
+    clearCartRows();
+    cartElements.loginRequiredRow.hidden = true;
+    cartElements.error.hidden = true;
+    cartElements.emptyRow.hidden = items.length > 0;
+
+    var totalInCents = 0;
+    var totalAvailable = true;
+
+    items.forEach(function (cartItem) {
+      if (!cartItem
+        || typeof cartItem.productId !== "string"
+        || !cartItem.productId
+        || (cartItem.optionId !== null && typeof cartItem.optionId !== "string")
+        || !Number.isInteger(cartItem.quantity)
+        || cartItem.quantity < 1) {
+        throw new Error("Cart item data is invalid.");
+      }
+
+      var product = productsById.get(cartItem.productId) || null;
+      var rendered = createCartRow(cartItem, product);
+      rendered.row.classList.add("cart-item");
+      cartElements.list.appendChild(rendered.row);
+
+      if (rendered.subtotalInCents === null) {
+        totalAvailable = false;
+      } else {
+        totalInCents += rendered.subtotalInCents;
+      }
+    });
+
+    cartElements.total.textContent = totalAvailable ? formatPrice(totalInCents) : "—";
+    cartElements.buyButton.disabled = true;
+
+    if (!totalAvailable) {
+      cartElements.error.textContent = "Some products are no longer available. Remove them to update the total.";
+      cartElements.error.hidden = false;
+    }
+  }
+
+  function showLoginRequired() {
+    clearCartRows();
+    cartElements.emptyRow.hidden = true;
+    cartElements.loginRequiredRow.hidden = false;
+    cartElements.error.hidden = true;
+    cartElements.total.textContent = "—";
+    cartElements.buyButton.disabled = true;
+  }
+
+  function subscribeToCart(user) {
+    if (unsubscribeCart) {
+      unsubscribeCart();
+      unsubscribeCart = null;
+    }
+
+    if (!user) {
+      showLoginRequired();
       return;
     }
 
-    var emptyRow = document.getElementById("cart-empty-row");
-    var template = document.getElementById("cart-item-template");
-    var totalElement = document.getElementById("cart-total-value");
-    var buyButton = document.querySelector(".buy-button");
-    var errorMessage = document.getElementById("cart-error");
+    cartElements.loginRequiredRow.hidden = true;
+    getProductCatalog()
+      .then(function () {
+        if (!currentUser || currentUser.uid !== user.uid) {
+          return;
+        }
 
-    try {
-      var items = readCart();
-      cartList.querySelectorAll(".cart-item").forEach(function (row) {
-        row.remove();
+        unsubscribeCart = getCartCollection(user).onSnapshot(function (snapshot) {
+          try {
+            var items = snapshot.docs.map(function (document) {
+              return document.data();
+            });
+            renderCart(items);
+          } catch (error) {
+            showCartError("Unable to display your cart. Please try again.", error);
+          }
+        }, function (error) {
+          showCartError("Unable to load your cloud cart. Check that Firestore is enabled and its rules allow access.", error);
+        });
+      })
+      .catch(function (error) {
+        showCartError("Unable to load product details. Please try again.", error);
       });
+  }
 
-      items.forEach(function (item) {
-        var row = createCartRow(item, template);
-        row.classList.add("cart-item");
-        cartList.appendChild(row);
-      });
+  function initialize() {
+    cartElements = document.querySelector(".cart-table")
+      ? {
+        list: document.querySelector(".cart-table"),
+        emptyRow: document.getElementById("cart-empty-row"),
+        loginRequiredRow: document.getElementById("cart-login-required"),
+        template: document.getElementById("cart-item-template"),
+        total: document.getElementById("cart-total-value"),
+        error: document.getElementById("cart-error"),
+        buyButton: document.querySelector(".buy-button")
+      }
+      : null;
 
-      emptyRow.hidden = items.length > 0;
-      totalElement.textContent = formatPrice(items.reduce(function (total, item) {
-        return total + item.unitPriceCents * item.quantity;
-      }, 0));
-      errorMessage.hidden = true;
-      buyButton.disabled = true;
-    } catch (error) {
-      console.error("Could not load cart.", error);
-      emptyRow.hidden = true;
-      totalElement.textContent = "—";
-      errorMessage.hidden = false;
-      buyButton.disabled = true;
+    firebaseAuth = window.VazerkFirebaseAuth || null;
+    if (!window.firebase
+      || typeof window.firebase.firestore !== "function"
+      || !firebaseAuth) {
+      initializationError = new Error("Firebase Auth and Firestore must be initialized before the cart.");
+      authStateResolved = true;
+      resolveAuthState();
+      if (cartElements) {
+        showCartError("Firebase is not ready. Please refresh the page and try again.", initializationError);
+      }
+      return;
     }
+
+    firestore = window.firebase.firestore();
+    firebaseAuth.onAuthStateChanged(function (user) {
+      currentUser = user || null;
+      if (!authStateResolved) {
+        authStateResolved = true;
+        resolveAuthState();
+      }
+
+      if (cartElements) {
+        subscribeToCart(currentUser);
+      }
+    }, function (error) {
+      initializationError = error;
+      if (!authStateResolved) {
+        authStateResolved = true;
+        resolveAuthState();
+      }
+      if (cartElements) {
+        showCartError("Unable to check your sign-in status. Please refresh the page.", error);
+      }
+    });
   }
 
   window.VazerkCart = {
@@ -172,8 +363,8 @@
   };
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", renderCart);
+    document.addEventListener("DOMContentLoaded", initialize);
   } else {
-    renderCart();
+    initialize();
   }
 })();

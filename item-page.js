@@ -363,18 +363,22 @@
             cartLink.dataset.pending = "true";
             cartLink.setAttribute("aria-busy", "true");
 
-            try {
-              var imageUrl = detailItem.image
-                ? new URL(detailItem.image, itemsUrl).href
-                : "";
-              window.VazerkCart.add(detailItem, selectedOption, imageUrl);
-              window.location.href = "cart.html";
-            } catch (error) {
-              console.error("Nao foi possivel adicionar o produto ao carrinho.", error);
-              alert(error.message || "Erro ao adicionar o produto ao carrinho.");
-              cartLink.dataset.pending = "false";
-              cartLink.removeAttribute("aria-busy");
-            }
+            window.VazerkCart.add(detailItem, selectedOption)
+              .then(function () {
+                window.location.href = "cart.html";
+              })
+              .catch(function (error) {
+                cartLink.dataset.pending = "false";
+                cartLink.removeAttribute("aria-busy");
+
+                if (error.code === "auth-required" && typeof window.VazerkOpenAuthModal === "function") {
+                  window.VazerkOpenAuthModal();
+                  return;
+                }
+
+                console.error("Nao foi possivel adicionar o produto ao carrinho.", error);
+                alert(error.message || "Erro ao adicionar o produto ao carrinho.");
+              });
           });
         }
 

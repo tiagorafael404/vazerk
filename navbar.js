@@ -143,6 +143,8 @@
     showSlidingWindow(authModal);
   }
 
+  window.VazerkOpenAuthModal = forceOpenAuthModal;
+
   function handleContactClick() {
     var contactModal = document.getElementById("contact");
     var authModal = document.getElementById("auth-modal");
@@ -215,6 +217,7 @@
 
     var auth = window.firebase.auth();
     firebaseAuthInstance = auth;
+    window.VazerkFirebaseAuth = auth;
 
     auth.setPersistence(window.firebase.auth.Auth.Persistence.LOCAL).catch(function (error) {
       console.error("Erro ao definir persistencia do login:", error);
