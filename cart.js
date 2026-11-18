@@ -13,6 +13,8 @@
   var productsById = new Map();
   var catalogPromise = null;
   var unsubscribeCart = null;
+  var checkoutAvailable = false;
+  var checkoutPending = false;
   var catalogUrl = new URL("items.json", window.location.href).href;
 
   function getCurrentUser() {
@@ -171,6 +173,8 @@
     cartElements.total.textContent = "—";
     cartElements.error.textContent = message;
     cartElements.error.hidden = false;
+    checkoutAvailable = false;
+    checkoutPending = false;
     cartElements.buyButton.disabled = true;
   }
 
@@ -252,7 +256,8 @@
     });
 
     cartElements.total.textContent = totalAvailable ? formatPrice(totalInCents) : "—";
-    cartElements.buyButton.disabled = true;
+    checkoutAvailable = items.length > 0 && totalAvailable;
+    cartElements.buyButton.disabled = !checkoutAvailable || checkoutPending;
 
     if (!totalAvailable) {
       cartElements.error.textContent = "Some products are no longer available. Remove them to update the total.";
@@ -266,7 +271,51 @@
     cartElements.loginRequiredRow.hidden = false;
     cartElements.error.hidden = true;
     cartElements.total.textContent = "—";
+    checkoutAvailable = false;
+    checkoutPending = false;
     cartElements.buyButton.disabled = true;
+  }
+
+  function checkout() {
+    return requireAuthenticatedUser().then(function (user) {
+      if (typeof window.comprarCarrinho !== "function") {
+        throw new Error("Checkout is unavailable. Please refresh the page and try again.");
+      }
+
+      return getCartCollection(user).get().then(function (snapshot) {
+        var items = snapshot.docs.map(function (document) {
+          return document.data();
+        });
+
+        if (items.length === 0) {
+          throw new Error("Your cart is empty.");
+        }
+
+        return window.comprarCarrinho(items);
+      });
+    });
+  }
+
+  function handleCheckout() {
+    if (!checkoutAvailable) {
+      return;
+    }
+
+    cartElements.buyButton.disabled = true;
+    checkoutPending = true;
+    cartElements.buyButton.setAttribute("aria-busy", "true");
+    cartElements.error.hidden = true;
+
+    checkout().then(function () {
+      cartElements.buyButton.removeAttribute("aria-busy");
+    }, function (error) {
+      console.error("Unable to start cart checkout.", error);
+      cartElements.error.textContent = error.message || "Unable to start checkout. Please try again.";
+      cartElements.error.hidden = false;
+      checkoutPending = false;
+      cartElements.buyButton.removeAttribute("aria-busy");
+      cartElements.buyButton.disabled = !checkoutAvailable;
+    });
   }
 
   function subscribeToCart(user) {
@@ -274,6 +323,10 @@
       unsubscribeCart();
       unsubscribeCart = null;
     }
+
+    checkoutAvailable = false;
+    checkoutPending = false;
+    cartElements.buyButton.disabled = true;
 
     if (!user) {
       showLoginRequired();
@@ -317,6 +370,10 @@
         buyButton: document.querySelector(".buy-button")
       }
       : null;
+
+    if (cartElements) {
+      cartElements.buyButton.addEventListener("click", handleCheckout);
+    }
 
     firebaseAuth = window.VazerkFirebaseAuth || null;
     if (!window.firebase
