@@ -57,7 +57,7 @@
 
         .cart-table {
             width: 100%;
-            min-width: 520px;
+            min-width: 600px;
             margin: 0;
             padding: 0;
             list-style: none;
@@ -65,14 +65,15 @@
 
         .cart-row {
             display: grid;
-            grid-template-columns: minmax(0, 2fr) repeat(3, minmax(80px, 1fr));
+            grid-template-columns: minmax(0, 2fr) repeat(3, minmax(80px, 1fr)) 48px;
             align-items: center;
             text-align: left;
+                        border-bottom: 1px solid #e8e8e8;
+
         }
 
         .cart-row > * {
             padding: 16px 12px;
-            border-bottom: 1px solid #e8e8e8;
         }
 
         .cart-header {
@@ -101,6 +102,28 @@
             font-weight: 600;
         }
 
+        .cart-remove-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border: 0;
+            border-radius: 6px;
+            background: transparent;
+            color: #b42318;
+            cursor: pointer;
+            font-size: 22px;
+        }
+
+        .cart-remove-button:hover {
+            background: #fee4e2;
+        }
+
+        .cart-remove-button:focus-visible {
+            outline: 2px solid #b42318;
+            outline-offset: 2px;
+        }
+
         .empty-cart {
             color: #666;
             text-align: center;
@@ -108,6 +131,11 @@
 
         .empty-cart span {
             grid-column: 1 / -1;
+        }
+
+        .cart-error {
+            color: #b42318;
+            line-height: 1.5;
         }
 
         .continue-shopping {
@@ -178,9 +206,10 @@
                             <span role="columnheader">Price</span>
                             <span role="columnheader">Quantity</span>
                             <span role="columnheader">Subtotal</span>
+                            <span role="columnheader" aria-label="Actions"></span>
                         </li>
-                        <li class="cart-row empty-cart" role="row">
-                            <span role="cell" aria-colspan="4">Your cart is empty.</span>
+                        <li class="cart-row empty-cart" id="cart-empty-row" role="row">
+                            <span role="cell" aria-colspan="5">Your cart is empty.</span>
                         </li>
                     </ul>
                     <template id="cart-item-template">
@@ -192,9 +221,15 @@
                             <span role="cell"></span>
                             <span role="cell"></span>
                             <span role="cell"></span>
+                            <span class="cart-action" role="cell">
+                                <button class="cart-remove-button" type="button" aria-label="Remove item" title="Remove item">
+                                    <i class="bx bx-trash" aria-hidden="true"></i>
+                                </button>
+                            </span>
                         </li>
                     </template>
                 </div>
+                <p class="cart-error" id="cart-error" role="alert" hidden>Unable to load cart data. Please check your browser storage.</p>
                 <a class="continue-shopping" href="/">Continue shopping</a>
             </section>
 
@@ -202,9 +237,9 @@
                 <h2 id="cart-summary-title">Order summary</h2>
                 <div class="cart-total">
                     <span>Total</span>
-                    <span>€0.00</span>
+                    <span id="cart-total-value">€0.00</span>
                 </div>
-                <button class="buy-button" type="button" disabled>Buy</button>
+                <button class="buy-button" type="button" disabled title="Cart checkout is not available yet.">Buy</button>
             </aside>
         </div>
     </main>
@@ -214,6 +249,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="cookies.js"></script>
+    <script src="cart.js"></script>
     <script src="navbar.js"></script>
 </body>
 </html>

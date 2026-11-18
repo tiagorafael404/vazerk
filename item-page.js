@@ -320,6 +320,7 @@
         var productPrice = document.querySelector(".product_price a");
         var productDescription = document.querySelector(".product_description a");
         var optionsTitle = document.querySelector(".options_title a");
+        var cartLink = document.getElementById("cartLink");
         var buyLink = document.getElementById("buyLink");
         var optionsList = document.querySelector(".options_list ul");
         var selectedOption = null;
@@ -342,6 +343,39 @@
           } else {
             optionsTitle.textContent = (detailItem.select && detailItem.select.label) || optionsTitle.textContent;
           }
+        }
+
+        if (cartLink) {
+          cartLink.href = "cart.html";
+          cartLink.setAttribute("aria-disabled", "false");
+          cartLink.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            if (cartLink.dataset.pending === "true") {
+              return;
+            }
+
+            if (!window.VazerkCart || typeof window.VazerkCart.add !== "function") {
+              alert("O carrinho nao esta disponivel.");
+              return;
+            }
+
+            cartLink.dataset.pending = "true";
+            cartLink.setAttribute("aria-busy", "true");
+
+            try {
+              var imageUrl = detailItem.image
+                ? new URL(detailItem.image, itemsUrl).href
+                : "";
+              window.VazerkCart.add(detailItem, selectedOption, imageUrl);
+              window.location.href = "cart.html";
+            } catch (error) {
+              console.error("Nao foi possivel adicionar o produto ao carrinho.", error);
+              alert(error.message || "Erro ao adicionar o produto ao carrinho.");
+              cartLink.dataset.pending = "false";
+              cartLink.removeAttribute("aria-busy");
+            }
+          });
         }
 
         if (buyLink) {
