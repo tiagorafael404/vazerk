@@ -397,15 +397,30 @@
               return;
             }
 
+            if (!window.VazerkCart || typeof window.VazerkCart.requireAuthenticatedUser !== "function") {
+              alert("A autenticacao nao esta disponivel.");
+              return;
+            }
+
             buyLink.dataset.pending = "true";
             buyLink.setAttribute("aria-busy", "true");
 
-            comprar(detailItem.id, selectedOption && selectedOption.id).catch(function (error) {
-              console.error("Nao foi possivel iniciar o pagamento.", error);
-              alert(error.message || "Erro ao criar pagamento.");
-              buyLink.dataset.pending = "false";
-              buyLink.removeAttribute("aria-busy");
-            });
+            window.VazerkCart.requireAuthenticatedUser()
+              .then(function () {
+                return comprar(detailItem.id, selectedOption && selectedOption.id);
+              })
+              .catch(function (error) {
+                buyLink.dataset.pending = "false";
+                buyLink.removeAttribute("aria-busy");
+
+                if (error.code === "auth-required" && typeof window.VazerkOpenAuthModal === "function") {
+                  window.VazerkOpenAuthModal();
+                  return;
+                }
+
+                console.error("Nao foi possivel iniciar o pagamento.", error);
+                alert(error.message || "Erro ao criar pagamento.");
+              });
           });
         }
 

@@ -29,12 +29,12 @@
   }
 
   function createAuthRequiredError() {
-    var error = new Error("Please sign in before adding items to your cart.");
+    var error = new Error("Please sign in to continue.");
     error.code = "auth-required";
     return error;
   }
 
-  function add(product, option) {
+  function requireAuthenticatedUser() {
     return authStatePromise.then(function () {
       if (initializationError) {
         throw initializationError;
@@ -45,6 +45,12 @@
         throw createAuthRequiredError();
       }
 
+      return user;
+    });
+  }
+
+  function add(product, option) {
+    return requireAuthenticatedUser().then(function (user) {
       if (!product || product.id === undefined || product.id === null || !product.name) {
         throw new Error("Product details are incomplete.");
       }
@@ -83,16 +89,7 @@
   }
 
   function remove(productId, optionId) {
-    return authStatePromise.then(function () {
-      if (initializationError) {
-        throw initializationError;
-      }
-
-      var user = getCurrentUser();
-      if (!user) {
-        throw createAuthRequiredError();
-      }
-
+    return requireAuthenticatedUser().then(function (user) {
       return getCartCollection(user)
         .doc(getCartDocumentId(productId, optionId))
         .delete();
@@ -358,6 +355,7 @@
   }
 
   window.VazerkCart = {
+    requireAuthenticatedUser: requireAuthenticatedUser,
     add: add,
     remove: remove
   };
