@@ -57,7 +57,7 @@
 
         .cart-table {
             width: 100%;
-            min-width: 560px;
+            min-width: 580px;
             margin: 0;
             padding: 0;
             list-style: none;
@@ -65,11 +65,15 @@
 
         .cart-row {
             display: grid;
-            grid-template-columns: minmax(160px, 1fr) 84px 84px 96px 44px;
+            grid-template-columns: 280px 100px 100px 100px 44px;
             align-items: center;
             text-align: left;
             border-bottom: 1px solid #e8e8e8;
 
+        }
+
+        .cart-row[hidden] {
+            display: none;
         }
 
         .cart-row > * {
