@@ -134,7 +134,7 @@
               '<textarea name="message" id="message" placeholder="..." required></textarea>' +
               '<button type="submit">Send</button>' +
               '<input type="hidden" name="_captcha" value="false">' +
-              '<input type="hidden" name="_next" value="https://vwgolf.net">' +
+              '<input type="hidden" name="_next" value="https://vazerk.net">' +
               '<input type="hidden" name="_subject" value="X2SCALE">' +
               '<input type="text" name="_honey" style="display:none">' +
               '<input type="hidden" name="_template" value="box">' +

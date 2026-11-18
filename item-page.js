@@ -1,8 +1,8 @@
 (function () {
-  if (window.__vwGolfItemPageLoaded) {
+  if (window.__vazerkItemPageLoaded) {
     return;
   }
-  window.__vwGolfItemPageLoaded = true;
+  window.__vazerkItemPageLoaded = true;
 
   var currentDetailItem = null;
 

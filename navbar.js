@@ -1,8 +1,8 @@
 (function () {
-  if (window.__vwGolfNavbarAuthLoaded) {
+  if (window.__vazerkNavbarAuthLoaded) {
     return;
   }
-  window.__vwGolfNavbarAuthLoaded = true;
+  window.__vazerkNavbarAuthLoaded = true;
 
   var authVisualStateKey = "loggedIn";
   var firebaseAuthInstance = null;
@@ -192,11 +192,11 @@
   }
 
   function initializeFirebaseAuth() {
-    if (window.__vwGolfAuthInitialized) {
+    if (window.__vazerkAuthInitialized) {
       return;
     }
 
-    window.__vwGolfAuthInitialized = true;
+    window.__vazerkAuthInitialized = true;
 
     if (!window.firebase) {
       return;
