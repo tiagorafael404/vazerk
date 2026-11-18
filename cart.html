@@ -1,0 +1,219 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Vazerk</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fjalla+One|Libre+Baskerville">
+    <link rel="stylesheet" href="home/css.css">
+    <link rel="icon" href="logo.ico" type="image/x-icon">
+    
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .cart-page {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 28px;
+        }
+
+        .cart-page h1 {
+            margin: 0 0 28px;
+            font-family: "Fjalla One", sans-serif;
+            text-transform: uppercase;
+        }
+
+        .cart-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
+            align-items: start;
+            gap: 28px;
+        }
+
+        .cart-items,
+        .cart-summary {
+            padding: 24px;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .cart-items {
+            min-width: 0;
+        }
+
+        .cart-items h2,
+        .cart-summary h2 {
+            margin: 0 0 20px;
+            font-family: "Fjalla One", sans-serif;
+            text-transform: uppercase;
+        }
+
+        .cart-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .cart-table {
+            width: 100%;
+            min-width: 520px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .cart-row {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) repeat(3, minmax(80px, 1fr));
+            align-items: center;
+            text-align: left;
+        }
+
+        .cart-row > * {
+            padding: 16px 12px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .cart-header {
+            color: #555;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .cart-product {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cart-product-image {
+            width: 64px;
+            height: 64px;
+            flex: 0 0 64px;
+            border-radius: 8px;
+            background: #f6f6f6;
+            object-fit: cover;
+        }
+
+        .cart-product-name {
+            color: #111;
+            font-weight: 600;
+        }
+
+        .empty-cart {
+            color: #666;
+            text-align: center;
+        }
+
+        .empty-cart span {
+            grid-column: 1 / -1;
+        }
+
+        .continue-shopping {
+            display: inline-block;
+            margin-top: 20px;
+            color: #111;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 16px 0;
+            border-top: 1px solid #e8e8e8;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .buy-button {
+            width: 100%;
+            margin-top: 12px;
+            padding: 14px 20px;
+            border: 0;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            cursor: pointer;
+            font-family: "Fjalla One", sans-serif;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+
+        .buy-button:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 760px) {
+            .cart-page {
+                margin: 40px auto;
+                padding: 0 16px;
+            }
+
+            .cart-layout {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .cart-items,
+            .cart-summary {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="cart-page">
+        <h1>Shopping cart</h1>
+        <div class="cart-layout">
+            <section class="cart-items" aria-labelledby="cart-items-title">
+                <h2 id="cart-items-title">Items</h2>
+                <div class="cart-table-wrapper">
+                    <ul class="cart-table" role="table" aria-label="Cart items">
+                        <li class="cart-row cart-header" role="row">
+                            <span role="columnheader">Product</span>
+                            <span role="columnheader">Price</span>
+                            <span role="columnheader">Quantity</span>
+                            <span role="columnheader">Subtotal</span>
+                        </li>
+                        <li class="cart-row empty-cart" role="row">
+                            <span role="cell" aria-colspan="4">Your cart is empty.</span>
+                        </li>
+                    </ul>
+                    <template id="cart-item-template">
+                        <li class="cart-row" role="row">
+                            <span class="cart-product" role="cell">
+                                <img class="cart-product-image" alt="">
+                                <span class="cart-product-name"></span>
+                            </span>
+                            <span role="cell"></span>
+                            <span role="cell"></span>
+                            <span role="cell"></span>
+                        </li>
+                    </template>
+                </div>
+                <a class="continue-shopping" href="/">Continue shopping</a>
+            </section>
+
+            <aside class="cart-summary" aria-labelledby="cart-summary-title">
+                <h2 id="cart-summary-title">Order summary</h2>
+                <div class="cart-total">
+                    <span>Total</span>
+                    <span>€0.00</span>
+                </div>
+                <button class="buy-button" type="button" disabled>Buy</button>
+            </aside>
+        </div>
+    </main>
+
+    <script src="shared-modals.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="cookies.js"></script>
+    <script src="navbar.js"></script>
+</body>
+</html>
