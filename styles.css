@@ -892,7 +892,7 @@ body {
         flex-direction: row;
         width: 100%;
         height: auto;
-        margin: 15 auto auto auto;
+        margin: 15 auto 50 auto;
         justify-content: space-between;
     }
 
@@ -901,6 +901,7 @@ body {
         height: auto;
         display: flex;
         flex-direction: row;
+
         
     }
 
@@ -910,6 +911,8 @@ body {
         height: auto;
         background-color: white;
         border-radius: 10px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.30);
+
     }
 
     .p-container .info {
@@ -993,6 +996,8 @@ body {
         margin: auto auto auto 0;
         background-color: white;
         border-radius: 10px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.30);
+
         
     }
 
@@ -1003,6 +1008,8 @@ body {
         background-position: center;
         border-radius: 10px;
         margin: auto;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.30);
+
     }
 
     .p-container .gallery ul {
@@ -1082,36 +1089,40 @@ body {
 .options .options_list li {
 
         height: 45px;
-        background-color: #000000;
-        margin: auto;
+        width: auto;
+        background-color: #ffffff;
         border-style: solid;
         border-color: black;
         border-width: 0;
         border-radius: 35px;
-        margin: 0 5 10 0;
+        margin: 0 5 10 5;
         
     }
 
 .options .options_list li.selected {
-        border-width: 4px;
-        border-color: black;
-        border-style: solid;
+
+
+    }
+
+.options .options_list li.selected a {
+
+        font-weight: bold;
+        color: #ffffff;
+        background-color: #000000;
 
     }
 
 .options .options_list li a {
         text-decoration: none;
-        color: #fff;
+        color: #000000;
         text-transform: none;
         margin: auto;
-        height: 100%;
-        width: 100%;
         justify-content: center;
         align-items: center;
-        font-size: 16px;
-        font-weight: bold;
-        padding: 0 15px;
-
+        font-size: 18px;
+        font-weight: normal;
+        padding: 0 20 0 20;
+        width: auto;
     }
 
     .p-container .pay_buttons {
@@ -1214,7 +1225,7 @@ body {
     .delivery .delivery_info {
         width: 100%;
         height: auto;
-        margin: 0 auto 10 0;
+        margin: 0 auto 20 0;
         color: black;
         text-transform: none;
         text-decoration: none;
@@ -1387,18 +1398,14 @@ body {
     .options .options_list li {
 
         height: 45px;
-        background-color: #000000;
         margin: auto;
-        border-style: solid;
-        border-color: black;
+
         border-width: 0;
-        border-radius: 35px;
         margin: 0 5 10 0;
         
     }
 
 .options .options_list li.selected {
-        border-width: 4px;
     }
 
     }
