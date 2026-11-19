@@ -392,7 +392,7 @@ a{
         .products .info{
             margin-top: 7;
             width: 100%;
-            height: 60;
+            height: auto;
             text-transform: none;
     
         }
@@ -405,7 +405,8 @@ a{
             font-weight: bold;
             font-family: sans-serif;
             width: 100%;
-            height: 50%;
+            height: auto;
+            margin: 0 0 0 0;
         }
     
         .price{
@@ -416,7 +417,8 @@ a{
             font-weight: bold;
             font-family: sans-serif;
             width: 100%;
-            height: 50%;
+            height: auto;
+            margin: 10 0 0 0;
             
         }
     
@@ -427,7 +429,7 @@ a{
             text-transform: none;
             font-weight: bold;
             display: flex;
-            height: 100%;
+            height: auto;
             align-items: center;
             justify-content: left;
             
@@ -443,7 +445,7 @@ a{
             align-items: center;
             justify-content: left;
             display: flex;
-            height: 100%;
+            height: auto;
             font-family: "Space Mono", monospace;
             
         }
