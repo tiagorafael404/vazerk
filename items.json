@@ -44,8 +44,8 @@
     "name": "White T-Shirt",
     "price": "10,99€",
     "image": "p/p3/photo.png",
-    "image2": "golf4/gearshift/3/2.jpg",
-    "image3": "golf4/gearshift/3/3.jpg",
+    "image2": "p/p3/photo2.png",
+    "image3": "p/p3/photo3.png",
     "url": "item.html?item=3",
     "description": "White T-shirt.",
     "select": {
