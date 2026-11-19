@@ -56,11 +56,12 @@ a{
  
 
     .introdution {
-        width: 70%;
-        background-image: url("vazerk ad1.jpg");
+        width: 100%;
+        background-image: url("vazerk ad3.jpg");
         background-size: cover;
-        aspect-ratio: 5 / 1;
-        margin: 15 auto 15 auto;
+        aspect-ratio: 7 / 1;
+        margin: 0 auto 15 auto;
+        background-position: center 35%;
 
     }
 
@@ -305,11 +306,12 @@ a{
 
         .introdution {
             width: 100%;
-            background-image: url("vazerk ad1.jpg");
+            background-image: url("vazerk ad3.jpg");
             background-size: cover;
-            aspect-ratio: 5 / 1;
-            margin: 15 auto 15 auto;
-
+            background-position: center 20%;
+            background-repeat: no-repeat;
+            aspect-ratio: 6 / 1;
+            margin: 0 auto 15 auto;
         }
 
         .products {

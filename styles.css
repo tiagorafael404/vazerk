@@ -149,10 +149,26 @@ body {
 
 
 
-    .logo {
+    .navbar .logo {
         margin: auto auto auto auto;
         width: 30%;
+        height: 50%;
+        font-family: "Times New Roman", serif;
+        font-size: 50px;
+    }
+
+    .logo a {
+        text-decoration: none;
+        color: rgb(176, 20, 20);
+        font-size: 50px;
+        text-transform: none;
+        margin: auto;
         height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Times New Roman", serif;
     }
 
 
