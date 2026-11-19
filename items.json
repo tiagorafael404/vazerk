@@ -3,22 +3,22 @@
     "id": 1,
     "url": "item.html?item=1",
     "category": "sunglasses",
-    "name": "Black Sunglasses",
+    "name": "Black Rectangular Sunglasses",
     "price": "3,00€",
     "image": "p/p1/photo.png",
     "image2": "p/p1/photo2.png",
     "image3": "p/p1/photo3.png",
-    "description": "Black sunglasses."
+    "description": "Black sunglasses with a rectangular frame and dark lenses. Their understated design makes them an easy accessory for everyday outfits."
   },
   {
     "id": 2,
     "category": "tshirt",
-    "name": "Black T-Shirt",
+    "name": "Black Logo T-Shirt",
     "price": "1,00€",
     "image": "p/p2/photo.png",
     "image2": "p/p2/photo2.png",
     "url": "item.html?item=2",
-    "description": "Black T-shirt.",
+    "description": "Black short-sleeve T-shirt with a crew neckline and a small white chest graphic. Its minimal design pairs easily with casual outfits. Available in sizes S, M, and L.",
     "select": {
       "label": "Select Size",
       "options": [
@@ -41,13 +41,13 @@
   {
     "id": 3,
     "category": "tshirt",
-    "name": "White T-Shirt",
+    "name": "Outfielders Raglan T-Shirt",
     "price": "10,99€",
     "image": "p/p3/photo.png",
     "image2": "p/p3/photo2.png",
     "image3": "p/p3/photo3.png",
     "url": "item.html?item=3",
-    "description": "White T-shirt.",
+    "description": "Off-white raglan T-shirt with dark sleeves, a crew neckline, and a prominent Outfielders baseball-inspired front graphic. Available in sizes S, M, and L.",
     "select": {
       "label": "Select Size",
       "options": [
@@ -70,13 +70,13 @@
   {
     "id": 4,
     "category": "tshirt",
-    "name": "T-Shirt",
+    "name": "Black Daily Gallery Sweater",
     "price": "10,99€",
     "image": "p/p4/photo.jpg",
     "image2": "p/p4/photo2.jpg",
     "image3": "p/p4/photo3.jpg",
     "url": "item.html?item=4",
-    "description": "T-shirt.",
+    "description": "Black long-sleeve crewneck sweater with ribbed cuffs and hem and a bold DAILY GALLERY graphic across the front. Available in sizes S, M, and L.",
     "select": {
       "label": "Select Size",
       "options": [
@@ -97,57 +97,57 @@
   },
   {
     "id": 5,
-    "name": "5/6-Speed Gearshift for VW Golf 4",
+    "name": "Light Blue Crewneck Sweater",
     "price": "10,99€",
     "image": "p/p5/photo.jpg",
     "image2": "p/p5/photo2.jpg",
     "image3": "p/p5/photo3.jpg",
     "image4": "p/p5/photo4.jpg",
     "url": "item.html?item=5",
-    "description": "5/6-speed gearshift for VW Golf 4.",
+    "description": "Light blue long-sleeve crewneck sweater with a clean solid-color design, ribbed cuffs, and a ribbed hem. Available in sizes S, M, and L.",
     "select": {
-      "label": "Select Speed",
+      "label": "Select Size",
       "options": [
         {
           "id": 1,
-          "name": "5 Speed"
+          "name": "S"
         },
         {
           "id": 2,
-          "name": "6 Speed"
+          "name": "M"
         },
         {
           "id": 3,
-          "name": "5/6 Speed"
+          "name": "L"
         }
       ]
     }
   },
 
   {
-    "id": 5,
-    "name": "5/6-Speed Gearshift for VW Golf 4",
+    "id": 6,
+    "name": "Black Contrast-Collar Polo Sweater",
     "price": "10,99€",
-    "image": "p/p5/photo.jpg",
-    "image2": "p/p5/photo2.jpg",
-    "image3": "p/p5/photo3.jpg",
-    "image4": "p/p5/photo4.jpg",
-    "url": "item.html?item=5",
-    "description": "5/6-speed gearshift for VW Golf 4.",
+    "image": "p/p6/photo.jpg",
+    "image2": "p/p6/photo2.jpg",
+    "image3": "p/p6/photo3.jpg",
+    "image4": "p/p6/photo4.jpg",
+    "url": "item.html?item=6",
+    "description": "Black long-sleeve polo-style sweater with a contrasting light-colored collar and front placket, finished with ribbed cuffs and hem. Available in sizes S, M, and L.",
     "select": {
-      "label": "Select Speed",
+      "label": "Select Size",
       "options": [
         {
           "id": 1,
-          "name": "5 Speed"
+          "name": "S"
         },
         {
           "id": 2,
-          "name": "6 Speed"
+          "name": "M"
         },
         {
           "id": 3,
-          "name": "5/6 Speed"
+          "name": "L"
         }
       ]
     }

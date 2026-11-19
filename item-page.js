@@ -155,12 +155,14 @@
         function createProductLi(item) {
           var li = document.createElement("li");
           li.innerHTML =
-            '<a class="product-link" href="#">'
+            '<div class="area">'
+            + '<a class="product-link" href="#">'
             + '<div class="image"></div>'
             + "</a>"
             + '<div class="info">'
             + '<div class="name"><a class="name-link" href="#"></a></div>'
             + '<div class="price"><a class="price-text"></a></div>'
+            + "</div>"
             + "</div>";
 
           fillProductLi(li, item);
