@@ -180,23 +180,53 @@ body {
         height: 100%;
         align-items: right;
         justify-content: right;
+        display: flex;
+        flex-direction: row;
     }
 
 
     .nav-login {
         width: 100;
         height: 100%;
-
         margin: auto 0 auto auto;
         cursor: pointer;
+        border-radius: 15px;
+
     }
 
     .nav-logout {
         width: 100;
         height: 100%;
-
+        
         margin: auto 0 auto auto;
         cursor: pointer;
+    }
+
+    .nav-cart {
+        width: 70;
+        height: 100%;
+        margin: auto 0 auto 0;
+        cursor: pointer;
+        display: flex;
+    }
+
+    .nav-cart a {
+        text-decoration: none;
+        color: black;
+        font-size: 20px;
+        text-transform: none;
+        margin: auto;
+        height: 100%;
+        width: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nav-cart i {
+        font-size: 30px;
+        margin: auto;
+        width: auto;
     }
 
     .more a {
@@ -214,6 +244,8 @@ body {
 
     .more a:hover {
         background-color: rgb(16, 16, 16, 0.5);
+        border-radius: 15px;
+
         /* Nova cor de fundo quando o mouse está sobre o botão */
     }
 
@@ -1456,8 +1488,10 @@ body {
         margin: auto 15 auto 15;
     }
 
+
+
     .navbar-phone .nav4 i{
-        font-size: 35;
+        font-size: 30px;
     }
 
     .content {
@@ -1514,6 +1548,8 @@ body {
         justify-items: center;
 
     }
+
+
 
 
     .cookies-box {

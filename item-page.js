@@ -320,10 +320,16 @@
         var productPrice = document.querySelector(".product_price a");
         var productDescription = document.querySelector(".product_description a");
         var optionsTitle = document.querySelector(".options_title a");
+        var optionsTitleContainer = document.querySelector(".options_title");
         var cartLink = document.getElementById("cartLink");
         var buyLink = document.getElementById("buyLink");
         var optionsList = document.querySelector(".options_list ul");
+        var hasOptions = detailItem.select && Array.isArray(detailItem.select.options) && detailItem.select.options.length > 0;
         var selectedOption = null;
+
+        if (optionsTitleContainer) {
+          optionsTitleContainer.style.display = hasOptions ? "" : "none";
+        }
 
         if (productName) {
           productName.textContent = detailItem.name || productName.textContent;
@@ -424,7 +430,7 @@
           });
         }
 
-        if (optionsList && detailItem.select && Array.isArray(detailItem.select.options) && detailItem.select.options.length > 0) {
+        if (optionsList && hasOptions) {
           optionsList.innerHTML = "";
           detailItem.select.options.forEach(function (option, index) {
             var li = document.createElement("li");
