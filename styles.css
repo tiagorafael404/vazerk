@@ -1,5 +1,5 @@
-.navbar a {
-    font-family: "Fjalla One", sans-serif;
+.navbar a, .navbar-phone a, .navbar-phone {
+    font-family: "Poppins", sans-serif;
 }
 
 html {
@@ -1432,6 +1432,7 @@ body {
         justify-content: space-between;
         align-items: center;
         
+        
     }
 
 
@@ -1443,7 +1444,7 @@ body {
         margin: auto;
 
         color: black;
-        font-size: 25px;
+        font-size: 20px;
         text-decoration: none;
     }
 
@@ -1459,7 +1460,6 @@ body {
 
     .navbar-phone .nav2 a{
         margin: auto auto auto 0;
-        font-family: "Space Mono", monospace;
 
     }
 
@@ -1468,7 +1468,6 @@ body {
         display: flex;
         flex-direction: row;
         align-items: center;
-        font-family: "Space Mono", monospace;
 
     }
 
@@ -1480,7 +1479,6 @@ body {
         font-size: 20px;
         font-weight: normal;
         margin: auto auto auto 5;
-        font-family: "Space Mono", monospace;
 
 
     }
