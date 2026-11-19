@@ -66,7 +66,7 @@
       '<div class="content">' +
         '<div class="menu3" id="menu">' +
           '<ul>' +
-            '<li><a href="/home.html" class="menubutton">Home</a></li>' +
+            '<li><a href="/" class="menubutton">Home</a></li>' +
             '<li id="contactme-phone"><a class="menubutton">Contact</a></li>' +
             '<li><a class="menubutton" href="aboutus.html">About us</a></li>' +
           '</ul>' +
