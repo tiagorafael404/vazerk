@@ -153,13 +153,12 @@ body {
         margin: auto auto auto auto;
         width: 30%;
         height: 50%;
-        font-family: "Times New Roman", serif;
         font-size: 50px;
     }
 
     .logo a {
         text-decoration: none;
-        color: rgb(176, 20, 20);
+        color: rgb(0, 0, 0);
         font-size: 50px;
         text-transform: none;
         margin: auto;
