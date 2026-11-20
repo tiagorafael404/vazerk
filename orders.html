@@ -1,0 +1,221 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Vazerk</title>
+    <link rel="icon" href="logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fjalla+One|Libre+Baskerville">
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .orders-page {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 28px;
+        }
+
+        .orders-page h1 {
+            margin: 0 0 8px;
+            font-family: "Fjalla One", sans-serif;
+            text-transform: uppercase;
+        }
+
+        .orders-description {
+            margin: 0 0 28px;
+            color: #666;
+        }
+
+        .orders-panel {
+            padding: 24px;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .orders-list {
+            display: grid;
+            gap: 16px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .order-card {
+            padding: 20px;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+        }
+
+        .order-card-header,
+        .order-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .order-card-header {
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .order-reference,
+        .order-date,
+        .order-total-label {
+            display: block;
+        }
+
+        .order-reference,
+        .order-total {
+            color: #111;
+            font-weight: 700;
+        }
+
+        .order-date,
+        .order-total-label {
+            margin-top: 4px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .order-status {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #e8f5e9;
+            color: #216e39;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .order-items {
+            display: grid;
+            gap: 12px;
+            margin: 0;
+            padding: 16px 0;
+            list-style: none;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .orders-state {
+            padding: 36px 16px;
+            color: #666;
+            text-align: center;
+        }
+
+        .orders-state[hidden],
+        .orders-list[hidden] {
+            display: none;
+        }
+
+        .orders-state-icon {
+            display: block;
+            margin-bottom: 12px;
+            color: #888;
+            font-size: 40px;
+        }
+
+        .orders-state h2 {
+            margin: 0 0 8px;
+            color: #222;
+            font-family: "Fjalla One", sans-serif;
+            font-size: 22px;
+            font-weight: normal;
+            text-transform: uppercase;
+        }
+
+        .orders-state p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .orders-error {
+            color: #b42318;
+        }
+
+        .orders-continue-shopping {
+            display: inline-block;
+            margin-top: 20px;
+            color: #111;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .orders-page {
+                margin: 40px auto;
+                padding: 0 16px;
+            }
+
+            .orders-panel {
+                padding: 16px;
+            }
+
+            .order-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script src="shared-modals.js"></script>
+
+    <main class="orders-page">
+        <h1>My Orders</h1>
+        <p class="orders-description">View the purchases made with your account.</p>
+
+        <section class="orders-panel" aria-label="Purchase history">
+            <div class="orders-state" id="orders-loading" role="status" hidden>
+                <i class="bx bx-loader-alt orders-state-icon" aria-hidden="true"></i>
+                <p>Loading your orders...</p>
+            </div>
+
+            <div class="orders-state" id="orders-empty">
+                <i class="bx bx-package orders-state-icon" aria-hidden="true"></i>
+                <h2>No orders yet</h2>
+                <p>Your completed purchases will appear here.</p>
+                <a class="orders-continue-shopping" href="/">Continue shopping</a>
+            </div>
+
+            <div class="orders-state orders-error" id="orders-error" role="alert" hidden>
+                <i class="bx bx-error-circle orders-state-icon" aria-hidden="true"></i>
+                <h2>Unable to load orders</h2>
+                <p>Please try again later.</p>
+            </div>
+
+            <ul class="orders-list" id="orders-list" aria-label="Your orders" hidden></ul>
+        </section>
+    </main>
+
+    <template id="order-card-template">
+        <li class="order-card">
+            <div class="order-card-header">
+                <div>
+                    <span class="order-reference"></span>
+                    <time class="order-date"></time>
+                </div>
+                <span class="order-status"></span>
+            </div>
+            <ul class="order-items"></ul>
+            <div class="order-card-footer">
+                <span class="order-total-label">Total</span>
+                <span class="order-total"></span>
+            </div>
+        </li>
+    </template>
+
+    <script src="firebase-config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="cookies.js"></script>
+    <script src="navbar.js"></script>
+</body>
+</html>
