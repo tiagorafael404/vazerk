@@ -140,6 +140,17 @@
             color: #b42318;
         }
 
+        .orders-retry {
+            margin-top: 20px;
+            padding: 10px 18px;
+            border: 0;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
         .orders-continue-shopping {
             display: inline-block;
             margin-top: 20px;
@@ -172,12 +183,18 @@
         <p class="orders-description">View the purchases made with your account.</p>
 
         <section class="orders-panel" aria-label="Purchase history">
-            <div class="orders-state" id="orders-loading" role="status" hidden>
+            <div class="orders-state" id="orders-loading" role="status">
                 <i class="bx bx-loader-alt orders-state-icon" aria-hidden="true"></i>
                 <p>Loading your orders...</p>
             </div>
 
-            <div class="orders-state" id="orders-empty">
+            <div class="orders-state" id="orders-login" hidden>
+                <i class="bx bx-user orders-state-icon" aria-hidden="true"></i>
+                <h2>Sign in to view your orders</h2>
+                <p>Your purchases are available after you sign in to your account.</p>
+            </div>
+
+            <div class="orders-state" id="orders-empty" hidden>
                 <i class="bx bx-package orders-state-icon" aria-hidden="true"></i>
                 <h2>No orders yet</h2>
                 <p>Your completed purchases will appear here.</p>
@@ -187,7 +204,8 @@
             <div class="orders-state orders-error" id="orders-error" role="alert" hidden>
                 <i class="bx bx-error-circle orders-state-icon" aria-hidden="true"></i>
                 <h2>Unable to load orders</h2>
-                <p>Please try again later.</p>
+                <p id="orders-error-message">Please try again later.</p>
+                <button class="orders-retry" id="orders-retry" type="button">Try again</button>
             </div>
 
             <ul class="orders-list" id="orders-list" aria-label="Your orders" hidden></ul>
@@ -211,11 +229,19 @@
         </li>
     </template>
 
+    <template id="order-item-template">
+        <li class="order-item">
+            <span class="order-item-name"></span>
+            <span class="order-item-total"></span>
+        </li>
+    </template>
+
     <script src="firebase-config.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="cookies.js"></script>
     <script src="navbar.js"></script>
+    <script src="orders.js"></script>
 </body>
 </html>
