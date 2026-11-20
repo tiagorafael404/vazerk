@@ -7,7 +7,10 @@
   var currentDetailItem = null;
 
   function formatDayMonth(date) {
-    var monthAbbreviations = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+    var monthAbbreviations = [
+      "jan", "feb", "mar", "apr", "may", "jun",
+      "jul", "aug", "sep", "oct", "nov", "dec"
+    ];
     var day = String(date.getDate());
     var month = monthAbbreviations[date.getMonth()];
 
@@ -31,15 +34,19 @@
   }
 
   function bindGalleryClick() {
-    var galleryItems = document.querySelectorAll(".gallery-item");
-    var mainPhoto = document.getElementById("main_photo");
+    document.querySelectorAll(".p-container .gallery ul").forEach(function (gallery) {
+      if (gallery.dataset.galleryClickBound === "true") {
+        return;
+      }
 
-    if (!galleryItems.length || !mainPhoto) {
-      return;
-    }
+      gallery.dataset.galleryClickBound = "true";
+      gallery.addEventListener("click", function (event) {
+        var item = event.target.closest(".gallery-item");
+        var mainPhoto = document.getElementById("main_photo");
+        if (!item || !gallery.contains(item) || !mainPhoto) {
+          return;
+        }
 
-    galleryItems.forEach(function (item) {
-      item.addEventListener("click", function () {
         var newImage = item.getAttribute("photo");
 
         if (currentDetailItem) {
@@ -66,31 +73,46 @@
     });
   }
 
+  function removeGalleryItemsWithoutBackground() {
+    document.querySelectorAll(".p-container .gallery li").forEach(function (item) {
+      var backgroundImage = window.getComputedStyle(item).backgroundImage;
+      if (!backgroundImage || backgroundImage === "none") {
+        item.remove();
+      }
+    });
+  }
+
   function bindGalleryDrag() {
     document.querySelectorAll(".p-container .gallery ul").forEach(function (gallery) {
       var startX = 0;
       var startScrollLeft = 0;
       var dragged = false;
+      var pointerDown = false;
+      var activePointerId = null;
 
       gallery.addEventListener("pointerdown", function (event) {
         if (event.pointerType === "mouse" && event.button !== 0) {
           return;
         }
 
+        pointerDown = true;
+        activePointerId = event.pointerId;
         startX = event.clientX;
         startScrollLeft = gallery.scrollLeft;
         dragged = false;
-        gallery.setPointerCapture(event.pointerId);
         gallery.style.cursor = "grabbing";
       });
 
       gallery.addEventListener("pointermove", function (event) {
-        if (!gallery.hasPointerCapture(event.pointerId)) {
+        if (!pointerDown || event.pointerId !== activePointerId) {
           return;
         }
 
         var distance = event.clientX - startX;
         if (Math.abs(distance) > 4) {
+          if (!gallery.hasPointerCapture(event.pointerId)) {
+            gallery.setPointerCapture(event.pointerId);
+          }
           dragged = true;
         }
 
@@ -98,8 +120,12 @@
       });
 
       function endDrag(event) {
-        if (gallery.hasPointerCapture(event.pointerId)) {
+        if (event.pointerId === activePointerId && gallery.hasPointerCapture(event.pointerId)) {
           gallery.releasePointerCapture(event.pointerId);
+        }
+        if (event.pointerId === activePointerId) {
+          pointerDown = false;
+          activePointerId = null;
         }
         gallery.style.cursor = "grab";
       }
@@ -366,6 +392,7 @@
             mainPhotoFallback.style.backgroundImage = "none";
           }
 
+          removeGalleryItemsWithoutBackground();
           return;
         }
 
@@ -533,8 +560,10 @@
           photo.style.backgroundImage = "url('" + imageUrl + "')";
           photo.setAttribute("photo", imageValue);
         });
+        removeGalleryItemsWithoutBackground();
       })
       .catch(function (error) {
+        removeGalleryItemsWithoutBackground();
         console.error("Erro ao carregar items.json:", error);
       });
   }

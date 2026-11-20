@@ -255,7 +255,6 @@
         }
       });
     }
-
   }
 
   function bindNavigationHandlers() {
