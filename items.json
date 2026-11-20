@@ -4,7 +4,7 @@
     "url": "item.html?item=1",
     "category": "sunglasses",
     "name": "Black Rectangular Sunglasses",
-    "price": "3,00€",
+    "price": "10,99€",
     "image": "p/p1/photo.png",
     "image2": "p/p1/photo2.png",
     "image3": "p/p1/photo3.png",
@@ -14,7 +14,7 @@
     "id": 2,
     "category": "tshirt",
     "name": "Black Logo T-Shirt",
-    "price": "1,00€",
+    "price": "25,99€",
     "image": "p/p2/photo.png",
     "image2": "p/p2/photo2.png",
     "url": "item.html?item=2",
@@ -42,7 +42,7 @@
     "id": 3,
     "category": "tshirt",
     "name": "Outfielders Raglan T-Shirt",
-    "price": "10,99€",
+    "price": "25,99€",
     "image": "p/p3/photo.png",
     "image2": "p/p3/photo2.png",
     "image3": "p/p3/photo3.png",
@@ -71,7 +71,7 @@
     "id": 4,
     "category": "tshirt",
     "name": "Black Daily Gallery Sweater",
-    "price": "10,99€",
+    "price": "28,99€",
     "image": "p/p4/photo.jpg",
     "image2": "p/p4/photo2.jpg",
     "image3": "p/p4/photo3.jpg",
@@ -98,7 +98,7 @@
   {
     "id": 5,
     "name": "Light Blue Crewneck Sweater",
-    "price": "10,99€",
+    "price": "28,99€",
     "image": "p/p5/photo.jpg",
     "image2": "p/p5/photo2.jpg",
     "image3": "p/p5/photo3.jpg",
@@ -127,13 +127,125 @@
   {
     "id": 6,
     "name": "Black Contrast-Collar Polo Sweater",
-    "price": "10,99€",
+    "price": "28,99€",
     "image": "p/p6/photo.jpg",
     "image2": "p/p6/photo2.jpg",
     "image3": "p/p6/photo3.jpg",
     "image4": "p/p6/photo4.jpg",
     "url": "item.html?item=6",
     "description": "Black long-sleeve polo-style sweater with a contrasting light-colored collar and front placket, finished with ribbed cuffs and hem. Available in sizes S, M, and L.",
+    "select": {
+      "label": "Select Size",
+      "options": [
+        {
+          "id": 1,
+          "name": "S"
+        },
+        {
+          "id": 2,
+          "name": "M"
+        },
+        {
+          "id": 3,
+          "name": "L"
+        }
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "name": "Black Stay Mode Sweatshirt",
+    "price": "27,99€",
+    "image": "p/p7/photo.jpg",
+    "image2": "p/p7/photo2.jpg",
+    "image3": "p/p7/photo3.jpg",
+    "image4": "p/p7/photo4.jpg",
+    "url": "item.html?item=7",
+    "description": "Black long-sleeve crewneck sweatshirt with a bold white Stay Mode graphic centered on the chest. Its simple color palette makes the front print stand out. Available in sizes S, M, and L.",
+    "select": {
+      "label": "Select Size",
+      "options": [
+        {
+          "id": 1,
+          "name": "S"
+        },
+        {
+          "id": 2,
+          "name": "M"
+        },
+        {
+          "id": 3,
+          "name": "L"
+        }
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "name": "Brown Graphic Crewneck Sweater",
+    "price": "28,99€",
+    "image": "p/p8/photo.jpg",
+    "image2": "p/p8/photo2.jpg",
+    "image3": "p/p8/photo3.jpg",
+    "image4": "p/p8/photo4.jpg",
+    "url": "item.html?item=8",
+    "description": "Brown long-sleeve crewneck sweater with a textured appearance and a prominent white graphic across the chest, accompanied by smaller chest details. Available in sizes S, M, and L.",
+    "select": {
+      "label": "Select Size",
+      "options": [
+        {
+          "id": 1,
+          "name": "S"
+        },
+        {
+          "id": 2,
+          "name": "M"
+        },
+        {
+          "id": 3,
+          "name": "L"
+        }
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "name": "Worldwide Graphic Sweatshirt",
+    "price": "27,99€",
+    "image": "p/p9/photo.jpg",
+    "image2": "p/p9/photo2.jpg",
+    "image3": "p/p9/photo3.jpg",
+    "image4": "p/p9/photo4.jpg",
+    "url": "item.html?item=9",
+    "description": "Long-sleeve crewneck sweatshirt with a compact black graphic on the front. Its neutral color and simple silhouette pair easily with casual outfits. Available in sizes S, M, and L.",
+    "select": {
+      "label": "Select Size",
+      "options": [
+        {
+          "id": 1,
+          "name": "S"
+        },
+        {
+          "id": 2,
+          "name": "M"
+        },
+        {
+          "id": 3,
+          "name": "L"
+        }
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "name": "Pink Graphic Crewneck Sweatshirt",
+    "price": "27,99€",
+    "image": "p/p10/photo.jpg",
+    "image2": "p/p10/photo2.jpg",
+    "image3": "p/p10/photo3.jpg",
+    "image4": "p/p10/photo4.jpg",
+    "url": "item.html?item=10",
+    "description": "Pink long-sleeve crewneck sweatshirt featuring a large white abstract graphic across the front. The bright color and bold design make it a standout casual piece. Available in sizes S, M, and L.",
     "select": {
       "label": "Select Size",
       "options": [
