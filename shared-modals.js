@@ -161,10 +161,11 @@
             '</div>' +
             '<div class="close"><i class="fa fa-close" id="account-close"></i></div>' +
           '</div>' +
-          '<div class="account-content">' +
-            '<div class="account-cart"><a href="cart.html">Cart</a></div>' +
-            '<div class="account-login"><a>Logout</a></div>' +
-          '</div>' +
+          '<ul class="account-content">' +
+            '<li class="account-orders"><a href="orders.html">My Orders</a></li>' +
+            '<li class="account-cart"><a href="cart.html">Cart</a></li>' +
+            '<li class="account-login"><a>Logout</a></li>' +
+          '</ul>' +
         '</div>' +
       '</div>'
     );
