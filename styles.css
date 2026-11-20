@@ -591,13 +591,11 @@ body {
     #account-modal {
         display: none;
         opacity: 0;
-        transform: translateY(-100%);
     }
 
     #account-modal.show {
         display: block;
         opacity: 1;
-        transform: translateY(0);
     }
 
     .account-modal {
