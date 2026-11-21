@@ -1,0 +1,8 @@
+name = "x2scale"
+main = "worker.js"
+compatibility_date = "2026-11-20"
+
+[[d1_databases]]
+binding = "x2scale_orders"
+database_name = "x2scale-orders"
+database_id = "484f65d1-88be-4300-ae93-bfcea33497b3"

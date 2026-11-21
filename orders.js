@@ -76,7 +76,9 @@
 
   function showError(error) {
     console.error("Unable to load purchase history.", error);
-    elements.errorMessage.textContent = "Please try again later.";
+    elements.errorMessage.textContent = error && error.message
+      ? error.message
+      : "Please try again later.";
     showState("error");
   }
 
@@ -103,7 +105,20 @@
       })
       .then(function (response) {
         if (!response.ok) {
-          throw new Error("Orders service returned HTTP " + response.status + ".");
+          return response.text().then(function (body) {
+            var message = "Orders service returned HTTP " + response.status + ".";
+            if (body) {
+              try {
+                var data = JSON.parse(body);
+                if (data && typeof data.error === "string") {
+                  message = data.error + " (HTTP " + response.status + ").";
+                }
+              } catch (error) {
+                message += " " + body.slice(0, 200);
+              }
+            }
+            throw new Error(message);
+          });
         }
         return response.json();
       })
