@@ -532,7 +532,10 @@ export default {
     }
 
     const origin = request.headers.get("Origin");
-    const siteConfig = getSiteConfig(origin, env);
+    const isLocalOrdersRequest = url.pathname === "/orders"
+      && origin === "http://localhost:5501";
+    const siteConfig = getSiteConfig(origin, env)
+      || (isLocalOrdersRequest ? getSiteConfig("https://vazerk.com", env) : null);
     if (!siteConfig) {
       return Response.json({ error: "Site não autorizado." }, { status: 403 });
     }
