@@ -298,7 +298,7 @@ async function handleGetOrders(env, siteConfig, user, corsHeaders) {
 
   try {
     const result = await env.x2scale_orders.prepare(
-      `SELECT order_id, status, currency, total, items_json, created_at
+      `SELECT order_id, payment_intent_id, status, currency, total, items_json, created_at
        FROM orders
        WHERE uid = ?1 AND firebase_project_id = ?2
        ORDER BY created_at DESC`
@@ -306,6 +306,7 @@ async function handleGetOrders(env, siteConfig, user, corsHeaders) {
 
     const orders = result.results.map((row) => ({
       id: row.order_id,
+      paymentIntentId: row.payment_intent_id,
       status: row.status,
       currency: row.currency,
       total: row.total,

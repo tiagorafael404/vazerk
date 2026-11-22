@@ -46,7 +46,9 @@
     var status = card.querySelector(".order-status");
     var itemsList = card.querySelector(".order-items");
 
-    reference.textContent = "Order " + order.id;
+    reference.textContent = order.paymentIntentId
+      ? "Payment " + order.paymentIntentId
+      : "Order " + order.id;
     date.dateTime = orderDate.toISOString();
     date.textContent = new Intl.DateTimeFormat(undefined, {
       dateStyle: "medium",
