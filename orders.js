@@ -45,10 +45,12 @@
     var date = card.querySelector(".order-date");
     var status = card.querySelector(".order-status");
     var itemsList = card.querySelector(".order-items");
+    var detailsLink = card.querySelector(".order-details");
 
     reference.textContent = order.paymentIntentId
       ? "Payment " + order.paymentIntentId
       : "Order " + order.id;
+    detailsLink.href = "order-details.html?id=" + encodeURIComponent(order.id);
     date.dateTime = orderDate.toISOString();
     date.textContent = new Intl.DateTimeFormat(undefined, {
       dateStyle: "medium",

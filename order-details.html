@@ -1,0 +1,297 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - Vazerk</title>
+    <link rel="icon" href="logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fjalla+One|Libre+Baskerville">
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .order-details-page {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 28px;
+        }
+
+        .order-details-page h1 {
+            margin: 0 0 8px;
+            font-family: "Fjalla One", sans-serif;
+            text-transform: uppercase;
+        }
+
+        .order-details-back {
+            display: inline-block;
+            margin: 0 0 24px;
+            color: #222;
+            font-weight: 600;
+        }
+
+        .order-details-panel {
+            padding: 24px;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .order-details-state {
+            padding: 36px 16px;
+            color: #666;
+            text-align: center;
+        }
+
+        .order-details-state[hidden],
+        .order-details-content[hidden] {
+            display: none;
+        }
+
+        .order-details-state h2 {
+            margin: 0 0 8px;
+            color: #222;
+            font-family: "Fjalla One", sans-serif;
+            font-size: 22px;
+            font-weight: normal;
+            text-transform: uppercase;
+        }
+
+        .order-details-state p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .order-details-state-icon {
+            display: block;
+            margin-bottom: 12px;
+            color: #888;
+            font-size: 40px;
+        }
+
+        .order-details-error {
+            color: #b42318;
+        }
+
+        .order-details-retry {
+            margin-top: 20px;
+            padding: 10px 18px;
+            border: 0;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .order-details-meta {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .order-details-meta-item {
+            min-width: 0;
+        }
+
+        .order-details-meta-label {
+            display: block;
+            margin-bottom: 6px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .order-details-meta-value {
+            color: #111;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .order-details-payment-id {
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .order-details-items {
+            display: grid;
+            gap: 16px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .order-details-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 16px 0;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .order-details-product {
+            display: flex;
+            align-items: center;
+            min-width: 0;
+            gap: 14px;
+        }
+
+        .order-details-image,
+        .order-details-image-placeholder {
+            width: 76px;
+            height: 76px;
+            flex: 0 0 76px;
+            border-radius: 8px;
+            background: #f3f3f3;
+            object-fit: cover;
+        }
+
+        .order-details-image-placeholder {
+            display: grid;
+            place-items: center;
+            color: #888;
+            font-size: 28px;
+        }
+
+        .order-details-product-name {
+            margin: 0;
+            color: #111;
+            font-size: 16px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .order-details-quantity,
+        .order-details-unit-price {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .order-details-item-total {
+            color: #111;
+            font-weight: 700;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .order-details-total {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 8px;
+            padding-top: 18px;
+            border-top: 1px solid #e8e8e8;
+            color: #111;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            .order-details-page {
+                margin: 40px auto;
+                padding: 0 16px;
+            }
+
+            .order-details-panel {
+                padding: 18px;
+            }
+
+            .order-details-meta {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .order-details-item {
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .order-details-image,
+            .order-details-image-placeholder {
+                width: 60px;
+                height: 60px;
+                flex-basis: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script src="shared-modals.js"></script>
+
+    <main class="order-details-page">
+        <h1>Order details</h1>
+        <a class="order-details-back" href="orders.html">Back to my orders</a>
+
+        <section class="order-details-panel" aria-label="Order details">
+            <div class="order-details-state" id="order-details-loading" role="status">
+                <i class="bx bx-loader-alt order-details-state-icon" aria-hidden="true"></i>
+                <p>Loading order details...</p>
+            </div>
+
+            <div class="order-details-state" id="order-details-login" hidden>
+                <i class="bx bx-user order-details-state-icon" aria-hidden="true"></i>
+                <h2>Sign in to view this order</h2>
+                <p>Order details are available after you sign in to your account.</p>
+            </div>
+
+            <div class="order-details-state" id="order-details-not-found" hidden>
+                <i class="bx bx-package order-details-state-icon" aria-hidden="true"></i>
+                <h2>Order not found</h2>
+                <p>This order is not available in your account.</p>
+            </div>
+
+            <div class="order-details-state order-details-error" id="order-details-error" role="alert" hidden>
+                <i class="bx bx-error-circle order-details-state-icon" aria-hidden="true"></i>
+                <h2>Unable to load order</h2>
+                <p id="order-details-error-message">Please try again later.</p>
+                <button class="order-details-retry" id="order-details-retry" type="button">Try again</button>
+            </div>
+
+            <div class="order-details-content" id="order-details-content" hidden>
+                <div class="order-details-meta">
+                    <div class="order-details-meta-item">
+                        <span class="order-details-meta-label">Purchase date</span>
+                        <time class="order-details-meta-value" id="order-details-date"></time>
+                    </div>
+                    <div class="order-details-meta-item">
+                        <span class="order-details-meta-label">Payment ID</span>
+                        <span class="order-details-meta-value order-details-payment-id" id="order-details-payment-id"></span>
+                    </div>
+                </div>
+
+                <ul class="order-details-items" id="order-details-items"></ul>
+
+                <div class="order-details-total">
+                    <span>Total</span>
+                    <span id="order-details-total"></span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <template id="order-details-item-template">
+        <li class="order-details-item">
+            <div class="order-details-product">
+                <img class="order-details-image" alt="" hidden>
+                <span class="order-details-image-placeholder" aria-hidden="true"><i class="bx bx-package"></i></span>
+                <div>
+                    <h2 class="order-details-product-name"></h2>
+                    <span class="order-details-quantity"></span>
+                    <span class="order-details-unit-price"></span>
+                </div>
+            </div>
+            <span class="order-details-item-total"></span>
+        </li>
+    </template>
+
+    <script src="firebase-config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="cookies.js"></script>
+    <script src="navbar.js"></script>
+    <script src="order-details.js"></script>
+</body>
+</html>

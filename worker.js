@@ -395,6 +395,8 @@ async function getStripeLineItems(sessionId, stripeKey) {
       const quantity = Number(lineItem.quantity);
       const unitAmount = lineItem.price && lineItem.price.unit_amount;
       const product = lineItem.price && lineItem.price.product;
+      const productId = product && typeof product === "object"
+        && product.metadata && product.metadata.productId;
       const fallbackUnitAmount = quantity > 0
         ? Math.round(Number(lineItem.amount_subtotal) / quantity)
         : NaN;
@@ -415,6 +417,7 @@ async function getStripeLineItems(sessionId, stripeKey) {
         name: productName || description,
         quantity,
         unitAmount: amount,
+        productId: typeof productId === "string" ? productId : null,
       });
     });
 

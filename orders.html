@@ -80,6 +80,24 @@
             font-size: 14px;
         }
 
+        .order-details {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 16px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .order-details:hover,
+        .order-details:focus-visible {
+            background: #333;
+        }
+
         .order-status {
             padding: 6px 10px;
             border-radius: 999px;
@@ -226,6 +244,7 @@
                 <span class="order-total-label">Total</span>
                 <span class="order-total"></span>
             </div>
+            <a class="order-details" href="order-details.html">Order details</a>
         </li>
     </template>
 
