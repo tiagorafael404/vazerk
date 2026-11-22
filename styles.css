@@ -717,8 +717,9 @@ body {
         align-items: center;
         display: flex;
         justify-content: center;
-      border: solid 2px #fff;
+        border: solid 2px #fff;
         border-radius: 10px 10px 10px 10px;
+        cursor: pointer;
     }
 
     .account-content li a{
